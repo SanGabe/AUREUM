@@ -7,9 +7,12 @@ export const metadata: Metadata = {
     template: "%s | AUREUM",
   },
   description:
-    "Organização financeira para pessoas e casais, com WhatsApp, faturas, extratos e Google Sheets.",
+    "Organize contas, cartões, metas e a vida financeira da sua Household com ordem, clareza e progresso.",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.svg",
   },
 };
 
