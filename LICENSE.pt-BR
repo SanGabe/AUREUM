@@ -1,0 +1,138 @@
+LICENÇA PROPRIETÁRIA SOURCE-AVAILABLE AUREUM v1.0
+TRADUÇÃO PARA PORTUGUÊS (BRASIL)
+
+Copyright © 2026 Gabriel de Lima Gomes Citrini.
+Todos os direitos reservados.
+
+AVISO SOBRE ESTA TRADUÇÃO
+
+Esta é uma tradução para português brasileiro disponibilizada para facilitar
+a leitura. A versão oficial e juridicamente vinculante desta licença é o arquivo
+LICENSE, redigido em inglês. Em caso de divergência de interpretação entre esta
+tradução e a versão em inglês, prevalecerá a versão em inglês.
+
+1. TITULARIDADE
+
+O AUREUM, incluindo seu código-fonte, documentação, interface de usuário,
+identidade visual, logotipos, artes, estruturas de banco de dados, regras de
+negócio e materiais relacionados (coletivamente, o "Software"), constitui
+material proprietário protegido pelas leis aplicáveis de direitos autorais,
+propriedade intelectual e demais normas pertinentes.
+
+Exceto pelas permissões limitadas expressamente concedidas abaixo, nenhum
+direito, titularidade ou interesse sobre o Software é transferido ou licenciado
+a qualquer pessoa.
+
+2. USOS PERMITIDOS
+
+É concedida permissão para acessar e visualizar o código-fonte publicamente
+disponível do Software exclusivamente para:
+
+- análise de portfólio;
+- estudo educacional;
+- avaliação técnica;
+- análise de segurança; e
+- aprendizado pessoal e não comercial.
+
+Você poderá criar cópias locais temporárias ou realizar modificações somente
+quando razoavelmente necessárias para essas finalidades permitidas, desde que
+tais cópias ou modificações não sejam publicadas, distribuídas, disponibilizadas
+como serviço ou utilizadas comercialmente.
+
+3. USOS PROIBIDOS
+
+Sem autorização prévia e escrita do titular dos direitos autorais, você não
+poderá, total ou substancialmente:
+
+- copiar ou redistribuir o Software a terceiros;
+- publicar, espelhar, reenviar ou de qualquer outra forma disponibilizar cópias
+  do Software;
+- vender, revender, licenciar, sublicenciar, alugar, arrendar ou explorar
+  comercialmente o Software;
+- utilizar o Software, seu código-fonte ou partes substanciais dele em qualquer
+  produto comercial, serviço pago, entrega de consultoria ou atividade geradora
+  de receita;
+- operar, hospedar, implantar ou oferecer o Software como serviço comercial ou
+  público;
+- distribuir versões modificadas, adaptadas, traduzidas ou derivadas do Software;
+- remover, ocultar ou alterar avisos de direitos autorais, autoria, marca,
+  atribuição ou propriedade;
+- apresentar o Software, sua marca ou partes substanciais de seu design ou
+  implementação como trabalho próprio; ou
+- conceder a terceiros quaisquer direitos que você não possua nos termos desta
+  Licença.
+
+4. FORKS E DIREITOS DA PLATAFORMA DE HOSPEDAGEM
+
+Nada nesta Licença tem a intenção de restringir direitos que obrigatoriamente
+devam ser concedidos a uma plataforma de hospedagem de código-fonte conforme os
+termos de serviço aplicáveis dessa plataforma.
+
+Por exemplo, quando o Software estiver hospedado em um repositório público, a
+plataforma poderá permitir que usuários visualizem ou criem forks dentro da
+própria plataforma, conforme exigido pelos respectivos termos.
+
+Essas permissões da plataforma não concedem qualquer direito adicional de
+redistribuir, comercializar, sublicenciar, vender, disponibilizar publicamente
+ou de outra forma explorar o Software além das permissões expressamente
+estabelecidas nesta Licença.
+
+5. MARCA E IDENTIDADE VISUAL
+
+Os nomes "AUREUM" e "Aureum", seus logotipos, símbolos, slogans, identidade
+visual e demais elementos de marca não são licenciados para reutilização por
+meio desta Licença.
+
+Nenhuma permissão é concedida para utilizá-los de maneira que sugira endosso,
+afiliação, patrocínio, titularidade ou origem sem autorização prévia e escrita.
+
+6. COMPONENTES DE TERCEIROS
+
+Bibliotecas, pacotes, ativos, fontes, APIs e outras dependências de terceiros
+incluídas no Software ou utilizadas por ele permanecem sujeitas às suas
+respectivas licenças e termos.
+
+Esta Licença aplica-se somente aos materiais sobre os quais o titular dos
+direitos autorais possui autoridade para conceder direitos.
+
+7. AUSÊNCIA DE GARANTIAS
+
+O SOFTWARE É FORNECIDO "NO ESTADO EM QUE SE ENCONTRA" E "CONFORME DISPONÍVEL",
+SEM GARANTIAS DE QUALQUER NATUREZA, EXPRESSAS OU IMPLÍCITAS, INCLUINDO, SEM
+LIMITAÇÃO, GARANTIAS DE COMERCIALIZAÇÃO, ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA,
+TITULARIDADE, NÃO VIOLAÇÃO DE DIREITOS, PRECISÃO, CONFIABILIDADE OU
+DISPONIBILIDADE.
+
+NA EXTENSÃO MÁXIMA PERMITIDA PELA LEI, O TITULAR DOS DIREITOS AUTORAIS NÃO SERÁ
+RESPONSÁVEL POR QUALQUER RECLAMAÇÃO, PERDA, DANO, RESPONSABILIDADE OU OUTRA
+CONSEQUÊNCIA DECORRENTE DO ACESSO, ANÁLISE OU USO DO SOFTWARE.
+
+8. RESCISÃO
+
+Qualquer permissão concedida por esta Licença será automaticamente encerrada em
+caso de violação de qualquer de seus termos.
+
+Após a rescisão, você deverá cessar todo uso não autorizado e remover quaisquer
+cópias ou materiais derivados sob sua posse ou controle, salvo quando a retenção
+for exigida por lei ou pelos termos aplicáveis da plataforma.
+
+9. PERMISSÕES ADICIONAIS
+
+Licenças comerciais, direitos de redistribuição, permissões para parcerias e
+outros usos não concedidos por esta Licença poderão ser autorizados
+separadamente e por escrito pelo titular dos direitos autorais.
+
+10. CONTATO
+
+Para solicitações relacionadas a licenciamento ou uso comercial, entre em
+contato com o titular dos direitos autorais por meio do repositório oficial do
+AUREUM ou por outro canal oficial de contato publicado pelo proprietário do
+projeto.
+
+---
+
+Este projeto é source-available, não open source.
+
+A visibilidade pública do repositório não constitui permissão para copiar,
+redistribuir, vender, sublicenciar, explorar comercialmente ou disponibilizar
+publicamente o Software, exceto nos casos expressamente permitidos acima.

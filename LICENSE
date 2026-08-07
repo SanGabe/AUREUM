@@ -1,21 +1,109 @@
-MIT License
+AUREUM PROPRIETARY SOURCE-AVAILABLE LICENSE v1.0
 
-Copyright (c) 2026 Gabriel Citrini
+Copyright © 2026 Gabriel de Lima Gomes Citrini.
+All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. OWNERSHIP
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+AUREUM, including its source code, documentation, user interface, visual identity,
+logos, artwork, database structures, business logic, and related materials
+(collectively, the "Software"), is proprietary material protected by applicable
+copyright, intellectual property, and other laws.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Except for the limited permissions expressly granted below, no rights, title, or
+interest in the Software are transferred or licensed to any person.
+
+2. PERMITTED USE
+
+Permission is granted to access and view the publicly available source code of
+the Software solely for:
+
+- portfolio review;
+- educational study;
+- technical evaluation;
+- security review; and
+- personal, non-commercial learning.
+
+You may make temporary local copies or modifications only when reasonably
+necessary for those permitted purposes, provided that such copies or
+modifications are not published, distributed, deployed as a service, or used
+commercially.
+
+3. PROHIBITED USE
+
+Without prior written permission from the copyright holder, you may not, in
+whole or in substantial part:
+
+- copy or redistribute the Software to third parties;
+- publish, mirror, re-upload, or otherwise make copies of the Software available;
+- sell, resell, license, sublicense, rent, lease, or commercially exploit the Software;
+- use the Software, its source code, or substantial portions of it in any commercial
+  product, paid service, consultancy deliverable, or revenue-generating activity;
+- operate, host, deploy, or offer the Software as a commercial or public service;
+- distribute modified, adapted, translated, or derivative versions of the Software;
+- remove, obscure, or alter copyright, authorship, trademark, attribution, or
+  proprietary notices;
+- represent the Software, its branding, or substantial portions of its design or
+  implementation as your own work; or
+- grant any third party rights that you do not possess under this License.
+
+4. FORKS AND HOSTING-PLATFORM RIGHTS
+
+Nothing in this License is intended to restrict rights that must be granted to a
+source-code hosting platform under that platform's applicable terms of service.
+For example, where the Software is hosted in a public repository, the platform
+may permit users to view or create platform-level forks as required by its terms.
+Such platform permissions do not grant any additional right to redistribute,
+commercialize, sublicense, sell, publicly deploy, or otherwise exploit the
+Software outside the permissions expressly stated in this License.
+
+5. BRANDING AND TRADEMARKS
+
+The names "AUREUM" and "Aureum", associated logos, symbols, slogans, visual
+identity, and other brand elements are not licensed for reuse by this License.
+No permission is granted to use them in a manner that suggests endorsement,
+affiliation, sponsorship, ownership, or origin without prior written permission.
+
+6. THIRD-PARTY COMPONENTS
+
+Third-party libraries, packages, assets, fonts, APIs, and other dependencies
+included in or used by the Software remain subject to their respective licenses
+and terms. This License applies only to material for which the copyright holder
+has the authority to grant rights.
+
+7. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT,
+ACCURACY, RELIABILITY, OR AVAILABILITY.
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDER SHALL NOT BE LIABLE
+FOR ANY CLAIM, LOSS, DAMAGE, LIABILITY, OR OTHER CONSEQUENCE ARISING FROM ACCESS
+TO, REVIEW OF, OR USE OF THE SOFTWARE.
+
+8. TERMINATION
+
+Any permission granted under this License terminates automatically if you breach
+any of its terms. Upon termination, you must cease all unauthorized use and
+remove any copies or derivative materials in your possession or control, except
+where retention is required by law or by applicable platform terms.
+
+9. ADDITIONAL PERMISSIONS
+
+Commercial licenses, redistribution rights, partnership permissions, and other
+uses not granted by this License may be authorized separately in writing by the
+copyright holder.
+
+10. CONTACT
+
+For licensing or commercial-use inquiries, contact the copyright holder through
+the official AUREUM repository or another official contact channel published by
+the project owner.
+
+---
+
+This project is source-available, not open source.
+Public visibility of the repository does not constitute permission to copy,
+redistribute, sell, sublicense, commercially exploit, or publicly deploy the
+Software except as expressly permitted above.

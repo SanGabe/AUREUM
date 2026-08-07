@@ -3,8 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Fluxo Financeiro",
-    template: "%s | Fluxo Financeiro",
+    default: "AUREUM",
+    template: "%s | AUREUM",
   },
   description:
     "Organização financeira para pessoas e casais, com WhatsApp, faturas, extratos e Google Sheets.",

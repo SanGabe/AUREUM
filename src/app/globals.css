@@ -1,17 +1,17 @@
 :root {
-  --background: #f5f7f7;
-  --surface: #ffffff;
-  --surface-soft: #eef2f1;
-  --ink: #111716;
-  --muted: #67706e;
-  --line: #dde4e2;
-  --primary: #173f37;
-  --primary-strong: #0d2f29;
-  --accent: #b5f279;
-  --danger: #a83d3d;
-  --success: #267c52;
+  --background: #071b3e;
+  --surface: #0e2a58;
+  --surface-soft: #173764;
+  --ink: #f8f2df;
+  --muted: #a9b8cf;
+  --line: rgba(224, 177, 67, 0.20);
+  --primary: #d9a936;
+  --primary-strong: #07162f;
+  --accent: #f0ca63;
+  --danger: #ef7c7c;
+  --success: #e3b94f;
   --radius: 20px;
-  --shadow: 0 18px 50px rgba(25, 49, 44, 0.08);
+  --shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -24,7 +24,7 @@ html {
 
 body {
   margin: 0;
-  color: var(--ink);
+  color: #f4e8c8;
   background: var(--background);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -53,8 +53,8 @@ button {
 .landing-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 85% 5%, rgba(181, 242, 121, 0.28), transparent 26rem),
-    linear-gradient(180deg, #f9fbfa 0%, #eef3f1 100%);
+    radial-gradient(circle at 80% 0%, rgba(224, 177, 67, 0.15), transparent 28rem),
+    linear-gradient(180deg, #071b3e 0%, #06152f 100%);
 }
 
 .topbar {
@@ -78,8 +78,8 @@ button {
   height: 36px;
   display: grid;
   place-items: center;
-  color: #fff;
-  background: var(--primary);
+  color: #07162f;
+  background: var(--accent);
   border-radius: 11px;
 }
 
@@ -144,8 +144,8 @@ button {
 }
 
 .button-primary {
-  color: #fff;
-  background: var(--primary);
+  color: #07162f;
+  background: var(--accent);
   border-color: var(--primary);
 }
 
@@ -154,8 +154,8 @@ button {
 }
 
 .button-secondary {
-  color: var(--primary);
-  background: var(--surface);
+  color: var(--accent);
+  background: rgba(14, 42, 88, 0.8);
   border-color: var(--line);
 }
 
@@ -170,8 +170,8 @@ button {
 .status-panel,
 .panel,
 .summary-card {
-  border: 1px solid rgba(221, 228, 226, 0.9);
-  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(224, 177, 67, 0.16);
+  background: rgba(14, 42, 88, 0.72);
   box-shadow: var(--shadow);
 }
 
@@ -254,7 +254,7 @@ button {
   flex-direction: column;
   padding: 28px 20px;
   color: #fff;
-  background: var(--primary-strong);
+  background: #06142d;
 }
 
 .brand-dashboard {
@@ -262,7 +262,7 @@ button {
 }
 
 .brand-dashboard .brand-mark {
-  color: var(--primary-strong);
+  color: #07162f;
   background: var(--accent);
 }
 
@@ -277,7 +277,7 @@ button {
   gap: 13px;
   align-items: center;
   padding: 13px 14px;
-  color: #c4d0cd;
+  color: #aebbd0;
   border-radius: 13px;
   font-size: 0.93rem;
   font-weight: 660;
@@ -309,7 +309,7 @@ button {
 }
 
 .sidebar-footer small {
-  color: #9aaba7;
+  color: #8998b1;
 }
 
 .avatar {
@@ -317,7 +317,7 @@ button {
   height: 40px;
   display: grid;
   place-items: center;
-  color: var(--primary-strong);
+  color: #07162f;
   background: var(--accent);
   border-radius: 13px;
   font-size: 0.78rem;
@@ -380,7 +380,7 @@ button {
 .summary-indicator {
   width: 8px;
   height: 8px;
-  background: #9ea8a5;
+  background: #6f7e96;
   border-radius: 50%;
 }
 
@@ -568,8 +568,8 @@ button {
   display: grid;
   place-items: center;
   margin-bottom: 38px;
-  color: #fff;
-  background: var(--primary);
+  color: #07162f;
+  background: var(--accent);
   border-radius: 15px;
   font-size: 1.25rem;
   font-weight: 900;
@@ -689,4 +689,41 @@ button {
   .transaction-row > strong {
     grid-column: 2;
   }
+}
+
+
+/* AUREUM brand identity */
+.brand-image {
+  display: block;
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
+.brand-emblem-small {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.hero-brand-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+  gap: 48px;
+  align-items: center;
+}
+.hero-seal {
+  width: min(100%, 390px);
+  justify-self: end;
+  filter: drop-shadow(0 24px 50px rgba(0,0,0,.3));
+}
+.brand-kicker { color: var(--accent); }
+.landing-shell .hero h1, .dashboard-header h1, .panel h2, .feature-card h2 { color: #fff8e7; }
+.feature-card > span, .eyebrow, .panel-kicker { color: var(--accent); }
+.status-panel { background: linear-gradient(135deg, rgba(14,42,88,.86), rgba(7,27,62,.94)); }
+.import-panel {
+  background: radial-gradient(circle at 90% 10%, rgba(224,177,67,.16), transparent 12rem), rgba(14,42,88,.78);
+}
+@media (max-width: 820px) {
+  .hero-brand-panel { grid-template-columns: 1fr; }
+  .hero-seal { width: min(75vw, 340px); justify-self: center; order: -1; }
 }

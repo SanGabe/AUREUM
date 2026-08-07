@@ -1,4 +1,4 @@
-# Fluxo Financeiro
+# AUREUM
 
 Base inicial do aplicativo web de organização financeira para pessoas e casais.
 
@@ -33,14 +33,14 @@ http://localhost:3000/api/health
 
 ## Publicar no GitHub
 
-Crie um repositório vazio chamado `fluxo-financeiro` no GitHub. Depois, dentro desta pasta:
+Crie um repositório vazio chamado `aureum` no GitHub. Depois, dentro desta pasta:
 
 ```bash
 git init
 git add .
-git commit -m "feat: cria fundação do Fluxo Financeiro"
+git commit -m "feat: cria fundação do AUREUM"
 git branch -M main
-git remote add origin https://github.com/SEU_USUARIO/fluxo-financeiro.git
+git remote add origin https://github.com/SEU_USUARIO/aureum.git
 git push -u origin main
 ```
 
@@ -48,7 +48,7 @@ git push -u origin main
 
 1. Entre na Vercel usando sua conta do GitHub.
 2. Selecione **Add New → Project**.
-3. Importe o repositório `fluxo-financeiro`.
+3. Importe o repositório `aureum`.
 4. Confirme que o framework foi identificado como **Next.js**.
 5. Mantenha o diretório raiz como `./`.
 6. Não adicione variáveis de ambiente nesta primeira publicação.
