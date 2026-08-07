@@ -1,306 +1,348 @@
 import Link from "next/link";
 import styles from "./landing.module.css";
 
-const capabilities = [
-  {
-    number: "01",
-    title: "Registre sem atrito",
-    description:
-      "Centralize contas, cartões, metas, faturas e lançamentos sem depender de uma coleção de planilhas e anotações.",
-  },
-  {
-    number: "02",
-    title: "Controle com confiança",
-    description:
-      "Informações importadas podem ser conferidas antes de virarem dados oficiais. Menos ruído, mais segurança para decidir.",
-  },
-  {
-    number: "03",
-    title: "Compartilhe com regras",
-    description:
-      "Organize a vida financeira da Household com acessos de membro, colaborador financeiro e administrador.",
-  },
-];
+function BrandName({ compact = false }: { compact?: boolean }) {
+  return (
+    <span className={compact ? styles.brandNameCompact : styles.brandName}>
+      <span className={styles.brandGold}>AU</span>
+      <span>RE</span>
+      <span className={styles.brandGold}>UM</span>
+    </span>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z" />
+      <path d="m9 12 2 2 4-5" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="5" y="10" width="14" height="10" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    </svg>
+  );
+}
+
+function CloudIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7.5 18H6a4 4 0 0 1-.5-8A6 6 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9H16" />
+      <path d="M12 12v9m0-9-3 3m3-3 3 3" />
+    </svg>
+  );
+}
 
 const pillars = [
   {
-    latin: "AMOR",
-    title: "Cuidar do que importa",
-    description:
-      "Dinheiro não é só número. É casa, família, escolhas, tranquilidade e os planos de quem caminha com você.",
+    key: "AMOR",
     symbol: "♡",
+    title: "Cuidar do que importa",
+    copy:
+      "Organize o que é seu, o que é da sua casa e o que constrói o futuro de quem você ama.",
   },
   {
-    latin: "ORDO",
-    title: "Ordem que liberta",
-    description:
-      "Transforme informação espalhada em estrutura, contexto e uma visão financeira que realmente faça sentido.",
-    symbol: "◫",
+    key: "ORDO",
+    symbol: "⌂",
+    title: "Ordem que gera liberdade",
+    copy:
+      "Tenha método, estrutura e controle para entender seu dinheiro e tomar decisões melhores.",
   },
   {
-    latin: "PROGRESSUS",
-    title: "Progresso com direção",
-    description:
-      "Acompanhe objetivos, reconheça padrões e avance com decisões mais conscientes — uma conquista de cada vez.",
+    key: "PROGRESSUS",
     symbol: "↗",
+    title: "Evolução constante",
+    copy:
+      "Acompanhe metas, construa patrimônio e avance com consistência rumo aos seus objetivos.",
   },
 ];
 
+const problems = [
+  "Informações dispersas",
+  "Falta de visão do todo",
+  "Esquecimento de contas",
+  "Dificuldade para planejar",
+];
+
 export default function Home() {
+  const year = new Date().getFullYear();
+
   return (
-    <main className={styles.shell}>
-      <nav className={styles.nav}>
-        <Link
-          className={styles.brand}
-          href="/"
-          aria-label="Página inicial do AUREUM"
-        >
-          <img
-            className={styles.brandBird}
-            src="/brand/aureum-ararinha.png"
-            alt=""
-            aria-hidden="true"
-          />
-          <img
-            className={styles.brandWordmark}
-            src="/brand/aureum-wordmark.png"
-            alt="AUREUM"
-          />
+    <main className={styles.page}>
+      <header className={styles.header}>
+        <Link href="/" className={styles.logo} aria-label="AUREUM">
+          <span className={styles.logoBird}>
+            <img src="/brand/aureum-ararinha.png" alt="" aria-hidden="true" />
+          </span>
+          <span className={styles.logoText}>
+            <BrandName />
+            <small>AMOR • ORDO • PROGRESSUS</small>
+          </span>
         </Link>
 
-        <div className={styles.navLinks}>
-          <a href="#produto">Produto</a>
-          <a href="#manifesto">Manifesto</a>
-          <a href="#historia">A marca</a>
+        <nav className={styles.nav} aria-label="Navegação principal">
+          <a href="#recursos">Recursos</a>
+          <a href="#para-quem">Para quem</a>
+          <a href="#seguranca">Segurança</a>
+          <a href="#historia">Sobre nós</a>
+          <Link href="/demonstracao">Demonstração</Link>
+        </nav>
+
+        <div className={styles.headerActions}>
+          <Link href="/cadastrar" className={styles.headerPrimary}>
+            Criar minha conta
+          </Link>
+          <Link href="/entrar" className={styles.headerSecondary}>
+            Entrar
+          </Link>
         </div>
-
-        <Link className={styles.login} href="/entrar">
-          Entrar
-        </Link>
-      </nav>
+      </header>
 
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
-          <div className={styles.eyebrow}>
-            AUREUM <span>•</span> AMOR <span>•</span> ORDO <span>•</span>{" "}
-            PROGRESSUS
-          </div>
-
-          <h1>
-            Saia da idade da pedra das{" "}
-            <em>finanças pessoais.</em>
-          </h1>
-
-          <p className={styles.lead}>
-            Deixe para trás planilhas soltas, anotações no papel e informações
-            espalhadas. O AUREUM reúne sua vida financeira em uma experiência
-            clara, elegante e feita para evoluir com você.
+          <p className={styles.kicker}>
+            <BrandName compact /> • AMOR • ORDO • PROGRESSUS
           </p>
 
-          <div className={styles.actions}>
-            <Link className={styles.primaryButton} href="/cadastrar">
-              Criar minha conta <span aria-hidden="true">→</span>
+          <h1>
+            Seu app de finanças <span>unificado.</span>
+          </h1>
+
+          <p className={styles.brandThesis}>
+            O valor do <strong>AU</strong>. O poder de <strong>UM</strong>.
+          </p>
+
+          <p className={styles.heroDescription}>
+            Contas, cartões, metas, faturas, extratos e a vida financeira da
+            sua casa conectados em uma experiência clara, elegante e feita
+            para evoluir com você.
+          </p>
+
+          <div className={styles.heroButtons}>
+            <Link href="/cadastrar" className={styles.primaryButton}>
+              Criar minha conta <span>→</span>
             </Link>
-            <Link className={styles.secondaryButton} href="/demonstracao">
+            <Link href="/demonstracao" className={styles.demoButton}>
+              <span className={styles.play}>▶</span>
               Ver demonstração
             </Link>
           </div>
 
-          <div className={styles.heroProof}>
-            <span>Contas + cartões + metas</span>
-            <span>Household com permissões</span>
-            <span>Dados sob seu controle</span>
-          </div>
-        </div>
-
-        <div className={styles.heroVisual} aria-label="Identidade AUREUM">
-          <div className={styles.orbitOuter} aria-hidden="true" />
-          <div className={styles.orbitInner} aria-hidden="true" />
-
-          <div className={styles.birdFrame}>
-            <img
-              src="/brand/aureum-ararinha.png"
-              alt="Ararinha, símbolo brasileiro do AUREUM"
-            />
-          </div>
-
-          <div className={`${styles.floatCard} ${styles.floatTop}`}>
-            <small>UMA CASA</small>
-            <strong>Uma visão financeira.</strong>
-          </div>
-
-          <div className={`${styles.floatCard} ${styles.floatBottom}`}>
-            <small>DO IMPROVISO</small>
-            <strong>À clareza.</strong>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.eraSection} id="manifesto">
-        <div className={styles.sectionIntro}>
-          <span className={styles.sectionKicker}>MUDANÇA DE ERA</span>
-          <h2>O papel foi brilhante. A planilha foi um avanço.</h2>
-          <p>
-            Mas uma vida financeira compartilhada, cheia de contas, cartões,
-            objetivos e responsabilidades já pede uma ferramenta que conecte
-            tudo isso.
-          </p>
-        </div>
-
-        <div className={styles.timeline}>
-          <article className={styles.timelineStep}>
-            <span className={styles.timelineNumber}>I</span>
+          <div className={styles.trustRow} id="seguranca">
             <div>
-              <small>ONTEM</small>
-              <h3>Papel e memória</h3>
-              <p>Anotações espalhadas e informações que dependem de lembrar onde ficaram.</p>
+              <span className={styles.trustIcon}><ShieldIcon /></span>
+              <p>Seus dados protegidos<br />com segurança de ponta</p>
             </div>
-          </article>
-
-          <div className={styles.timelineArrow} aria-hidden="true">→</div>
-
-          <article className={styles.timelineStep}>
-            <span className={styles.timelineNumber}>II</span>
             <div>
-              <small>DEPOIS</small>
-              <h3>Planilhas</h3>
-              <p>Mais organização, mas ainda manual, fragmentada e difícil de manter em conjunto.</p>
+              <span className={styles.trustIcon}><LockIcon /></span>
+              <p>Privacidade por padrão<br />e sob seu controle</p>
             </div>
-          </article>
-
-          <div className={styles.timelineArrow} aria-hidden="true">→</div>
-
-          <article className={`${styles.timelineStep} ${styles.timelineActive}`}>
-            <span className={styles.timelineNumber}>A</span>
             <div>
-              <small>AGORA</small>
-              <h3>AUREUM</h3>
-              <p>Uma camada única de organização, colaboração, controle e evolução financeira.</p>
+              <span className={styles.trustIcon}><CloudIcon /></span>
+              <p>Integrações para reduzir<br />trabalho manual</p>
             </div>
-          </article>
-        </div>
-      </section>
-
-      <section className={styles.productSection} id="produto">
-        <div className={styles.sectionHeadingRow}>
-          <div>
-            <span className={styles.sectionKicker}>O PRODUTO</span>
-            <h2>Menos esforço para registrar.<br />Mais contexto para decidir.</h2>
           </div>
-          <p>
-            O AUREUM não quer ser outra planilha bonita. Ele organiza o fluxo
-            financeiro em torno da forma como pessoas e famílias realmente
-            tomam decisões.
-          </p>
         </div>
 
-        <div className={styles.capabilityGrid}>
-          {capabilities.map((capability) => (
-            <article className={styles.capabilityCard} key={capability.number}>
-              <span>{capability.number}</span>
-              <h3>{capability.title}</h3>
-              <p>{capability.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.pillarsSection}>
-        <div className={styles.pillarsTitle}>
-          <span className={styles.sectionKicker}>O PRINCÍPIO</span>
-          <h2>Amor. Ordem. Progresso.</h2>
-          <p>
-            Três palavras que deixam de ser apenas um lema e passam a orientar
-            a experiência do produto.
-          </p>
-        </div>
-
-        <div className={styles.pillarGrid}>
-          {pillars.map((pillar) => (
-            <article className={styles.pillarCard} key={pillar.latin}>
-              <div className={styles.pillarSymbol} aria-hidden="true">
-                {pillar.symbol}
-              </div>
-              <span>{pillar.latin}</span>
-              <h3>{pillar.title}</h3>
-              <p>{pillar.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.storySection} id="historia">
-        <div className={styles.sealPanel}>
-          <div className={styles.sealGlow} aria-hidden="true" />
+        <div className={styles.productVisual} aria-label="Prévia do AUREUM">
           <img
-            src="/brand/aureum-seal.png"
-            alt="Selo institucional do AUREUM"
+            className={styles.heroBirdOutline}
+            src="/brand/aureum-ararinha.png"
+            alt=""
+            aria-hidden="true"
           />
+
+          <div className={styles.phone}>
+            <div className={styles.phoneTop}>
+              <span className={styles.miniBird}>A</span>
+              <BrandName compact />
+              <span>☰</span>
+            </div>
+            <p className={styles.phoneTitle}>Visão geral</p>
+            <div className={styles.mobileBalance}>
+              <small>Saldo total</small>
+              <strong>R$ 24.680,50</strong>
+              <span>+12,5% vs mês anterior</span>
+            </div>
+            <div className={styles.mobileMetric}>
+              <span>Contas</span><strong>R$ 14.150,00</strong>
+            </div>
+            <div className={styles.mobileMetric}>
+              <span>Cartões</span><strong>R$ 2.250,00</strong>
+            </div>
+            <div className={styles.mobileMetric}>
+              <span>Investimentos</span><strong>R$ 12.580,50</strong>
+            </div>
+            <div className={styles.mobileChart}>
+              <div className={styles.donut} />
+              <div>
+                <small>Mercado 32%</small>
+                <small>Moradia 24%</small>
+                <small>Lazer 15%</small>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.laptop}>
+            <div className={styles.laptopScreen}>
+              <p className={styles.screenTitle}>Fluxo de caixa</p>
+              <div className={styles.screenGrid}>
+                <div className={styles.chartPanel}>
+                  <div className={styles.fakeChart}>
+                    <span style={{ height: "30%" }} />
+                    <span style={{ height: "48%" }} />
+                    <span style={{ height: "42%" }} />
+                    <span style={{ height: "66%" }} />
+                    <span style={{ height: "58%" }} />
+                    <span style={{ height: "78%" }} />
+                    <span style={{ height: "62%" }} />
+                    <span style={{ height: "82%" }} />
+                  </div>
+                  <div className={styles.months}>
+                    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span>
+                  </div>
+                </div>
+                <div className={styles.sideMetrics}>
+                  <div><small>Receitas</small><strong>R$ 18.950,00</strong></div>
+                  <div><small>Despesas</small><strong>R$ 13.420,00</strong></div>
+                  <div className={styles.goalsMini}>
+                    <small>Metas</small>
+                    <p><span>Viagem</span><b>75%</b></p>
+                    <i><em style={{ width: "75%" }} /></i>
+                    <p><span>Reserva</span><b>60%</b></p>
+                    <i><em style={{ width: "60%" }} /></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.laptopBase} />
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.problemCard} id="recursos">
+        <div className={styles.stone}>
+          <div className={styles.stoneGrid}>
+            <span /><span /><span />
+            <span /><span /><span />
+            <span /><span /><span />
+          </div>
+          <div className={styles.stoneNote}>
+            <i /><i /><i /><i />
+          </div>
+          <div className={styles.stonePencil}>／</div>
         </div>
 
-        <div className={styles.storyCopy}>
-          <span className={styles.sectionKicker}>NOSSA IDENTIDADE</span>
-          <h2>Raízes brasileiras. Visão de longo prazo.</h2>
+        <div className={styles.problemContent}>
+          <p className={styles.sectionLabel}>O PROBLEMA</p>
+          <h2>Saia da idade da pedra financeira.</h2>
           <p>
-            A identidade do AUREUM combina referências clássicas, construção,
-            conhecimento e progresso com símbolos brasileiros. O selo
-            institucional representa a camada histórica da marca; a ararinha,
-            sua face mais viva, próxima e reconhecível.
+            Planilhas perdidas, anotações espalhadas, faturas difíceis de
+            acompanhar e decisões tomadas sem clareza. Improvisar custa caro.
           </p>
 
-          <blockquote>
-            “Organizar o presente para dar direção ao futuro.”
-          </blockquote>
+          <div className={styles.problemList}>
+            {problems.map((problem) => (
+              <div key={problem}>
+                <span>×</span>
+                <p>{problem}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <div className={styles.storyTags}>
-            <span>Identidade brasileira</span>
-            <span>Clareza</span>
-            <span>Construção</span>
-            <span>Longo prazo</span>
+      <section className={styles.solution} id="para-quem">
+        <p className={styles.solutionTitle}>A SOLUÇÃO: ORDEM, CLAREZA E PROGRESSO</p>
+        <div className={styles.pillars}>
+          {pillars.map((pillar) => (
+            <article key={pillar.key} className={styles.pillar}>
+              <div className={styles.pillarIcon}>{pillar.symbol}</div>
+              <div>
+                <h3>{pillar.key}</h3>
+                <strong>{pillar.title}</strong>
+                <p>{pillar.copy}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.story} id="historia">
+        <div className={styles.sealWrap}>
+          <img src="/brand/aureum-seal.png" alt="Selo institucional AUREUM" />
+        </div>
+
+        <div className={styles.storyContent}>
+          <p className={styles.sectionLabel}>NOSSA HISTÓRIA</p>
+          <h2>Valor para o que importa. Ordem para o que é seu. Progresso para o que vem.</h2>
+          <p>
+            AUREUM une referências clássicas, identidade brasileira e tecnologia.
+            <strong> AU</strong> remete ao ouro — valor, patrimônio e solidez.
+            <strong> UM</strong> traduz a proposta do produto: sua vida financeira
+            conectada em um único lugar.
+          </p>
+
+          <div className={styles.storyFeatures}>
+            <div><span>◇</span><p>Confiança e<br />transparência</p></div>
+            <div><span>⌂</span><p>Tradição que<br />inspira</p></div>
+            <div><span>☆</span><p>Excelência em<br />cada detalhe</p></div>
+            <div><span>↗</span><p>Tecnologia que<br />impulsiona</p></div>
           </div>
         </div>
       </section>
 
       <section className={styles.finalCta}>
-        <div className={styles.finalBird}>
-          <img
-            src="/brand/aureum-ararinha.png"
-            alt=""
-            aria-hidden="true"
-          />
+        <div className={styles.ctaBird}>
+          <img src="/brand/aureum-ararinha.png" alt="" aria-hidden="true" />
         </div>
         <div>
-          <span className={styles.sectionKicker}>A PRÓXIMA ERA</span>
           <h2>Chegou a hora de elevar sua vida financeira.</h2>
           <p>
-            Menos improviso. Mais ordem. Mais clareza para construir o que vem
-            depois.
+            O AUREUM transforma a forma como você organiza, acompanha e
+            constrói seu futuro financeiro.
           </p>
         </div>
-        <Link className={styles.primaryButton} href="/cadastrar">
-          Começar no AUREUM <span aria-hidden="true">→</span>
+        <Link href="/cadastrar" className={styles.primaryButton}>
+          Criar minha conta <span>→</span>
         </Link>
       </section>
 
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
-          <img
-            src="/brand/aureum-ararinha.png"
-            alt=""
-            aria-hidden="true"
-          />
+          <span className={styles.logoBird}>
+            <img src="/brand/aureum-ararinha.png" alt="" aria-hidden="true" />
+          </span>
           <div>
-            <strong>AUREUM</strong>
-            <small>AMOR • ORDO • PROGRESSUS</small>
+            <BrandName />
+            <small>O valor do AU. O poder de UM.</small>
           </div>
         </div>
 
-        <p>Organização financeira para pessoas, casais e famílias.</p>
-
-        <div className={styles.footerLinks}>
+        <div>
+          <strong>Produto</strong>
           <Link href="/demonstracao">Demonstração</Link>
+          <a href="#recursos">Recursos</a>
+        </div>
+        <div>
+          <strong>Conta</strong>
+          <Link href="/cadastrar">Criar conta</Link>
           <Link href="/entrar">Entrar</Link>
         </div>
+        <div>
+          <strong>AUREUM</strong>
+          <a href="#historia">Nossa história</a>
+          <span>Amor • Ordo • Progressus</span>
+        </div>
+
+        <p className={styles.copyright}>
+          © {year} AUREUM. Todos os direitos reservados.
+        </p>
       </footer>
     </main>
   );

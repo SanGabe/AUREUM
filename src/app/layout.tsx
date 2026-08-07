@@ -1,19 +1,21 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "AUREUM",
+    default: "AUREUM — Seu app de finanças unificado",
     template: "%s | AUREUM",
   },
   description:
-    "Organize contas, cartões, metas e a vida financeira da sua Household com ordem, clareza e progresso.",
+    "O valor do AU. O poder de UM. Contas, cartões, metas e a vida financeira da sua casa em um só lugar.",
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     shortcut: "/favicon.svg",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#03142f",
 };
 
 export default function RootLayout({

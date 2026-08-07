@@ -3,7 +3,15 @@ import { DashboardView } from "@/components/dashboard-view";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Dashboard | AUREUM",
+  title: "Dashboard",
+};
+
+type Household = {
+  id: string;
+  name: string;
+  type: string;
+  default_currency: string;
+  country_code: string;
 };
 
 export default async function DashboardPage() {
@@ -25,22 +33,48 @@ export default async function DashboardPage() {
     .limit(1)
     .maybeSingle();
 
+  let household: Household | null = null;
+  let role: string | null = membership?.role ?? null;
+
+  if (membership?.household_id) {
+    const { data, error } = await supabase
+      .from("households")
+      .select("id, name, type, default_currency, country_code")
+      .eq("id", membership.household_id)
+      .maybeSingle();
+
+    if (!error) {
+      household = data;
+    } else {
+      console.error("Erro ao carregar Household:", error);
+    }
+  }
+
+  // Fallback importante: se o vínculo estiver faltando/indisponível,
+  // tenta recuperar uma Household criada pelo próprio usuário.
+  if (!household) {
+    const { data: ownedHousehold, error: ownedError } = await supabase
+      .from("households")
+      .select("id, name, type, default_currency, country_code")
+      .eq("created_by", user.id)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (!ownedError && ownedHousehold) {
+      household = ownedHousehold;
+      role = "owner";
+    } else if (ownedError) {
+      console.error("Erro ao recuperar Household do proprietário:", ownedError);
+    }
+  }
+
   if (membershipError) {
     console.error("Erro ao carregar vínculo financeiro:", membershipError);
   }
 
-  if (!membership) {
-    redirect("/onboarding");
-  }
-
-  const { data: household, error: householdError } = await supabase
-    .from("households")
-    .select("id, name, type, default_currency, country_code")
-    .eq("id", membership.household_id)
-    .single();
-
-  if (householdError || !household) {
-    console.error("Erro ao carregar household:", householdError);
+  // Só envia ao onboarding quando de fato não existe espaço acessível.
+  if (!household) {
     redirect("/onboarding");
   }
 
@@ -50,12 +84,12 @@ export default async function DashboardPage() {
       : user.email?.split("@")[0] ?? "Usuário";
 
   const roleLabel =
-    membership.role === "owner"
+    role === "owner"
       ? "Proprietário"
-      : membership.role === "admin"
+      : role === "admin"
         ? "Administrador"
-        : membership.role === "viewer"
-          ? "Visualizador"
+        : role === "financial_contributor"
+          ? "Colaborador Financeiro"
           : "Membro";
 
   return (
