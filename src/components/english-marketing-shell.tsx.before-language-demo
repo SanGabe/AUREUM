@@ -1,9 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import {
-  LanguageMenu,
-  type LanguageRoute,
-} from "@/components/language-menu";
 import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
@@ -30,22 +26,6 @@ export function EnglishMarketingShell({
   const year = new Date().getFullYear();
   const t = getEnglishCopy(locale);
   const prefix = localePrefix(locale);
-  const languageRoute: LanguageRoute =
-    active === "resources"
-      ? "resources"
-      : active === "for-whom"
-        ? "for-whom"
-        : active === "security"
-          ? "security"
-          : active === "about"
-            ? "about"
-            : active === "love"
-              ? "love"
-              : active === "order"
-                ? "order"
-                : active === "progress"
-                  ? "progress"
-                  : "home";
 
   return (
     <main className={styles.page} lang={locale}>
@@ -59,10 +39,7 @@ export function EnglishMarketingShell({
           <Link className={active === "for-whom" ? styles.active : ""} href={`${prefix}/for-whom`}>{t.common.forWhom}</Link>
           <Link className={active === "security" ? styles.active : ""} href={`${prefix}/security`}>{t.common.security}</Link>
           <Link className={active === "about" ? styles.active : ""} href={`${prefix}/about`}>{t.common.about}</Link>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-            <Link href={`${prefix}/demo`}>{t.common.demo}</Link>
-            <LanguageMenu currentLocale={locale} route={languageRoute} />
-          </span>
+          <Link href={`${prefix}/demo`}>{t.common.demo}</Link>
         </nav>
 
         <div className={styles.headerActions}>
@@ -75,6 +52,13 @@ export function EnglishMarketingShell({
         </div>
       </header>
 
+      <div style={{ width: "min(1320px,calc(100% - 64px))", margin: "0 auto", display: "flex", justifyContent: "flex-end", gap: 8, fontSize: 11 }}>
+        <Link href="/" style={{ color: "#8294ad" }}>PT-BR</Link>
+        <span style={{ color: "#42546e" }}>•</span>
+        <Link href="/en-us" style={{ color: locale === "en-US" ? "#e4aa32" : "#8294ad" }}>EN-US</Link>
+        <span style={{ color: "#42546e" }}>•</span>
+        <Link href="/en-gb" style={{ color: locale === "en-GB" ? "#e4aa32" : "#8294ad" }}>EN-GB</Link>
+      </div>
 
       {children}
 

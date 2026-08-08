@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { LandingDemoLink } from "@/components/landing-demo-link";
-import { LanguageMenu } from "@/components/language-menu";
 import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
@@ -122,15 +120,7 @@ export function EnglishLanding({ locale }: { locale: EnglishLocale }) {
           <Link href={`${prefix}/for-whom`}>Who it is for</Link>
           <Link href={`${prefix}/security`}>Security</Link>
           <Link href={`${prefix}/about`}>About</Link>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-            <LandingDemoLink
-              href={`${prefix}/demo`}
-              loadingText="Loading demo..."
-            >
-              Demo
-            </LandingDemoLink>
-            <LanguageMenu currentLocale={locale} route="home" />
-          </span>
+          <Link href={`${prefix}/demo`}>Demo</Link>
         </nav>
 
         <div className={styles.headerActions}>
@@ -143,6 +133,13 @@ export function EnglishLanding({ locale }: { locale: EnglishLocale }) {
         </div>
       </header>
 
+      <div style={{ width: "min(1380px,calc(100% - 96px))", margin: "-8px auto 0", display: "flex", justifyContent: "flex-end", gap: 8, fontSize: 11 }}>
+        <Link href="/" style={{ color: "#7f90a7" }}>PT-BR</Link>
+        <span style={{ color: "#42546e" }}>•</span>
+        <Link href="/en-us" style={{ color: locale === "en-US" ? "#e4aa32" : "#7f90a7" }}>EN-US</Link>
+        <span style={{ color: "#42546e" }}>•</span>
+        <Link href="/en-gb" style={{ color: locale === "en-GB" ? "#e4aa32" : "#7f90a7" }}>EN-GB</Link>
+      </div>
 
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
@@ -154,14 +151,10 @@ export function EnglishLanding({ locale }: { locale: EnglishLocale }) {
             <Link className={styles.primaryButton} href={`${prefix}/sign-up`}>
               {t.common.createAccount} <span>→</span>
             </Link>
-            <LandingDemoLink
-              className={styles.secondaryButton}
-              href={`${prefix}/demo`}
-              loadingText="Loading demo..."
-            >
+            <Link className={styles.secondaryButton} href={`${prefix}/demo`}>
               <span className={styles.playButton}>▶</span>
               {t.landing.seeDemo}
-            </LandingDemoLink>
+            </Link>
           </div>
 
           <div className={styles.trustRow}>
@@ -223,7 +216,7 @@ export function EnglishLanding({ locale }: { locale: EnglishLocale }) {
 
       <footer className={styles.footer}>
         <div className={styles.footerBrand}><img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM — Amor, Ordo, Progressus" /></div>
-        <div className={styles.footerColumn}><strong>Product</strong><Link href={`${prefix}/resources`}>Features</Link><Link href={`${prefix}/for-whom`}>Who it is for</Link><LandingDemoLink href={`${prefix}/demo`} loadingText="Loading demo...">Demo</LandingDemoLink></div>
+        <div className={styles.footerColumn}><strong>Product</strong><Link href={`${prefix}/resources`}>Features</Link><Link href={`${prefix}/for-whom`}>Who it is for</Link><Link href={`${prefix}/demo`}>Demo</Link></div>
         <div className={styles.footerColumn}><strong>Company</strong><Link href={`${prefix}/about`}>About</Link><Link href={`${prefix}/security`}>Security</Link><Link href={`${prefix}/sign-up`}>Create account</Link></div>
         <div className={styles.footerColumn}><strong>Brand</strong><Link href={`${prefix}/love`}>Amor</Link><Link href={`${prefix}/order`}>Ordo</Link><Link href={`${prefix}/progress`}>Progressus</Link></div>
         <div className={styles.social}><strong>Follow us</strong><div><span>◎</span><span>▶</span><span>in</span></div></div>

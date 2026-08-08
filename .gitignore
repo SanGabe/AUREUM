@@ -27,3 +27,5 @@ pnpm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
+APLICAR-LANGUAGE-DEMO-V5.mjs
+AUREUM-LANGUAGE-DEMO-FIX.patch

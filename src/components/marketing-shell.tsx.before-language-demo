@@ -1,9 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import {
-  LanguageMenu,
-  type LanguageRoute,
-} from "@/components/language-menu";
 import styles from "./marketing.module.css";
 
 type Active =
@@ -23,22 +19,6 @@ export function MarketingShell({
   active?: Active;
 }) {
   const year = new Date().getFullYear();
-  const languageRoute: LanguageRoute =
-    active === "recursos"
-      ? "resources"
-      : active === "para-quem"
-        ? "for-whom"
-        : active === "seguranca"
-          ? "security"
-          : active === "sobre-nos"
-            ? "about"
-            : active === "amor"
-              ? "love"
-              : active === "ordo"
-                ? "order"
-                : active === "progressus"
-                  ? "progress"
-                  : "home";
 
   return (
     <main className={styles.page}>
@@ -52,10 +32,7 @@ export function MarketingShell({
           <Link className={active === "para-quem" ? styles.active : ""} href="/para-quem">Para quem</Link>
           <Link className={active === "seguranca" ? styles.active : ""} href="/seguranca">Segurança</Link>
           <Link className={active === "sobre-nos" ? styles.active : ""} href="/sobre-nos">Sobre nós</Link>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-            <Link href="/demonstracao">Demonstração</Link>
-            <LanguageMenu currentLocale="pt-BR" route={languageRoute} />
-          </span>
+          <Link href="/demonstracao">Demonstração</Link>
         </nav>
 
         <div className={styles.headerActions}>

@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { LandingDemoLink } from "@/components/landing-demo-link";
-import { LanguageMenu } from "@/components/language-menu";
 import styles from "./landing.module.css";
 
 function IconShield() {
@@ -213,15 +211,7 @@ export default function Home() {
           <Link href="/para-quem">Para quem</Link>
           <Link href="/seguranca">Segurança</Link>
           <Link href="/sobre-nos">Sobre nós</Link>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-            <LandingDemoLink
-              href="/demonstracao"
-              loadingText="Carregando demonstração..."
-            >
-              Demonstração
-            </LandingDemoLink>
-            <LanguageMenu currentLocale="pt-BR" route="home" />
-          </span>
+          <Link href="/demonstracao">Demonstração</Link>
         </nav>
 
         <div className={styles.headerActions}>
@@ -248,14 +238,10 @@ export default function Home() {
             <Link className={styles.primaryButton} href="/cadastrar">
               Criar minha conta <span>→</span>
             </Link>
-            <LandingDemoLink
-              className={styles.secondaryButton}
-              href="/demonstracao"
-              loadingText="Carregando demonstração..."
-            >
+            <Link className={styles.secondaryButton} href="/demonstracao">
               <span className={styles.playButton}>▶</span>
               Ver demonstração
-            </LandingDemoLink>
+            </Link>
           </div>
 
           <div className={styles.trustRow} id="seguranca">
@@ -383,12 +369,7 @@ export default function Home() {
           <strong>Produto</strong>
           <Link href="/recursos">Recursos</Link>
           <span>Preços</span>
-          <LandingDemoLink
-            href="/demonstracao"
-            loadingText="Carregando demonstração..."
-          >
-            Demonstração
-          </LandingDemoLink>
+          <Link href="/demonstracao">Demonstração</Link>
         </div>
 
         <div className={styles.footerColumn}>
