@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useDashboardActionLoading } from "@/components/dashboard-action-loading";
 import styles from "./dashboard-view.module.css";
 
 export type NucleusOption = {
@@ -59,6 +60,7 @@ export function MonthNavigator({
   selectedMonth: string;
 }) {
   const router = useRouter();
+  const { startLoading } = useDashboardActionLoading();
   const pickerRef = useRef<HTMLDivElement>(null);
   const parsed = parseMonth(selectedMonth);
   const [open, setOpen] = useState(false);
@@ -80,6 +82,12 @@ export function MonthNavigator({
   }, []);
 
   function goToMonth(value: string) {
+    if (value === selectedMonth) {
+      setOpen(false);
+      return;
+    }
+
+    startLoading("Carregando período...");
     router.push(
       `/dashboard?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(value)}`,
     );
@@ -191,6 +199,7 @@ export function ProfileMenu({
   userSubtitle: string;
 }) {
   const router = useRouter();
+  const { startLoading, stopLoading } = useDashboardActionLoading();
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -212,6 +221,9 @@ export function ProfileMenu({
   }, []);
 
   function changeNucleus(id: string) {
+    if (id === currentNucleusId) return;
+
+    startLoading("Trocando de Núcleo...");
     router.push(
       `/dashboard?household=${encodeURIComponent(id)}&month=${encodeURIComponent(selectedMonth)}`,
     );
@@ -220,10 +232,24 @@ export function ProfileMenu({
 
   async function logout() {
     setLoggingOut(true);
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.replace("/entrar");
-    router.refresh();
+    startLoading("Saindo do AUREUM...");
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        stopLoading();
+        setLoggingOut(false);
+        return;
+      }
+
+      router.replace("/entrar");
+      router.refresh();
+    } catch {
+      stopLoading();
+      setLoggingOut(false);
+    }
   }
 
   const returnParams = new URLSearchParams({
@@ -262,7 +288,13 @@ export function ProfileMenu({
           <div className={styles.profileDivider} />
 
           <nav className={styles.profileLinks}>
-            <Link href={`/perfil?${returnParams}`} onClick={() => setOpen(false)}>
+            <Link
+              href={`/perfil?${returnParams}`}
+              onClick={() => {
+                startLoading("Abrindo informações pessoais...");
+                setOpen(false);
+              }}
+            >
               <span>♙</span>
               <div>
                 <strong>Informações pessoais</strong>
@@ -270,7 +302,13 @@ export function ProfileMenu({
               </div>
             </Link>
 
-            <Link href={`/configuracoes?${returnParams}`} onClick={() => setOpen(false)}>
+            <Link
+              href={`/configuracoes?${returnParams}`}
+              onClick={() => {
+                startLoading("Abrindo configurações...");
+                setOpen(false);
+              }}
+            >
               <span>⚙</span>
               <div>
                 <strong>Configurações</strong>
@@ -302,7 +340,11 @@ export function ProfileMenu({
         <span className={styles.profileAvatar}>{initials(userName)}</span>
         <span className={styles.profileButtonCopy}>
           <strong>{userName.split(/\s+/)[0] || userName}</strong>
-          <small>{current?.name ? `${current.name} • ${current.roleLabel}` : userSubtitle}</small>
+          <small>
+            {current?.name
+              ? `${current.name} • ${current.roleLabel}`
+              : userSubtitle}
+          </small>
         </span>
         <span className={styles.profileChevron}>{open ? "⌃" : "⌄"}</span>
       </button>

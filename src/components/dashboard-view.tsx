@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DashboardActionLoadingProvider } from "@/components/dashboard-action-loading";
 import {
   MonthNavigator,
   ProfileMenu,
@@ -132,279 +133,279 @@ export function DashboardView({
       : 0;
 
   return (
-    <main className={styles.shell}>
-      <aside className={styles.sidebar}>
-        <Link className={styles.brand} href="/">
-          <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" />
-        </Link>
+    <DashboardActionLoadingProvider>
+      <main className={styles.shell}>
+        <aside className={styles.sidebar}>
+          <Link className={styles.brand} href="/">
+            <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" />
+          </Link>
 
-        <nav className={styles.sidebarNav}>
-          <a className={styles.activeLink} href="#resumo">
-            <span>◫</span>
-            Resumo
-          </a>
-          <a href="#transacoes">
-            <span>↕</span>
-            Transações
-          </a>
-          <a href="#categorias">
-            <span>◌</span>
-            Categorias
-          </a>
-          <a href="#metas">
-            <span>◎</span>
-            Metas
-          </a>
-        </nav>
+          <nav className={styles.sidebarNav}>
+            <a className={styles.activeLink} href="#resumo">
+              <span>◫</span>
+              Resumo
+            </a>
+            <a href="#transacoes">
+              <span>↕</span>
+              Transações
+            </a>
+            <a href="#categorias">
+              <span>◌</span>
+              Categorias
+            </a>
+            <a href="#metas">
+              <span>◎</span>
+              Metas
+            </a>
+          </nav>
 
-        {!demo && householdId ? (
-          <ProfileMenu
-            currentNucleusId={householdId}
-            nuclei={households}
-            selectedMonth={selectedMonth}
-            userEmail={userEmail}
-            userName={userName}
-            userSubtitle={userSubtitle}
-          />
-        ) : (
-          <div className={styles.demoUser}>
-            <span>VI</span>
-            <div>
-              <strong>Visitante</strong>
-              <small>Demonstração AUREUM</small>
-            </div>
-          </div>
-        )}
-      </aside>
-
-      <section className={styles.content}>
-        <header className={styles.top}>
-          <div>
-            <p className={styles.eyebrow}>{monthTitle(selectedMonth)}</p>
-            <h1>Olá, {firstName}.</h1>
-            <p>
-              {demo
-                ? "Demonstração com dados de exemplo."
-                : "Os números abaixo são calculados a partir dos registros deste Núcleo."}
-            </p>
-          </div>
-
-          {!demo ? (
-            <span className={styles.liveBadge}>● DADOS DO BANCO</span>
-          ) : (
-            <span className={styles.demoBadge}>DEMONSTRAÇÃO</span>
-          )}
-        </header>
-
-        {!demo && householdId ? (
-          <div className={styles.periodBar}>
-            <MonthNavigator
+          {!demo && householdId ? (
+            <ProfileMenu
               currentNucleusId={householdId}
+              nuclei={households}
               selectedMonth={selectedMonth}
+              userEmail={userEmail}
+              userName={userName}
+              userSubtitle={userSubtitle}
             />
-          </div>
-        ) : null}
-
-        <section className={styles.summary} id="resumo">
-          <article>
-            <span>Saldo consolidado</span>
-            <strong>{money(d.consolidatedBalance, d.currency)}</strong>
-            <small>{d.accountCount} conta(s) na moeda principal</small>
-          </article>
-
-          <article>
-            <span>Receitas do mês</span>
-            <strong className={styles.positive}>
-              {money(d.incomeMonth, d.currency)}
-            </strong>
-            <small>Lançamentos confirmados</small>
-          </article>
-
-          <article>
-            <span>Despesas do mês</span>
-            <strong className={styles.negative}>
-              {money(d.expensesMonth, d.currency)}
-            </strong>
-            <small>Somente transações oficiais</small>
-          </article>
-
-          <article>
-            <span>Gastos em cartões</span>
-            <strong>{money(d.cardSpendMonth, d.currency)}</strong>
-            <small>{d.cardCount} cartão(ões) cadastrado(s)</small>
-          </article>
-        </section>
-
-        {d.ignoredCurrencyAccounts > 0 ? (
-          <p className={styles.currencyNote}>
-            Existem {d.ignoredCurrencyAccounts} conta(s) em outra moeda. Elas não
-            são somadas ao saldo consolidado sem conversão cambial.
-          </p>
-        ) : null}
-
-        <section className={styles.grid}>
-          <article className={`${styles.panel} ${styles.wide}`} id="transacoes">
-            <div className={styles.panelHead}>
+          ) : (
+            <div className={styles.demoUser}>
+              <span>VI</span>
               <div>
-                <p>Movimentação</p>
-                <h2>Transações do mês</h2>
+                <strong>Visitante</strong>
+                <small>Demonstração AUREUM</small>
               </div>
             </div>
+          )}
+        </aside>
 
-            {d.transactions.length ? (
-              <div className={styles.transactions}>
-                {d.transactions.map((transaction) => {
-                  const sign =
-                    transaction.type === "income"
-                      ? "+"
-                      : transaction.type === "expense"
-                        ? "−"
-                        : "↔";
+        <section className={styles.content}>
+          <header className={styles.top}>
+            <div>
+              <p className={styles.eyebrow}>{monthTitle(selectedMonth)}</p>
+              <h1>Olá, {firstName}.</h1>
+              <p>
+                {demo
+                  ? "Demonstração com dados de exemplo."
+                  : "Os números abaixo são calculados a partir dos registros deste Núcleo."}
+              </p>
+            </div>
 
-                  const valueClass =
-                    transaction.type === "income"
-                      ? styles.positive
-                      : transaction.type === "expense"
-                        ? styles.negative
-                        : "";
-
-                  return (
-                    <div className={styles.transaction} key={transaction.id}>
-                      <span className={styles.txIcon}>
-                        {transaction.type === "income"
-                          ? "↙"
-                          : transaction.type === "expense"
-                            ? "↗"
-                            : "↔"}
-                      </span>
-
-                      <div>
-                        <strong>{transaction.description}</strong>
-                        <small>
-                          {[
-                            transaction.categoryName,
-                            transaction.accountName,
-                            transaction.cardName,
-                          ]
-                            .filter(Boolean)
-                            .join(" • ") || "Sem classificação"}
-                        </small>
-                      </div>
-
-                      <div className={styles.txValue}>
-                        <strong className={valueClass}>
-                          {sign} {money(transaction.amount, transaction.currency)}
-                        </strong>
-                        <small>
-                          {new Intl.DateTimeFormat("pt-BR", {
-                            day: "2-digit",
-                            month: "short",
-                          }).format(new Date(transaction.occurredAt))}
-                        </small>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+            {!demo ? (
+              <span className={styles.liveBadge}>● DADOS DO BANCO</span>
             ) : (
-              <div className={styles.empty}>
-                <strong>Nenhuma transação neste mês.</strong>
-                <p>
-                  Quando houver lançamentos oficiais neste Núcleo e período, eles
-                  aparecerão aqui.
-                </p>
-              </div>
+              <span className={styles.demoBadge}>DEMONSTRAÇÃO</span>
             )}
-          </article>
+          </header>
 
-          <article className={styles.panel} id="metas">
-            <div className={styles.panelHead}>
-              <div>
-                <p>Objetivo</p>
-                <h2>{d.goal?.title ?? "Metas"}</h2>
-              </div>
-              {d.goal ? <span>{goalPercent.toFixed(0)}%</span> : null}
+          {!demo && householdId ? (
+            <div className={styles.periodBar}>
+              <MonthNavigator
+                currentNucleusId={householdId}
+                selectedMonth={selectedMonth}
+              />
             </div>
+          ) : null}
 
-            {d.goal ? (
-              <>
-                <div className={styles.goalAmount}>
-                  <strong>{money(d.goal.currentAmount, d.currency)}</strong>
-                  <span>de {money(d.goal.targetAmount, d.currency)}</span>
+          <section className={styles.summary} id="resumo">
+            <article>
+              <span>Saldo consolidado</span>
+              <strong>{money(d.consolidatedBalance, d.currency)}</strong>
+              <small>{d.accountCount} conta(s) na moeda principal</small>
+            </article>
+
+            <article>
+              <span>Receitas do mês</span>
+              <strong className={styles.positive}>
+                {money(d.incomeMonth, d.currency)}
+              </strong>
+              <small>Lançamentos confirmados</small>
+            </article>
+
+            <article>
+              <span>Despesas do mês</span>
+              <strong className={styles.negative}>
+                {money(d.expensesMonth, d.currency)}
+              </strong>
+              <small>Somente transações oficiais</small>
+            </article>
+
+            <article>
+              <span>Gastos em cartões</span>
+              <strong>{money(d.cardSpendMonth, d.currency)}</strong>
+              <small>{d.cardCount} cartão(ões) cadastrado(s)</small>
+            </article>
+          </section>
+
+          {d.ignoredCurrencyAccounts > 0 ? (
+            <p className={styles.currencyNote}>
+              Existem {d.ignoredCurrencyAccounts} conta(s) em outra moeda. Elas não
+              são somadas ao saldo consolidado sem conversão cambial.
+            </p>
+          ) : null}
+
+          <section className={styles.grid}>
+            <article className={`${styles.panel} ${styles.wide}`} id="transacoes">
+              <div className={styles.panelHead}>
+                <div>
+                  <p>Movimentação</p>
+                  <h2>Transações do mês</h2>
                 </div>
-                <div className={styles.progress}>
-                  <i style={{ width: `${goalPercent}%` }} />
+              </div>
+
+              {d.transactions.length ? (
+                <div className={styles.transactions}>
+                  {d.transactions.map((transaction) => {
+                    const sign =
+                      transaction.type === "income"
+                        ? "+"
+                        : transaction.type === "expense"
+                          ? "−"
+                          : "↔";
+
+                    const valueClass =
+                      transaction.type === "income"
+                        ? styles.positive
+                        : transaction.type === "expense"
+                          ? styles.negative
+                          : "";
+
+                    return (
+                      <div className={styles.transaction} key={transaction.id}>
+                        <span className={styles.txIcon}>
+                          {transaction.type === "income"
+                            ? "↙"
+                            : transaction.type === "expense"
+                              ? "↗"
+                              : "↔"}
+                        </span>
+
+                        <div>
+                          <strong>{transaction.description}</strong>
+                          <small>
+                            {[
+                              transaction.categoryName,
+                              transaction.accountName,
+                              transaction.cardName,
+                            ]
+                              .filter(Boolean)
+                              .join(" • ") || "Sem classificação"}
+                          </small>
+                        </div>
+
+                        <div className={styles.txValue}>
+                          <strong className={valueClass}>
+                            {sign} {money(transaction.amount, transaction.currency)}
+                          </strong>
+                          <small>
+                            {new Intl.DateTimeFormat("pt-BR", {
+                              day: "2-digit",
+                              month: "short",
+                            }).format(new Date(transaction.occurredAt))}
+                          </small>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </>
-            ) : (
-              <div className={styles.empty}>
-                <strong>Nenhuma meta cadastrada.</strong>
-                <p>
-                  Aqui aparecem somente metas reais salvas no banco de dados.
-                </p>
-              </div>
-            )}
-          </article>
+              ) : (
+                <div className={styles.empty}>
+                  <strong>Nenhuma transação neste mês.</strong>
+                  <p>
+                    Quando houver lançamentos oficiais neste Núcleo e período, eles
+                    aparecerão aqui.
+                  </p>
+                </div>
+              )}
+            </article>
 
-          <article className={`${styles.panel} ${styles.wide}`} id="categorias">
-            <div className={styles.panelHead}>
-              <div>
-                <p>Despesas do mês</p>
-                <h2>Gastos por categoria</h2>
+            <article className={styles.panel} id="metas">
+              <div className={styles.panelHead}>
+                <div>
+                  <p>Objetivo</p>
+                  <h2>{d.goal?.title ?? "Metas"}</h2>
+                </div>
+                {d.goal ? <span>{goalPercent.toFixed(0)}%</span> : null}
               </div>
-            </div>
 
-            {d.categories.length ? (
-              <div className={styles.categories}>
-                {d.categories.map((category) => (
-                  <div className={styles.category} key={category.name}>
-                    <div>
-                      <strong>{category.name}</strong>
-                      <span>{money(category.value, d.currency)}</span>
-                    </div>
-                    <div className={styles.progress}>
-                      <i style={{ width: `${category.percent}%` }} />
-                    </div>
-                    <span>{category.percent.toFixed(0)}%</span>
+              {d.goal ? (
+                <>
+                  <div className={styles.goalAmount}>
+                    <strong>{money(d.goal.currentAmount, d.currency)}</strong>
+                    <span>de {money(d.goal.targetAmount, d.currency)}</span>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.empty}>
-                <strong>Sem despesas categorizadas neste mês.</strong>
-                <p>
-                  Assim que existirem registros, a distribuição será calculada
-                  automaticamente.
-                </p>
-              </div>
-            )}
-          </article>
+                  <div className={styles.progress}>
+                    <i style={{ width: `${goalPercent}%` }} />
+                  </div>
+                </>
+              ) : (
+                <div className={styles.empty}>
+                  <strong>Nenhuma meta cadastrada.</strong>
+                  <p>Aqui aparecem somente metas reais salvas no banco de dados.</p>
+                </div>
+              )}
+            </article>
 
-          <article className={styles.panel}>
-            <div className={styles.panelHead}>
-              <div>
-                <p>Estrutura</p>
-                <h2>Núcleo</h2>
+            <article className={`${styles.panel} ${styles.wide}`} id="categorias">
+              <div className={styles.panelHead}>
+                <div>
+                  <p>Despesas do mês</p>
+                  <h2>Gastos por categoria</h2>
+                </div>
               </div>
-            </div>
 
-            <div className={styles.structure}>
-              <div>
-                <strong>{d.accountCount}</strong>
-                <span>Contas</span>
+              {d.categories.length ? (
+                <div className={styles.categories}>
+                  {d.categories.map((category) => (
+                    <div className={styles.category} key={category.name}>
+                      <div>
+                        <strong>{category.name}</strong>
+                        <span>{money(category.value, d.currency)}</span>
+                      </div>
+                      <div className={styles.progress}>
+                        <i style={{ width: `${category.percent}%` }} />
+                      </div>
+                      <span>{category.percent.toFixed(0)}%</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.empty}>
+                  <strong>Sem despesas categorizadas neste mês.</strong>
+                  <p>
+                    Assim que existirem registros, a distribuição será calculada
+                    automaticamente.
+                  </p>
+                </div>
+              )}
+            </article>
+
+            <article className={styles.panel}>
+              <div className={styles.panelHead}>
+                <div>
+                  <p>Estrutura</p>
+                  <h2>Núcleo</h2>
+                </div>
               </div>
-              <div>
-                <strong>{d.cardCount}</strong>
-                <span>Cartões</span>
+
+              <div className={styles.structure}>
+                <div>
+                  <strong>{d.accountCount}</strong>
+                  <span>Contas</span>
+                </div>
+                <div>
+                  <strong>{d.cardCount}</strong>
+                  <span>Cartões</span>
+                </div>
+                <div>
+                  <strong>{d.transactions.length}</strong>
+                  <span>No período</span>
+                </div>
               </div>
-              <div>
-                <strong>{d.transactions.length}</strong>
-                <span>No período</span>
-              </div>
-            </div>
-          </article>
+            </article>
+          </section>
         </section>
-      </section>
-    </main>
+      </main>
+    </DashboardActionLoadingProvider>
   );
 }
