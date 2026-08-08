@@ -61,6 +61,7 @@ export default async function SettingsPage({ searchParams }: Props) {
             initialCurrency={profile?.default_currency ?? "BRL"}
             initialLocale={profile?.locale ?? "pt-BR"}
             userId={user.id}
+            locale="pt-BR"
           />
         </div>
       </section>

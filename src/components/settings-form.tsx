@@ -2,19 +2,31 @@
 
 import { FormEvent, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { CurrencySelect } from "@/components/currency-select";
+import type { AppLocale, EnglishLocale } from "@/i18n/locales";
+import { getEnglishCopy } from "@/i18n/english-copy";
 import styles from "./account-page.module.css";
 
 export function SettingsForm({
   initialCurrency,
   initialLocale,
   userId,
+  locale = "pt-BR",
 }: {
   initialCurrency: string;
   initialLocale: string;
   userId: string;
+  locale?: AppLocale;
 }) {
+  const en =
+    locale === "pt-BR"
+      ? null
+      : getEnglishCopy(locale as EnglishLocale);
+
   const [currency, setCurrency] = useState(initialCurrency || "BRL");
-  const [locale, setLocale] = useState(initialLocale || "pt-BR");
+  const [preferredLocale, setPreferredLocale] = useState(
+    initialLocale || locale,
+  );
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -32,7 +44,7 @@ export function SettingsForm({
         .from("profiles")
         .update({
           default_currency: currency,
-          locale,
+          locale: preferredLocale,
         })
         .eq("id", userId);
 
@@ -41,9 +53,14 @@ export function SettingsForm({
         return;
       }
 
-      setMessage("Preferências atualizadas.");
+      setMessage(
+        en?.account.preferencesSaved ?? "Preferências atualizadas.",
+      );
     } catch {
-      setError("Não foi possível salvar as configurações.");
+      setError(
+        en?.account.genericError ??
+          "Não foi possível salvar as configurações.",
+      );
     } finally {
       setLoading(false);
     }
@@ -52,24 +69,28 @@ export function SettingsForm({
   return (
     <form className={styles.form} onSubmit={save}>
       <label>
-        Idioma e região
-        <select onChange={(event) => setLocale(event.target.value)} value={locale}>
+        {en?.account.locale ?? "Idioma e região"}
+        <select
+          onChange={(event) => setPreferredLocale(event.target.value)}
+          value={preferredLocale}
+        >
           <option value="pt-BR">Português — Brasil</option>
-          <option value="pt-PT">Português — Portugal</option>
+          <option value="en-US">English — United States</option>
+          <option value="en-GB">English — United Kingdom</option>
         </select>
       </label>
 
       <label>
-        Moeda padrão pessoal
-        <select
-          onChange={(event) => setCurrency(event.target.value)}
+        {en?.account.personalCurrency ?? "Moeda padrão pessoal"}
+        <CurrencySelect
+          disabled={loading}
+          locale={locale}
+          onChange={setCurrency}
           value={currency}
-        >
-          <option value="BRL">Real brasileiro — BRL</option>
-          <option value="EUR">Euro — EUR</option>
-        </select>
+        />
         <small>
-          Cada Núcleo continua podendo ter sua própria moeda principal.
+          {en?.account.nucleusCurrencyHelp ??
+            "Cada Núcleo continua podendo ter sua própria moeda principal."}
         </small>
       </label>
 
@@ -77,7 +98,9 @@ export function SettingsForm({
       {message ? <div className={styles.success}>{message}</div> : null}
 
       <button disabled={loading} type="submit">
-        {loading ? "Salvando..." : "Salvar preferências"}
+        {loading
+          ? en?.account.saving ?? "Salvando..."
+          : en?.account.savePreferences ?? "Salvar preferências"}
       </button>
     </form>
   );

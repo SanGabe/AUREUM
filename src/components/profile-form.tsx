@@ -3,18 +3,27 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import type { AppLocale, EnglishLocale } from "@/i18n/locales";
+import { getEnglishCopy } from "@/i18n/english-copy";
 import styles from "./account-page.module.css";
 
 export function ProfileForm({
   email,
   initialName,
   userId,
+  locale = "pt-BR",
 }: {
   email: string;
   initialName: string;
   userId: string;
+  locale?: AppLocale;
 }) {
   const router = useRouter();
+  const en =
+    locale === "pt-BR"
+      ? null
+      : getEnglishCopy(locale as EnglishLocale);
+
   const [fullName, setFullName] = useState(initialName);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -25,7 +34,7 @@ export function ProfileForm({
     const name = fullName.trim();
 
     if (!name) {
-      setError("Informe seu nome.");
+      setError(locale === "pt-BR" ? "Informe seu nome." : "Enter your name.");
       return;
     }
 
@@ -55,10 +64,13 @@ export function ProfileForm({
         return;
       }
 
-      setMessage("Informações atualizadas.");
+      setMessage(en?.account.saved ?? "Informações atualizadas.");
       router.refresh();
     } catch {
-      setError("Não foi possível atualizar suas informações.");
+      setError(
+        en?.account.genericError ??
+          "Não foi possível atualizar suas informações.",
+      );
     } finally {
       setLoading(false);
     }
@@ -67,7 +79,7 @@ export function ProfileForm({
   return (
     <form className={styles.form} onSubmit={save}>
       <label>
-        Nome
+        {en?.account.name ?? "Nome"}
         <input
           autoComplete="name"
           onChange={(event) => setFullName(event.target.value)}
@@ -77,16 +89,21 @@ export function ProfileForm({
       </label>
 
       <label>
-        E-mail
+        {en?.account.email ?? "E-mail"}
         <input disabled type="email" value={email} />
-        <small>O e-mail de autenticação não é alterado por esta tela.</small>
+        <small>
+          {en?.account.emailReadOnly ??
+            "O e-mail de autenticação não é alterado por esta tela."}
+        </small>
       </label>
 
       {error ? <div className={styles.error}>{error}</div> : null}
       {message ? <div className={styles.success}>{message}</div> : null}
 
       <button disabled={loading} type="submit">
-        {loading ? "Salvando..." : "Salvar alterações"}
+        {loading
+          ? en?.account.saving ?? "Salvando..."
+          : en?.account.save ?? "Salvar alterações"}
       </button>
     </form>
   );

@@ -5,6 +5,9 @@ import {
   ProfileMenu,
   type NucleusOption,
 } from "@/components/dashboard-controls";
+import type { AppLocale, EnglishLocale } from "@/i18n/locales";
+import { localePrefix } from "@/i18n/locales";
+import { getEnglishCopy } from "@/i18n/english-copy";
 import styles from "./dashboard-view.module.css";
 
 export type DashboardTransaction = {
@@ -42,10 +45,11 @@ type Props = {
   selectedMonth?: string;
   data?: DashboardData;
   demo?: boolean;
+  locale?: AppLocale;
 };
 
 const demoData: DashboardData = {
-  currency: "BRL",
+  currency: "USD",
   consolidatedBalance: 20418.73,
   incomeMonth: 4702,
   expensesMonth: 2596.44,
@@ -54,43 +58,19 @@ const demoData: DashboardData = {
   cardCount: 2,
   ignoredCurrencyAccounts: 0,
   transactions: [
-    {
-      id: "1",
-      description: "Mercado São Luiz",
-      type: "expense",
-      amount: 186.42,
-      currency: "BRL",
-      occurredAt: "2026-08-05T12:00:00Z",
-      categoryName: "Alimentação",
-      accountName: "Nubank",
-      cardName: null,
-    },
-    {
-      id: "2",
-      description: "Salário",
-      type: "income",
-      amount: 2702,
-      currency: "BRL",
-      occurredAt: "2026-08-01T12:00:00Z",
-      categoryName: "Receita",
-      accountName: "XP",
-      cardName: null,
-    },
+    { id: "1", description: "Grocery Store", type: "expense", amount: 186.42, currency: "USD", occurredAt: "2026-08-05T12:00:00Z", categoryName: "Groceries", accountName: "Main account", cardName: null },
+    { id: "2", description: "Salary", type: "income", amount: 2702, currency: "USD", occurredAt: "2026-08-01T12:00:00Z", categoryName: "Income", accountName: "Main account", cardName: null },
   ],
   categories: [
-    { name: "Moradia", value: 1480, percent: 74 },
-    { name: "Alimentação", value: 696, percent: 35 },
+    { name: "Housing", value: 1480, percent: 68 },
+    { name: "Groceries", value: 696, percent: 32 },
   ],
-  goal: {
-    title: "Exemplo de meta",
-    currentAmount: 20000,
-    targetAmount: 35000,
-  },
+  goal: { title: "Example goal", currentAmount: 20000, targetAmount: 35000 },
 };
 
-function money(value: number, currency: string) {
+function money(value: number, currency: string, locale: AppLocale) {
   try {
-    return new Intl.NumberFormat("pt-BR", {
+    return new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
     }).format(value);
@@ -99,9 +79,9 @@ function money(value: number, currency: string) {
   }
 }
 
-function monthTitle(value: string) {
+function monthTitle(value: string, locale: AppLocale) {
   const [year, month] = value.split("-").map(Number);
-  return new Intl.DateTimeFormat("pt-BR", {
+  return new Intl.DateTimeFormat(locale, {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
@@ -115,6 +95,30 @@ function currentMonth() {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
 
+
+function displayCategory(name: string | null, locale: AppLocale) {
+  if (!name || locale === "pt-BR") return name;
+
+  const map: Record<string, string> = {
+    "Moradia": "Housing",
+    "Alimentação": "Groceries",
+    "Transporte": "Transport",
+    "Saúde": "Health",
+    "Educação": "Education",
+    "Lazer": "Leisure",
+    "Assinaturas": "Subscriptions",
+    "Viagens": "Travel",
+    "Compras": "Shopping",
+    "Salário": "Salary",
+    "Rendimentos": "Earnings",
+    "Outros": "Other",
+    "Sem categoria": "Uncategorised",
+  };
+
+  return map[name] ?? name;
+}
+
+
 export function DashboardView({
   userName = "Usuário",
   userEmail,
@@ -124,39 +128,97 @@ export function DashboardView({
   selectedMonth = currentMonth(),
   data,
   demo = false,
+  locale = "pt-BR",
 }: Props) {
-  const d = demo ? demoData : data!;
-  const firstName = userName.split(/\s+/)[0] || "você";
+  const en =
+    locale === "pt-BR"
+      ? null
+      : getEnglishCopy(locale as EnglishLocale);
+
+  const d = demo
+    ? {
+        ...demoData,
+        currency: locale === "en-GB" ? "GBP" : locale === "pt-BR" ? "BRL" : "USD",
+      }
+    : data!;
+
+  const firstName = userName.split(/\s+/)[0] || (locale === "pt-BR" ? "você" : "you");
   const goalPercent =
     d.goal && d.goal.targetAmount > 0
       ? Math.min(100, (d.goal.currentAmount / d.goal.targetAmount) * 100)
       : 0;
 
+  const prefix =
+    locale === "pt-BR" ? "" : localePrefix(locale as EnglishLocale);
+  const dashboardPath = `${prefix}/dashboard`;
+
+  const text = {
+    overview: en?.dashboard.overview ?? "Resumo",
+    transactions: en?.dashboard.transactions ?? "Transações",
+    categories: en?.dashboard.categories ?? "Categorias",
+    goals: en?.dashboard.goals ?? "Metas",
+    hello: en?.dashboard.hello ?? "Olá",
+    description:
+      en?.dashboard.description ??
+      "Os números abaixo são calculados a partir dos registros deste Núcleo.",
+    demoDescription:
+      en?.dashboard.demoDescription ?? "Demonstração com dados de exemplo.",
+    balance: en?.dashboard.balance ?? "Saldo consolidado",
+    income: en?.dashboard.income ?? "Receitas do mês",
+    expenses: en?.dashboard.expenses ?? "Despesas do mês",
+    cardSpend: en?.dashboard.cardSpend ?? "Gastos em cartões",
+    accountsMainCurrency:
+      en?.dashboard.accountsMainCurrency ?? "conta(s) na moeda principal",
+    confirmed: en?.dashboard.confirmed ?? "Lançamentos confirmados",
+    officialOnly:
+      en?.dashboard.officialOnly ?? "Somente transações oficiais",
+    cardsRegistered:
+      en?.dashboard.cardsRegistered ?? "cartão(ões) cadastrado(s)",
+    movement: en?.dashboard.movement ?? "Movimentação",
+    monthTransactions:
+      en?.dashboard.monthTransactions ?? "Transações do mês",
+    noTransactions:
+      en?.dashboard.noTransactions ?? "Nenhuma transação neste mês.",
+    noTransactionsText:
+      en?.dashboard.noTransactionsText ??
+      "Quando houver lançamentos oficiais neste Núcleo e período, eles aparecerão aqui.",
+    objective: en?.dashboard.objective ?? "Objetivo",
+    noGoal: en?.dashboard.noGoal ?? "Nenhuma meta cadastrada.",
+    noGoalText:
+      en?.dashboard.noGoalText ??
+      "Aqui aparecem somente metas reais salvas no banco de dados.",
+    monthExpenses:
+      en?.dashboard.monthExpenses ?? "Despesas do mês",
+    categorySpend:
+      en?.dashboard.categorySpend ?? "Gastos por categoria",
+    noCategories:
+      en?.dashboard.noCategories ??
+      "Sem despesas categorizadas neste mês.",
+    noCategoriesText:
+      en?.dashboard.noCategoriesText ??
+      "Assim que existirem registros, a distribuição será calculada automaticamente.",
+    structure: en?.dashboard.structure ?? "Estrutura",
+    nucleus: en?.common.nucleus ?? "Núcleo",
+    accounts: en?.dashboard.accounts ?? "Contas",
+    cards: en?.dashboard.cards ?? "Cartões",
+    inPeriod: en?.dashboard.inPeriod ?? "No período",
+    noClassification:
+      en?.dashboard.noClassification ?? "Sem classificação",
+  };
+
   return (
-    <DashboardActionLoadingProvider>
-      <main className={styles.shell}>
+    <DashboardActionLoadingProvider locale={locale}>
+      <main className={styles.shell} lang={locale}>
         <aside className={styles.sidebar}>
-          <Link className={styles.brand} href="/">
+          <Link className={styles.brand} href={prefix || "/"}>
             <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" />
           </Link>
 
           <nav className={styles.sidebarNav}>
-            <a className={styles.activeLink} href="#resumo">
-              <span>◫</span>
-              Resumo
-            </a>
-            <a href="#transacoes">
-              <span>↕</span>
-              Transações
-            </a>
-            <a href="#categorias">
-              <span>◌</span>
-              Categorias
-            </a>
-            <a href="#metas">
-              <span>◎</span>
-              Metas
-            </a>
+            <a className={styles.activeLink} href="#resumo"><span>◫</span>{text.overview}</a>
+            <a href="#transacoes"><span>↕</span>{text.transactions}</a>
+            <a href="#categorias"><span>◌</span>{text.categories}</a>
+            <a href="#metas"><span>◎</span>{text.goals}</a>
           </nav>
 
           {!demo && householdId ? (
@@ -167,13 +229,14 @@ export function DashboardView({
               userEmail={userEmail}
               userName={userName}
               userSubtitle={userSubtitle}
+              locale={locale}
             />
           ) : (
             <div className={styles.demoUser}>
               <span>VI</span>
               <div>
-                <strong>Visitante</strong>
-                <small>Demonstração AUREUM</small>
+                <strong>{locale === "pt-BR" ? "Visitante" : "Visitor"}</strong>
+                <small>{locale === "pt-BR" ? "Demonstração AUREUM" : "AUREUM demo"}</small>
               </div>
             </div>
           )}
@@ -182,19 +245,19 @@ export function DashboardView({
         <section className={styles.content}>
           <header className={styles.top}>
             <div>
-              <p className={styles.eyebrow}>{monthTitle(selectedMonth)}</p>
-              <h1>Olá, {firstName}.</h1>
-              <p>
-                {demo
-                  ? "Demonstração com dados de exemplo."
-                  : "Os números abaixo são calculados a partir dos registros deste Núcleo."}
-              </p>
+              <p className={styles.eyebrow}>{monthTitle(selectedMonth, locale)}</p>
+              <h1>{text.hello}, {firstName}.</h1>
+              <p>{demo ? text.demoDescription : text.description}</p>
             </div>
 
             {!demo ? (
-              <span className={styles.liveBadge}>● DADOS DO BANCO</span>
+              <span className={styles.liveBadge}>
+                {en?.dashboard.realData ?? "● DADOS DO BANCO"}
+              </span>
             ) : (
-              <span className={styles.demoBadge}>DEMONSTRAÇÃO</span>
+              <span className={styles.demoBadge}>
+                {en?.dashboard.demo ?? "DEMONSTRAÇÃO"}
+              </span>
             )}
           </header>
 
@@ -203,204 +266,85 @@ export function DashboardView({
               <MonthNavigator
                 currentNucleusId={householdId}
                 selectedMonth={selectedMonth}
+                locale={locale}
+                dashboardPath={dashboardPath}
               />
             </div>
           ) : null}
 
           <section className={styles.summary} id="resumo">
-            <article>
-              <span>Saldo consolidado</span>
-              <strong>{money(d.consolidatedBalance, d.currency)}</strong>
-              <small>{d.accountCount} conta(s) na moeda principal</small>
-            </article>
-
-            <article>
-              <span>Receitas do mês</span>
-              <strong className={styles.positive}>
-                {money(d.incomeMonth, d.currency)}
-              </strong>
-              <small>Lançamentos confirmados</small>
-            </article>
-
-            <article>
-              <span>Despesas do mês</span>
-              <strong className={styles.negative}>
-                {money(d.expensesMonth, d.currency)}
-              </strong>
-              <small>Somente transações oficiais</small>
-            </article>
-
-            <article>
-              <span>Gastos em cartões</span>
-              <strong>{money(d.cardSpendMonth, d.currency)}</strong>
-              <small>{d.cardCount} cartão(ões) cadastrado(s)</small>
-            </article>
+            <article><span>{text.balance}</span><strong>{money(d.consolidatedBalance,d.currency,locale)}</strong><small>{d.accountCount} {text.accountsMainCurrency}</small></article>
+            <article><span>{text.income}</span><strong className={styles.positive}>{money(d.incomeMonth,d.currency,locale)}</strong><small>{text.confirmed}</small></article>
+            <article><span>{text.expenses}</span><strong className={styles.negative}>{money(d.expensesMonth,d.currency,locale)}</strong><small>{text.officialOnly}</small></article>
+            <article><span>{text.cardSpend}</span><strong>{money(d.cardSpendMonth,d.currency,locale)}</strong><small>{d.cardCount} {text.cardsRegistered}</small></article>
           </section>
 
           {d.ignoredCurrencyAccounts > 0 ? (
             <p className={styles.currencyNote}>
-              Existem {d.ignoredCurrencyAccounts} conta(s) em outra moeda. Elas não
-              são somadas ao saldo consolidado sem conversão cambial.
+              {locale === "pt-BR"
+                ? `Existem ${d.ignoredCurrencyAccounts} conta(s) em moeda sem cotação disponível no cache atual.`
+                : `${d.ignoredCurrencyAccounts} account(s) use a currency without a cached exchange rate.`}
             </p>
           ) : null}
 
           <section className={styles.grid}>
             <article className={`${styles.panel} ${styles.wide}`} id="transacoes">
-              <div className={styles.panelHead}>
-                <div>
-                  <p>Movimentação</p>
-                  <h2>Transações do mês</h2>
-                </div>
-              </div>
-
+              <div className={styles.panelHead}><div><p>{text.movement}</p><h2>{text.monthTransactions}</h2></div></div>
               {d.transactions.length ? (
                 <div className={styles.transactions}>
                   {d.transactions.map((transaction) => {
-                    const sign =
-                      transaction.type === "income"
-                        ? "+"
-                        : transaction.type === "expense"
-                          ? "−"
-                          : "↔";
-
-                    const valueClass =
-                      transaction.type === "income"
-                        ? styles.positive
-                        : transaction.type === "expense"
-                          ? styles.negative
-                          : "";
+                    const sign = transaction.type === "income" ? "+" : transaction.type === "expense" ? "−" : "↔";
+                    const valueClass = transaction.type === "income" ? styles.positive : transaction.type === "expense" ? styles.negative : "";
 
                     return (
                       <div className={styles.transaction} key={transaction.id}>
-                        <span className={styles.txIcon}>
-                          {transaction.type === "income"
-                            ? "↙"
-                            : transaction.type === "expense"
-                              ? "↗"
-                              : "↔"}
-                        </span>
-
+                        <span className={styles.txIcon}>{transaction.type === "income" ? "↙" : transaction.type === "expense" ? "↗" : "↔"}</span>
                         <div>
                           <strong>{transaction.description}</strong>
-                          <small>
-                            {[
-                              transaction.categoryName,
-                              transaction.accountName,
-                              transaction.cardName,
-                            ]
-                              .filter(Boolean)
-                              .join(" • ") || "Sem classificação"}
-                          </small>
+                          <small>{[displayCategory(transaction.categoryName, locale),transaction.accountName,transaction.cardName].filter(Boolean).join(" • ") || text.noClassification}</small>
                         </div>
-
                         <div className={styles.txValue}>
-                          <strong className={valueClass}>
-                            {sign} {money(transaction.amount, transaction.currency)}
-                          </strong>
-                          <small>
-                            {new Intl.DateTimeFormat("pt-BR", {
-                              day: "2-digit",
-                              month: "short",
-                            }).format(new Date(transaction.occurredAt))}
-                          </small>
+                          <strong className={valueClass}>{sign} {money(transaction.amount,transaction.currency,locale)}</strong>
+                          <small>{new Intl.DateTimeFormat(locale,{day:"2-digit",month:"short"}).format(new Date(transaction.occurredAt))}</small>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              ) : (
-                <div className={styles.empty}>
-                  <strong>Nenhuma transação neste mês.</strong>
-                  <p>
-                    Quando houver lançamentos oficiais neste Núcleo e período, eles
-                    aparecerão aqui.
-                  </p>
-                </div>
-              )}
+              ) : <div className={styles.empty}><strong>{text.noTransactions}</strong><p>{text.noTransactionsText}</p></div>}
             </article>
 
             <article className={styles.panel} id="metas">
-              <div className={styles.panelHead}>
-                <div>
-                  <p>Objetivo</p>
-                  <h2>{d.goal?.title ?? "Metas"}</h2>
-                </div>
-                {d.goal ? <span>{goalPercent.toFixed(0)}%</span> : null}
-              </div>
-
+              <div className={styles.panelHead}><div><p>{text.objective}</p><h2>{d.goal?.title ?? text.goals}</h2></div>{d.goal ? <span>{goalPercent.toFixed(0)}%</span> : null}</div>
               {d.goal ? (
                 <>
-                  <div className={styles.goalAmount}>
-                    <strong>{money(d.goal.currentAmount, d.currency)}</strong>
-                    <span>de {money(d.goal.targetAmount, d.currency)}</span>
-                  </div>
-                  <div className={styles.progress}>
-                    <i style={{ width: `${goalPercent}%` }} />
-                  </div>
+                  <div className={styles.goalAmount}><strong>{money(d.goal.currentAmount,d.currency,locale)}</strong><span>{locale === "pt-BR" ? "de" : "of"} {money(d.goal.targetAmount,d.currency,locale)}</span></div>
+                  <div className={styles.progress}><i style={{width:`${goalPercent}%`}} /></div>
                 </>
-              ) : (
-                <div className={styles.empty}>
-                  <strong>Nenhuma meta cadastrada.</strong>
-                  <p>Aqui aparecem somente metas reais salvas no banco de dados.</p>
-                </div>
-              )}
+              ) : <div className={styles.empty}><strong>{text.noGoal}</strong><p>{text.noGoalText}</p></div>}
             </article>
 
             <article className={`${styles.panel} ${styles.wide}`} id="categorias">
-              <div className={styles.panelHead}>
-                <div>
-                  <p>Despesas do mês</p>
-                  <h2>Gastos por categoria</h2>
-                </div>
-              </div>
-
+              <div className={styles.panelHead}><div><p>{text.monthExpenses}</p><h2>{text.categorySpend}</h2></div></div>
               {d.categories.length ? (
                 <div className={styles.categories}>
                   {d.categories.map((category) => (
                     <div className={styles.category} key={category.name}>
-                      <div>
-                        <strong>{category.name}</strong>
-                        <span>{money(category.value, d.currency)}</span>
-                      </div>
-                      <div className={styles.progress}>
-                        <i style={{ width: `${category.percent}%` }} />
-                      </div>
+                      <div><strong>{displayCategory(category.name, locale)}</strong><span>{money(category.value,d.currency,locale)}</span></div>
+                      <div className={styles.progress}><i style={{width:`${category.percent}%`}} /></div>
                       <span>{category.percent.toFixed(0)}%</span>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className={styles.empty}>
-                  <strong>Sem despesas categorizadas neste mês.</strong>
-                  <p>
-                    Assim que existirem registros, a distribuição será calculada
-                    automaticamente.
-                  </p>
-                </div>
-              )}
+              ) : <div className={styles.empty}><strong>{text.noCategories}</strong><p>{text.noCategoriesText}</p></div>}
             </article>
 
             <article className={styles.panel}>
-              <div className={styles.panelHead}>
-                <div>
-                  <p>Estrutura</p>
-                  <h2>Núcleo</h2>
-                </div>
-              </div>
-
+              <div className={styles.panelHead}><div><p>{text.structure}</p><h2>{text.nucleus}</h2></div></div>
               <div className={styles.structure}>
-                <div>
-                  <strong>{d.accountCount}</strong>
-                  <span>Contas</span>
-                </div>
-                <div>
-                  <strong>{d.cardCount}</strong>
-                  <span>Cartões</span>
-                </div>
-                <div>
-                  <strong>{d.transactions.length}</strong>
-                  <span>No período</span>
-                </div>
+                <div><strong>{d.accountCount}</strong><span>{text.accounts}</span></div>
+                <div><strong>{d.cardCount}</strong><span>{text.cards}</span></div>
+                <div><strong>{d.transactions.length}</strong><span>{text.inPeriod}</span></div>
               </div>
             </article>
           </section>

@@ -68,6 +68,7 @@ export default async function ProfilePage({ searchParams }: Props) {
             email={user.email ?? ""}
             initialName={fullName}
             userId={user.id}
+            locale="pt-BR"
           />
         </div>
       </section>

@@ -5,6 +5,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useDashboardActionLoading } from "@/components/dashboard-action-loading";
+import type { AppLocale } from "@/i18n/locales";
+import type { EnglishLocale } from "@/i18n/locales";
+import { localePrefix } from "@/i18n/locales";
+import { getEnglishCopy } from "@/i18n/english-copy";
 import styles from "./dashboard-view.module.css";
 
 export type NucleusOption = {
@@ -23,8 +27,8 @@ function toMonthValue(year: number, month: number) {
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
-function monthName(month: number) {
-  return new Intl.DateTimeFormat("pt-BR", {
+function monthName(month: number, locale: AppLocale) {
+  return new Intl.DateTimeFormat(locale, {
     month: "short",
     timeZone: "UTC",
   })
@@ -33,9 +37,9 @@ function monthName(month: number) {
     .toUpperCase();
 }
 
-function fullMonthLabel(value: string) {
+function fullMonthLabel(value: string, locale: AppLocale) {
   const { year, month } = parseMonth(value);
-  return new Intl.DateTimeFormat("pt-BR", {
+  return new Intl.DateTimeFormat(locale, {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
@@ -52,12 +56,21 @@ function initials(name: string) {
   return parts[0]?.slice(0, 2).toUpperCase() || "U";
 }
 
+function english(locale: AppLocale) {
+  if (locale === "pt-BR") return null;
+  return getEnglishCopy(locale as EnglishLocale);
+}
+
 export function MonthNavigator({
   currentNucleusId,
   selectedMonth,
+  locale = "pt-BR",
+  dashboardPath = "/dashboard",
 }: {
   currentNucleusId: string;
   selectedMonth: string;
+  locale?: AppLocale;
+  dashboardPath?: string;
 }) {
   const router = useRouter();
   const { startLoading } = useDashboardActionLoading();
@@ -65,6 +78,7 @@ export function MonthNavigator({
   const parsed = parseMonth(selectedMonth);
   const [open, setOpen] = useState(false);
   const [viewYear, setViewYear] = useState(parsed.year);
+  const en = english(locale);
 
   useEffect(() => {
     setViewYear(parsed.year);
@@ -87,9 +101,9 @@ export function MonthNavigator({
       return;
     }
 
-    startLoading("Carregando período...");
+    startLoading(en?.dashboard.loadingPeriod ?? "Carregando período...");
     router.push(
-      `/dashboard?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(value)}`,
+      `${dashboardPath}?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(value)}`,
     );
     setOpen(false);
   }
@@ -106,11 +120,13 @@ export function MonthNavigator({
 
   return (
     <div className={styles.monthNavigator} ref={pickerRef}>
-      <span className={styles.periodLabel}>PERÍODO</span>
+      <span className={styles.periodLabel}>
+        {en?.dashboard.period ?? "PERÍODO"}
+      </span>
 
       <div className={styles.monthControl}>
         <button
-          aria-label="Mês anterior"
+          aria-label={locale === "pt-BR" ? "Mês anterior" : "Previous month"}
           className={styles.monthArrow}
           onClick={() => move(-1)}
           type="button"
@@ -125,12 +141,12 @@ export function MonthNavigator({
           type="button"
         >
           <span className={styles.calendarIcon}>▦</span>
-          <strong>{fullMonthLabel(selectedMonth)}</strong>
+          <strong>{fullMonthLabel(selectedMonth, locale)}</strong>
           <span className={styles.chevron}>{open ? "⌃" : "⌄"}</span>
         </button>
 
         <button
-          aria-label="Próximo mês"
+          aria-label={locale === "pt-BR" ? "Próximo mês" : "Next month"}
           className={styles.monthArrow}
           onClick={() => move(1)}
           type="button"
@@ -164,7 +180,7 @@ export function MonthNavigator({
                   onClick={() => goToMonth(value)}
                   type="button"
                 >
-                  {monthName(month)}
+                  {monthName(month, locale)}
                 </button>
               );
             })}
@@ -175,7 +191,7 @@ export function MonthNavigator({
             onClick={() => goToMonth(currentValue)}
             type="button"
           >
-            Ir para o mês atual
+            {en?.dashboard.currentMonth ?? "Ir para o mês atual"}
           </button>
         </div>
       ) : null}
@@ -190,6 +206,7 @@ export function ProfileMenu({
   userEmail,
   userName,
   userSubtitle,
+  locale = "pt-BR",
 }: {
   currentNucleusId: string;
   nuclei: NucleusOption[];
@@ -197,12 +214,14 @@ export function ProfileMenu({
   userEmail?: string;
   userName: string;
   userSubtitle: string;
+  locale?: AppLocale;
 }) {
   const router = useRouter();
   const { startLoading, stopLoading } = useDashboardActionLoading();
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const en = english(locale);
 
   const current = useMemo(
     () => nuclei.find((nucleus) => nucleus.id === currentNucleusId),
@@ -220,19 +239,23 @@ export function ProfileMenu({
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
+  const prefix =
+    locale === "pt-BR" ? "" : localePrefix(locale as EnglishLocale);
+  const dashboardPath = `${prefix}/dashboard`;
+
   function changeNucleus(id: string) {
     if (id === currentNucleusId) return;
 
-    startLoading("Trocando de Núcleo...");
+    startLoading(en?.dashboard.changingNucleus ?? "Trocando de Núcleo...");
     router.push(
-      `/dashboard?household=${encodeURIComponent(id)}&month=${encodeURIComponent(selectedMonth)}`,
+      `${dashboardPath}?household=${encodeURIComponent(id)}&month=${encodeURIComponent(selectedMonth)}`,
     );
     setOpen(false);
   }
 
   async function logout() {
     setLoggingOut(true);
-    startLoading("Saindo do AUREUM...");
+    startLoading(en?.dashboard.signingOut ?? "Saindo do AUREUM...");
 
     try {
       const supabase = createClient();
@@ -244,7 +267,7 @@ export function ProfileMenu({
         return;
       }
 
-      router.replace("/entrar");
+      router.replace(`${prefix}${locale === "pt-BR" ? "/entrar" : "/sign-in"}`);
       router.refresh();
     } catch {
       stopLoading();
@@ -257,6 +280,11 @@ export function ProfileMenu({
     month: selectedMonth,
   }).toString();
 
+  const profilePath =
+    locale === "pt-BR" ? "/perfil" : `${prefix}/profile`;
+  const settingsPath =
+    locale === "pt-BR" ? "/configuracoes" : `${prefix}/settings`;
+
   return (
     <div className={styles.profileWrap} ref={menuRef}>
       {open ? (
@@ -265,14 +293,14 @@ export function ProfileMenu({
             <span>{initials(userName)}</span>
             <div>
               <strong>{userName}</strong>
-              <small>{userEmail || "Conta AUREUM"}</small>
+              <small>{userEmail || en?.dashboard.profileSubtitle || "Conta AUREUM"}</small>
             </div>
           </div>
 
           <div className={styles.profileDivider} />
 
           <label className={styles.profileNucleus}>
-            <span>NÚCLEO ATUAL</span>
+            <span>{en?.dashboard.currentNucleus ?? "NÚCLEO ATUAL"}</span>
             <select
               onChange={(event) => changeNucleus(event.target.value)}
               value={currentNucleusId}
@@ -289,30 +317,44 @@ export function ProfileMenu({
 
           <nav className={styles.profileLinks}>
             <Link
-              href={`/perfil?${returnParams}`}
+              href={`${profilePath}?${returnParams}`}
               onClick={() => {
-                startLoading("Abrindo informações pessoais...");
+                startLoading(
+                  en?.dashboard.openPersonal ??
+                    "Abrindo informações pessoais...",
+                );
                 setOpen(false);
               }}
             >
               <span>♙</span>
               <div>
-                <strong>Informações pessoais</strong>
-                <small>Nome, e-mail e dados da conta</small>
+                <strong>
+                  {en?.common.personalInfo ?? "Informações pessoais"}
+                </strong>
+                <small>
+                  {en?.dashboard.personalInfoDescription ??
+                    "Nome, e-mail e dados da conta"}
+                </small>
               </div>
             </Link>
 
             <Link
-              href={`/configuracoes?${returnParams}`}
+              href={`${settingsPath}?${returnParams}`}
               onClick={() => {
-                startLoading("Abrindo configurações...");
+                startLoading(
+                  en?.dashboard.openSettings ??
+                    "Abrindo configurações...",
+                );
                 setOpen(false);
               }}
             >
               <span>⚙</span>
               <div>
-                <strong>Configurações</strong>
-                <small>Idioma, moeda e preferências</small>
+                <strong>{en?.common.settings ?? "Configurações"}</strong>
+                <small>
+                  {en?.dashboard.settingsDescription ??
+                    "Idioma, moeda e preferências"}
+                </small>
               </div>
             </Link>
           </nav>
@@ -326,7 +368,9 @@ export function ProfileMenu({
             type="button"
           >
             <span>↪</span>
-            {loggingOut ? "Saindo..." : "Sair do AUREUM"}
+            {loggingOut
+              ? en?.dashboard.signingOut ?? "Saindo..."
+              : en?.dashboard.signOutAureum ?? "Sair do AUREUM"}
           </button>
         </div>
       ) : null}

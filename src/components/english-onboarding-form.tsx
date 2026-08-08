@@ -3,54 +3,72 @@
 import { FormEvent, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { CurrencySelect } from "@/components/currency-select";
+import type { EnglishLocale } from "@/i18n/locales";
+import {
+  localeDefaultCountry,
+  localeDefaultCurrency,
+  localePrefix,
+} from "@/i18n/locales";
+import { getEnglishCopy } from "@/i18n/english-copy";
 import styles from "./onboarding-form.module.css";
 
-type HouseholdType = "personal" | "couple" | "family";
+type NucleusType = "personal" | "couple" | "family";
 type Mode = "choose" | "create" | "join";
 
-type Props = {
-  userId: string;
+export function EnglishOnboardingForm({
+  locale,
+  pendingRequest,
+  userId,
+}: {
+  locale: EnglishLocale;
   pendingRequest: { id: string; householdName: string | null } | null;
-};
-
-function normalizeCode(value: string) {
-  const raw = value.trim().toUpperCase().replace(/\s+/g, "");
-  if (!raw) return "";
-  return raw.startsWith("AUR-") ? raw : `AUR-${raw.replace(/^AUR-?/, "")}`;
-}
-
-function friendlyError(message: string) {
-  if (message.includes("HOUSEHOLD_ACCESS_LIMIT_REACHED"))
-    return "Você já atingiu o limite de 10 Núcleos acessíveis.";
-  if (message.includes("HOUSEHOLD_OWNER_LIMIT_REACHED"))
-    return "Você já é proprietário de 3 Núcleos.";
-  if (
-    message.toLowerCase().includes("invalid") ||
-    message.toLowerCase().includes("code")
-  )
-    return "Código AUREUM inválido ou indisponível.";
-  return message;
-}
-
-export function OnboardingForm({ userId, pendingRequest }: Props) {
+  userId: string;
+}) {
+  const t = getEnglishCopy(locale);
+  const prefix = localePrefix(locale);
   const lock = useRef(false);
+
   const [mode, setMode] = useState<Mode>("choose");
   const [name, setName] = useState("");
-  const [type, setType] = useState<HouseholdType>("personal");
-  const [currency, setCurrency] = useState<string>("BRL");
-  const [country, setCountry] = useState<string>("BR");
+  const [type, setType] = useState<NucleusType>("personal");
+  const [currency, setCurrency] = useState(
+    localeDefaultCurrency(locale),
+  );
+  const [country, setCountry] = useState(
+    localeDefaultCountry(locale),
+  );
   const [joinCode, setJoinCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  function normaliseCode(value: string) {
+    const raw = value.trim().toUpperCase().replace(/\s+/g, "");
+    if (!raw) return "";
+    return raw.startsWith("AUR-")
+      ? raw
+      : `AUR-${raw.replace(/^AUR-?/, "")}`;
+  }
 
-  async function createHousehold(event: FormEvent) {
+  function friendlyError(message: string) {
+    if (message.includes("HOUSEHOLD_ACCESS_LIMIT_REACHED"))
+      return t.onboarding.accessLimit;
+    if (message.includes("HOUSEHOLD_OWNER_LIMIT_REACHED"))
+      return t.onboarding.ownerLimit;
+    if (
+      message.toLowerCase().includes("invalid") ||
+      message.toLowerCase().includes("code")
+    )
+      return t.onboarding.invalidOrUnavailable;
+    return message;
+  }
+
+  async function createNucleus(event: FormEvent) {
     event.preventDefault();
     if (lock.current) return;
 
     const trimmed = name.trim();
     if (!trimmed) {
-      setError("Escolha um nome para seu Núcleo.");
+      setError(t.onboarding.nameRequired);
       return;
     }
 
@@ -69,11 +87,11 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
         .maybeSingle();
 
       if (existing) {
-        window.location.replace("/dashboard");
+        window.location.replace(`${prefix}/dashboard`);
         return;
       }
 
-      const { data: household, error: insertError } = await supabase
+      const { data: nucleus, error: insertError } = await supabase
         .from("households")
         .insert({
           name: trimmed,
@@ -90,42 +108,40 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
         return;
       }
 
-      if (!household) {
-        setError("Não foi possível confirmar a criação do Núcleo.");
+      if (!nucleus) {
+        setError(t.onboarding.createFailed);
         return;
       }
 
       const { data: membership } = await supabase
         .from("household_members")
         .select("role")
-        .eq("household_id", household.id)
+        .eq("household_id", nucleus.id)
         .eq("user_id", userId)
         .maybeSingle();
 
       if (!membership) {
-        setError(
-          "O Núcleo foi criado, mas o vínculo de proprietário ainda não foi confirmado.",
-        );
+        setError(t.onboarding.membershipFailed);
         return;
       }
 
-      window.location.replace("/dashboard");
+      window.location.replace(`${prefix}/dashboard`);
     } catch {
-      setError("Não foi possível concluir a criação. Tente novamente.");
+      setError(t.onboarding.genericCreateError);
     } finally {
       lock.current = false;
       setLoading(false);
     }
   }
 
-  async function joinHousehold(event: FormEvent) {
+  async function joinNucleus(event: FormEvent) {
     event.preventDefault();
     if (lock.current) return;
 
-    const code = normalizeCode(joinCode);
+    const code = normaliseCode(joinCode);
 
     if (!/^AUR-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8}$/.test(code)) {
-      setError("Use um código AUREUM no formato AUR-XXXXXXXX.");
+      setError(t.onboarding.invalidCode);
       return;
     }
 
@@ -138,7 +154,10 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
 
       const { error: requestError } = await supabase
         .from("household_join_requests")
-        .insert({ requester_id: userId, code_input: code });
+        .insert({
+          requester_id: userId,
+          code_input: code,
+        });
 
       if (requestError) {
         setError(friendlyError(requestError.message));
@@ -147,7 +166,7 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
 
       window.location.reload();
     } catch {
-      setError("Não foi possível enviar a solicitação. Tente novamente.");
+      setError(t.onboarding.genericJoinError);
     } finally {
       lock.current = false;
       setLoading(false);
@@ -187,22 +206,20 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
       <section className={styles.pending}>
         <span className={styles.pendingIcon}>⌛</span>
         <div>
-          <p className={styles.kicker}>SOLICITAÇÃO ENVIADA</p>
-          <h2>Aguardando aprovação.</h2>
+          <p className={styles.kicker}>{t.onboarding.pendingKicker}</p>
+          <h2>{t.onboarding.pendingTitle}</h2>
           <p>
             {pendingRequest.householdName ? (
               <>
-                Sua solicitação para entrar no Núcleo{" "}
-                <strong>{pendingRequest.householdName}</strong> está pendente.
+                {t.onboarding.pendingPrefix}{" "}
+                <strong>{pendingRequest.householdName}</strong>{" "}
+                {t.onboarding.pendingSuffix}
               </>
             ) : (
-              "Sua solicitação para entrar no Núcleo está pendente."
+              t.onboarding.pendingGeneric
             )}
           </p>
-          <p className={styles.muted}>
-            Assim que um proprietário ou administrador aprovar, seu acesso será
-            liberado como Membro.
-          </p>
+          <p className={styles.muted}>{t.onboarding.pendingHelp}</p>
         </div>
 
         <div className={styles.pendingActions}>
@@ -211,7 +228,7 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
             onClick={() => window.location.reload()}
             type="button"
           >
-            Atualizar status
+            {t.onboarding.refresh}
           </button>
           <button
             className={styles.secondary}
@@ -219,7 +236,7 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
             onClick={cancelRequest}
             type="button"
           >
-            Cancelar solicitação
+            {t.onboarding.cancel}
           </button>
         </div>
 
@@ -237,12 +254,9 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
           type="button"
         >
           <span className={styles.choiceNumber}>01</span>
-          <h2>Criar um novo Núcleo</h2>
-          <p>
-            Abra seu próprio espaço financeiro. Você será o proprietário e
-            poderá convidar pessoas depois.
-          </p>
-          <strong>Criar meu Núcleo →</strong>
+          <h2>{t.onboarding.create}</h2>
+          <p>{t.onboarding.createText}</p>
+          <strong>{t.onboarding.createAction}</strong>
         </button>
 
         <button
@@ -251,12 +265,9 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
           type="button"
         >
           <span className={styles.choiceNumber}>02</span>
-          <h2>Já faço parte de um Núcleo</h2>
-          <p>
-            Use o código AUREUM compartilhado pela sua família, parceiro ou
-            responsável pelo espaço.
-          </p>
-          <strong>Entrar com código →</strong>
+          <h2>{t.onboarding.join}</h2>
+          <p>{t.onboarding.joinText}</p>
+          <strong>{t.onboarding.joinAction}</strong>
         </button>
       </div>
     );
@@ -264,7 +275,7 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
 
   if (mode === "join") {
     return (
-      <form className={styles.form} onSubmit={joinHousehold}>
+      <form className={styles.form} onSubmit={joinNucleus}>
         <button
           className={styles.back}
           onClick={() => {
@@ -273,25 +284,24 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
           }}
           type="button"
         >
-          ← Voltar
+          {t.onboarding.back}
         </button>
 
         <div className={styles.sectionHeading}>
-          <p className={styles.kicker}>ENTRAR EM UM NÚCLEO</p>
-          <h2>Digite o código do Núcleo.</h2>
-          <p>
-            O código identifica o Núcleo, mas não libera acesso
-            automaticamente. Um administrador precisa aprovar sua entrada.
-          </p>
+          <p className={styles.kicker}>{t.onboarding.joinKicker}</p>
+          <h2>{t.onboarding.joinTitle}</h2>
+          <p>{t.onboarding.joinInfo}</p>
         </div>
 
         <label className={styles.field}>
-          Código AUREUM
+          {t.onboarding.code}
           <input
             autoFocus
             disabled={loading}
             maxLength={12}
-            onChange={(event) => setJoinCode(event.target.value.toUpperCase())}
+            onChange={(event) =>
+              setJoinCode(event.target.value.toUpperCase())
+            }
             placeholder="AUR-7K3M9QPX"
             value={joinCode}
           />
@@ -299,19 +309,15 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
 
         {error ? <div className={styles.error}>{error}</div> : null}
 
-        <button
-          className={styles.primary}
-          disabled={loading}
-          type="submit"
-        >
-          {loading ? "Enviando..." : "Solicitar entrada"}
+        <button className={styles.primary} disabled={loading} type="submit">
+          {loading ? t.onboarding.sending : t.onboarding.request}
         </button>
       </form>
     );
   }
 
   return (
-    <form className={styles.form} onSubmit={createHousehold}>
+    <form className={styles.form} onSubmit={createNucleus}>
       <button
         className={styles.back}
         onClick={() => {
@@ -320,40 +326,40 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
         }}
         type="button"
       >
-        ← Voltar
+        {t.onboarding.back}
       </button>
 
       <div className={styles.sectionHeading}>
-        <p className={styles.kicker}>CRIAR NÚCLEO</p>
-        <h2>Crie seu espaço financeiro.</h2>
+        <p className={styles.kicker}>{t.onboarding.createKicker}</p>
+        <h2>{t.onboarding.createTitle}</h2>
       </div>
 
       <label className={styles.field}>
-        Nome do Núcleo
+        {t.onboarding.name}
         <input
           autoFocus
           disabled={loading}
           maxLength={80}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Ex.: Nossa casa"
+          placeholder={t.onboarding.namePlaceholder}
           required
           value={name}
         />
       </label>
 
       <fieldset className={styles.fieldset} disabled={loading}>
-        <legend>Como você vai usar o AUREUM?</legend>
+        <legend>{t.onboarding.usage}</legend>
         <div className={styles.options}>
           {[
-            ["personal", "Pessoal", "Para organizar suas próprias finanças."],
-            ["couple", "Casal", "Um espaço compartilhado por duas pessoas."],
-            ["family", "Família", "Para organizar finanças de vários membros."],
+            ["personal", t.onboarding.personal, t.onboarding.personalText],
+            ["couple", t.onboarding.couple, t.onboarding.coupleText],
+            ["family", t.onboarding.family, t.onboarding.familyText],
           ].map(([value, title, copy]) => (
             <label className={styles.option} key={value}>
               <input
                 checked={type === value}
                 name="type"
-                onChange={() => setType(value as HouseholdType)}
+                onChange={() => setType(value as NucleusType)}
                 type="radio"
               />
               <span>
@@ -366,29 +372,28 @@ export function OnboardingForm({ userId, pendingRequest }: Props) {
       </fieldset>
 
       <label className={styles.field}>
-        Moeda principal
+        {t.onboarding.mainCurrency}
         <CurrencySelect
           disabled={loading}
-          locale="pt-BR"
+          locale={locale}
           onChange={(value) => {
             setCurrency(value);
-            if (value === "BRL") setCountry("BR");
-            else if (value === "EUR") setCountry("PT");
-            else if (value === "USD") setCountry("US");
+
+            if (value === "USD") setCountry("US");
             else if (value === "GBP") setCountry("GB");
+            else if (value === "EUR") setCountry("PT");
+            else if (value === "BRL") setCountry("BR");
           }}
           value={currency}
         />
       </label>
 
-      <p className={styles.muted}>
-        Depois você poderá acessar até 10 Núcleos e ser proprietário de até 3.
-      </p>
+      <p className={styles.muted}>{t.onboarding.limitText}</p>
 
       {error ? <div className={styles.error}>{error}</div> : null}
 
       <button className={styles.primary} disabled={loading} type="submit">
-        {loading ? "Criando..." : "Criar Núcleo"}
+        {loading ? t.onboarding.creating : t.onboarding.createButton}
       </button>
     </form>
   );
