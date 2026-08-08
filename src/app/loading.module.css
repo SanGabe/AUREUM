@@ -1,10 +1,13 @@
 .overlay {
   position: fixed;
-  z-index: 9999;
+  z-index: 2147483000;
   inset: 0;
+  width: 100vw;
+  height: 100dvh;
   display: grid;
   place-items: center;
   padding: 24px;
+
   background:
     radial-gradient(
       circle at center,
@@ -12,8 +15,11 @@
       transparent 22rem
     ),
     rgba(0, 13, 31, 0.94);
+
   backdrop-filter: blur(8px);
-  animation: overlayIn 180ms ease-out both;
+  -webkit-backdrop-filter: blur(8px);
+
+  animation: aureumOverlayIn 140ms ease-out;
 }
 
 .content {
@@ -51,7 +57,7 @@
 .dot {
   position: absolute;
   inset: 0;
-  animation: orbit 900ms linear infinite;
+  animation: aureumOrbit 900ms linear infinite;
 }
 
 .dot::before {
@@ -99,13 +105,13 @@
   font-size: 12px;
 }
 
-@keyframes orbit {
+@keyframes aureumOrbit {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes overlayIn {
+@keyframes aureumOverlayIn {
   from {
     opacity: 0;
   }
