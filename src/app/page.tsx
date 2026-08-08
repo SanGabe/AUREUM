@@ -1,17 +1,7 @@
 import Link from "next/link";
 import styles from "./landing.module.css";
 
-function BrandName({ compact = false }: { compact?: boolean }) {
-  return (
-    <span className={compact ? styles.brandNameCompact : styles.brandName}>
-      <span className={styles.brandGold}>AU</span>
-      <span>RE</span>
-      <span className={styles.brandGold}>UM</span>
-    </span>
-  );
-}
-
-function ShieldIcon() {
+function IconShield() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z" />
@@ -20,7 +10,7 @@ function ShieldIcon() {
   );
 }
 
-function LockIcon() {
+function IconLock() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <rect x="5" y="10" width="14" height="10" rx="2" />
@@ -29,44 +19,178 @@ function LockIcon() {
   );
 }
 
-function CloudIcon() {
+function IconCloud() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M7.5 18H6a4 4 0 0 1-.5-8A6 6 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9H16" />
+      <path d="M7 18H6a4 4 0 0 1-.5-8A6 6 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9H16" />
       <path d="M12 12v9m0-9-3 3m3-3 3 3" />
     </svg>
   );
 }
 
-const pillars = [
-  {
-    key: "AMOR",
-    symbol: "♡",
-    title: "Cuidar do que importa",
-    copy:
-      "Organize o que é seu, o que é da sua casa e o que constrói o futuro de quem você ama.",
-  },
-  {
-    key: "ORDO",
-    symbol: "⌂",
-    title: "Ordem que gera liberdade",
-    copy:
-      "Tenha método, estrutura e controle para entender seu dinheiro e tomar decisões melhores.",
-  },
-  {
-    key: "PROGRESSUS",
-    symbol: "↗",
-    title: "Evolução constante",
-    copy:
-      "Acompanhe metas, construa patrimônio e avance com consistência rumo aos seus objetivos.",
-  },
-];
+function IconBadge({ kind }: { kind: "shield" | "temple" | "star" | "rocket" }) {
+  if (kind === "shield") {
+    return (
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 4 25 8v7c0 6-3.7 10.5-9 13-5.3-2.5-9-7-9-13V8l9-4Z" />
+        <circle cx="16" cy="15" r="3" />
+      </svg>
+    );
+  }
+
+  if (kind === "temple") {
+    return (
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="m4 11 12-7 12 7H4Zm3 3h18M8 14v11m5-11v11m6-11v11m5-11v11M5 28h22" />
+      </svg>
+    );
+  }
+
+  if (kind === "star") {
+    return (
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="m16 4 3.4 7 7.6 1.1-5.5 5.4 1.3 7.5-6.8-3.6-6.8 3.6 1.3-7.5L5 12.1l7.6-1.1L16 4Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M19 5c4.8.4 7.6 2 9 3.5-1 5.3-3.8 9.7-8.3 13.3l-5.6-5.6C16 11.7 17.6 8 19 5Z" />
+      <path d="m13.8 16.4-5.7.9-3.2 3.2 6.5.8m4.2-4.9-.9 5.7-3.2 3.2-.8-6.5" />
+      <circle cx="22" cy="11" r="2" />
+    </svg>
+  );
+}
+
+function HeroDevices() {
+  return (
+    <div className={styles.devicesWrap} aria-label="Prévia do dashboard AUREUM">
+      <div className={styles.heroBirdHalo} aria-hidden="true">
+        <img src="/brand/aureum-emblem-hq.png" alt="" />
+      </div>
+
+      <div className={styles.phone}>
+        <div className={styles.phoneNotch} />
+        <div className={styles.phoneContent}>
+          <div className={styles.phoneBrand}>
+            <span>AUREUM</span>
+            <b>☰</b>
+          </div>
+          <h3>Visão geral</h3>
+          <div className={styles.balanceCard}>
+            <span>Saldo total</span>
+            <strong>R$ 24.680,50</strong>
+            <small>+12,5% vs mês anterior</small>
+          </div>
+          <div className={styles.miniAccount}>
+            <i className={styles.goldDot} />
+            <span>Contas</span>
+            <strong>R$ 14.150,00</strong>
+          </div>
+          <div className={styles.miniAccount}>
+            <i className={styles.redDot} />
+            <span>Cartões</span>
+            <strong>R$ 2.250,00</strong>
+          </div>
+          <div className={styles.miniAccount}>
+            <i className={styles.greenDot} />
+            <span>Investimentos</span>
+            <strong>R$ 12.580,50</strong>
+          </div>
+          <div className={styles.categoryCard}>
+            <div className={styles.donut} />
+            <div>
+              <span>Despesas por categoria</span>
+              <small>Mercado&nbsp;&nbsp;32%</small>
+              <small>Moradia&nbsp;&nbsp;24%</small>
+              <small>Lazer&nbsp;&nbsp;15%</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.laptop}>
+        <div className={styles.laptopScreen}>
+          <div className={styles.screenBrand}>AUREUM</div>
+          <div className={styles.screenHeader}>Fluxo de caixa</div>
+          <div className={styles.screenLayout}>
+            <div className={styles.cashChart}>
+              <svg viewBox="0 0 320 175" role="img" aria-label="Gráfico de fluxo de caixa">
+                <g className={styles.gridLines}>
+                  <path d="M22 25H310M22 62H310M22 99H310M22 136H310" />
+                  <path d="M63 16V148M108 16V148M153 16V148M198 16V148M243 16V148M288 16V148" />
+                </g>
+                <path
+                  className={styles.chartGlow}
+                  d="M25 128 55 106 82 112 112 80 141 69 170 91 197 111 225 89 255 55 282 72 307 50"
+                />
+                <path
+                  className={styles.chartLine}
+                  d="M25 128 55 106 82 112 112 80 141 69 170 91 197 111 225 89 255 55 282 72 307 50"
+                />
+              </svg>
+              <div className={styles.chartMonths}>
+                <span>Jan</span><span>Fev</span><span>Mar</span>
+                <span>Abr</span><span>Mai</span><span>Jun</span>
+              </div>
+            </div>
+
+            <div className={styles.screenMetrics}>
+              <div>
+                <span>Receitas</span>
+                <strong className={styles.income}>R$ 18.950,00</strong>
+              </div>
+              <div>
+                <span>Despesas</span>
+                <strong className={styles.expense}>R$ 13.420,00</strong>
+              </div>
+              <div className={styles.goalsCard}>
+                <span>Metas</span>
+                <p><b>Viagem em família</b><em>75%</em></p>
+                <i><u style={{ width: "75%" }} /></i>
+                <p><b>Reserva de emergência</b><em>60%</em></p>
+                <i><u style={{ width: "60%" }} /></i>
+                <p><b>Casa nova</b><em>30%</em></p>
+                <i><u style={{ width: "30%" }} /></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.laptopBase}>
+          <span />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const problems = [
   "Informações dispersas",
   "Falta de visão do todo",
   "Esquecimento de contas",
-  "Dificuldade para planejar",
+  "Dificuldade para planejar e decidir",
+];
+
+const pillars = [
+  {
+    title: "AMOR",
+    subtitle: "Cuidar do que importa",
+    text: "Organize o que é seu, o que é da sua casa e o que constrói o futuro de quem você ama.",
+    asset: "/brand/aureum-heart-hq.png",
+  },
+  {
+    title: "ORDO",
+    subtitle: "Ordem que gera liberdade",
+    text: "Tenha método, estrutura e controle para entender seu dinheiro e tomar decisões melhores.",
+    asset: "/brand/aureum-column-hq.png",
+  },
+  {
+    title: "PROGRESSUS",
+    subtitle: "Evolução constante",
+    text: "Acompanhe metas, construa patrimônio e avance com consistência rumo aos seus objetivos.",
+    asset: "/brand/aureum-laurel-hq.png",
+  },
 ];
 
 export default function Home() {
@@ -75,14 +199,8 @@ export default function Home() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link href="/" className={styles.logo} aria-label="AUREUM">
-          <span className={styles.logoBird}>
-            <img src="/brand/aureum-ararinha.png" alt="" aria-hidden="true" />
-          </span>
-          <span className={styles.logoText}>
-            <BrandName />
-            <small>AMOR • ORDO • PROGRESSUS</small>
-          </span>
+        <Link className={styles.headerLogo} href="/" aria-label="AUREUM">
+          <img src="/brand/aureum-logo-hq.png" alt="AUREUM" />
         </Link>
 
         <nav className={styles.nav} aria-label="Navegação principal">
@@ -94,10 +212,10 @@ export default function Home() {
         </nav>
 
         <div className={styles.headerActions}>
-          <Link href="/cadastrar" className={styles.headerPrimary}>
+          <Link className={styles.headerPrimary} href="/cadastrar">
             Criar minha conta
           </Link>
-          <Link href="/entrar" className={styles.headerSecondary}>
+          <Link className={styles.headerSecondary} href="/entrar">
             Entrar
           </Link>
         </div>
@@ -105,152 +223,64 @@ export default function Home() {
 
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
-          <p className={styles.kicker}>
-            <BrandName compact /> • AMOR • ORDO • PROGRESSUS
+          <p className={styles.eyebrow}>AUREUM • AMOR • ORDO • PROGRESSUS</p>
+          <h1>Saia da idade da pedra das finanças pessoais.</h1>
+          <p className={styles.heroText}>
+            Deixe para trás planilhas soltas, anotações no papel e informações
+            espalhadas. O AUREUM organiza contas, cartões, metas e a vida financeira
+            da casa em uma experiência clara, elegante e moderna.
           </p>
 
-          <h1>
-            Seu app de finanças <span>unificado.</span>
-          </h1>
-
-          <p className={styles.brandThesis}>
-            O valor do <strong>AU</strong>. O poder de <strong>UM</strong>.
-          </p>
-
-          <p className={styles.heroDescription}>
-            Contas, cartões, metas, faturas, extratos e a vida financeira da
-            sua casa conectados em uma experiência clara, elegante e feita
-            para evoluir com você.
-          </p>
-
-          <div className={styles.heroButtons}>
-            <Link href="/cadastrar" className={styles.primaryButton}>
+          <div className={styles.heroActions}>
+            <Link className={styles.primaryButton} href="/cadastrar">
               Criar minha conta <span>→</span>
             </Link>
-            <Link href="/demonstracao" className={styles.demoButton}>
-              <span className={styles.play}>▶</span>
+            <Link className={styles.secondaryButton} href="/demonstracao">
+              <span className={styles.playButton}>▶</span>
               Ver demonstração
             </Link>
           </div>
 
           <div className={styles.trustRow} id="seguranca">
             <div>
-              <span className={styles.trustIcon}><ShieldIcon /></span>
+              <span className={styles.trustIcon}><IconShield /></span>
               <p>Seus dados protegidos<br />com segurança de ponta</p>
             </div>
             <div>
-              <span className={styles.trustIcon}><LockIcon /></span>
+              <span className={styles.trustIcon}><IconLock /></span>
               <p>Privacidade por padrão<br />e sob seu controle</p>
             </div>
             <div>
-              <span className={styles.trustIcon}><CloudIcon /></span>
-              <p>Integrações para reduzir<br />trabalho manual</p>
+              <span className={styles.trustIcon}><IconCloud /></span>
+              <p>Sincronize com<br />Google Sheets</p>
             </div>
           </div>
         </div>
 
-        <div className={styles.productVisual} aria-label="Prévia do AUREUM">
-          <img
-            className={styles.heroBirdOutline}
-            src="/brand/aureum-ararinha.png"
-            alt=""
-            aria-hidden="true"
-          />
-
-          <div className={styles.phone}>
-            <div className={styles.phoneTop}>
-              <span className={styles.miniBird}>A</span>
-              <BrandName compact />
-              <span>☰</span>
-            </div>
-            <p className={styles.phoneTitle}>Visão geral</p>
-            <div className={styles.mobileBalance}>
-              <small>Saldo total</small>
-              <strong>R$ 24.680,50</strong>
-              <span>+12,5% vs mês anterior</span>
-            </div>
-            <div className={styles.mobileMetric}>
-              <span>Contas</span><strong>R$ 14.150,00</strong>
-            </div>
-            <div className={styles.mobileMetric}>
-              <span>Cartões</span><strong>R$ 2.250,00</strong>
-            </div>
-            <div className={styles.mobileMetric}>
-              <span>Investimentos</span><strong>R$ 12.580,50</strong>
-            </div>
-            <div className={styles.mobileChart}>
-              <div className={styles.donut} />
-              <div>
-                <small>Mercado 32%</small>
-                <small>Moradia 24%</small>
-                <small>Lazer 15%</small>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.laptop}>
-            <div className={styles.laptopScreen}>
-              <p className={styles.screenTitle}>Fluxo de caixa</p>
-              <div className={styles.screenGrid}>
-                <div className={styles.chartPanel}>
-                  <div className={styles.fakeChart}>
-                    <span style={{ height: "30%" }} />
-                    <span style={{ height: "48%" }} />
-                    <span style={{ height: "42%" }} />
-                    <span style={{ height: "66%" }} />
-                    <span style={{ height: "58%" }} />
-                    <span style={{ height: "78%" }} />
-                    <span style={{ height: "62%" }} />
-                    <span style={{ height: "82%" }} />
-                  </div>
-                  <div className={styles.months}>
-                    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span>
-                  </div>
-                </div>
-                <div className={styles.sideMetrics}>
-                  <div><small>Receitas</small><strong>R$ 18.950,00</strong></div>
-                  <div><small>Despesas</small><strong>R$ 13.420,00</strong></div>
-                  <div className={styles.goalsMini}>
-                    <small>Metas</small>
-                    <p><span>Viagem</span><b>75%</b></p>
-                    <i><em style={{ width: "75%" }} /></i>
-                    <p><span>Reserva</span><b>60%</b></p>
-                    <i><em style={{ width: "60%" }} /></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.laptopBase} />
-          </div>
-        </div>
+        <HeroDevices />
       </section>
 
       <section className={styles.problemCard} id="recursos">
-        <div className={styles.stone}>
-          <div className={styles.stoneGrid}>
-            <span /><span /><span />
-            <span /><span /><span />
-            <span /><span /><span />
-          </div>
-          <div className={styles.stoneNote}>
-            <i /><i /><i /><i />
-          </div>
-          <div className={styles.stonePencil}>／</div>
+        <div className={styles.stoneArea}>
+          <img
+            src="/brand/aureum-stone-hq.png"
+            alt="Pedra simbolizando planilhas e anotações antigas"
+          />
         </div>
 
         <div className={styles.problemContent}>
-          <p className={styles.sectionLabel}>O PROBLEMA</p>
-          <h2>Saia da idade da pedra financeira.</h2>
-          <p>
-            Planilhas perdidas, anotações espalhadas, faturas difíceis de
-            acompanhar e decisões tomadas sem clareza. Improvisar custa caro.
+          <p className={styles.sectionKicker}>O PROBLEMA</p>
+          <h2>Improvisar custa caro.</h2>
+          <p className={styles.bodyText}>
+            Planilhas perdidas, anotações espalhadas, faturas difíceis de acompanhar
+            e decisões tomadas sem clareza. Essa é a idade da pedra financeira.
           </p>
 
-          <div className={styles.problemList}>
-            {problems.map((problem) => (
-              <div key={problem}>
+          <div className={styles.problemGrid}>
+            {problems.map((item) => (
+              <div className={styles.problemItem} key={item}>
                 <span>×</span>
-                <p>{problem}</p>
+                <p>{item}</p>
               </div>
             ))}
           </div>
@@ -259,14 +289,17 @@ export default function Home() {
 
       <section className={styles.solution} id="para-quem">
         <p className={styles.solutionTitle}>A SOLUÇÃO: ORDEM, CLAREZA E PROGRESSO</p>
+
         <div className={styles.pillars}>
           {pillars.map((pillar) => (
-            <article key={pillar.key} className={styles.pillar}>
-              <div className={styles.pillarIcon}>{pillar.symbol}</div>
-              <div>
-                <h3>{pillar.key}</h3>
-                <strong>{pillar.title}</strong>
-                <p>{pillar.copy}</p>
+            <article className={styles.pillarCard} key={pillar.title}>
+              <div className={styles.pillarAsset}>
+                <img src={pillar.asset} alt="" aria-hidden="true" />
+              </div>
+              <div className={styles.pillarCopy}>
+                <h3>{pillar.title}</h3>
+                <strong>{pillar.subtitle}</strong>
+                <p>{pillar.text}</p>
               </div>
             </article>
           ))}
@@ -274,70 +307,89 @@ export default function Home() {
       </section>
 
       <section className={styles.story} id="historia">
-        <div className={styles.sealWrap}>
+        <div className={styles.sealArea}>
           <img src="/brand/aureum-seal.png" alt="Selo institucional AUREUM" />
         </div>
 
-        <div className={styles.storyContent}>
-          <p className={styles.sectionLabel}>NOSSA HISTÓRIA</p>
-          <h2>Valor para o que importa. Ordem para o que é seu. Progresso para o que vem.</h2>
-          <p>
-            AUREUM une referências clássicas, identidade brasileira e tecnologia.
-            <strong> AU</strong> remete ao ouro — valor, patrimônio e solidez.
-            <strong> UM</strong> traduz a proposta do produto: sua vida financeira
-            conectada em um único lugar.
+        <div className={styles.storyCopy}>
+          <p className={styles.sectionKicker}>NOSSA HISTÓRIA</p>
+          <h2>Inspirado em inteligência, construção e progresso.</h2>
+          <p className={styles.bodyText}>
+            AUREUM carrega um espírito de sofisticação, organização e visão de longo
+            prazo. Uma marca que honra nossas raízes, valoriza o conhecimento e usa a
+            tecnologia para construir um futuro financeiro mais sólido para você e sua família.
           </p>
 
           <div className={styles.storyFeatures}>
-            <div><span>◇</span><p>Confiança e<br />transparência</p></div>
-            <div><span>⌂</span><p>Tradição que<br />inspira</p></div>
-            <div><span>☆</span><p>Excelência em<br />cada detalhe</p></div>
-            <div><span>↗</span><p>Tecnologia que<br />impulsiona</p></div>
+            <div>
+              <span><IconBadge kind="shield" /></span>
+              <p>Confiança e<br />transparência</p>
+            </div>
+            <div>
+              <span><IconBadge kind="temple" /></span>
+              <p>Tradição que<br />inspira</p>
+            </div>
+            <div>
+              <span><IconBadge kind="star" /></span>
+              <p>Excelência em<br />cada detalhe</p>
+            </div>
+            <div>
+              <span><IconBadge kind="rocket" /></span>
+              <p>Tecnologia que<br />impulsiona</p>
+            </div>
           </div>
         </div>
       </section>
 
       <section className={styles.finalCta}>
-        <div className={styles.ctaBird}>
-          <img src="/brand/aureum-ararinha.png" alt="" aria-hidden="true" />
+        <div className={styles.finalEmblem}>
+          <img src="/brand/aureum-emblem-hq.png" alt="" aria-hidden="true" />
         </div>
-        <div>
+        <div className={styles.finalText}>
           <h2>Chegou a hora de elevar sua vida financeira.</h2>
           <p>
-            O AUREUM transforma a forma como você organiza, acompanha e
-            constrói seu futuro financeiro.
+            AUREUM está aqui para transformar a forma como você organiza, acompanha
+            e faz seu dinheiro trabalhar a seu favor.
           </p>
         </div>
-        <Link href="/cadastrar" className={styles.primaryButton}>
+        <Link className={styles.primaryButton} href="/cadastrar">
           Criar minha conta <span>→</span>
         </Link>
       </section>
 
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
-          <span className={styles.logoBird}>
-            <img src="/brand/aureum-ararinha.png" alt="" aria-hidden="true" />
-          </span>
-          <div>
-            <BrandName />
-            <small>O valor do AU. O poder de UM.</small>
-          </div>
+          <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM — Amor, Ordo, Progressus" />
         </div>
 
-        <div>
+        <div className={styles.footerColumn}>
           <strong>Produto</strong>
-          <Link href="/demonstracao">Demonstração</Link>
           <a href="#recursos">Recursos</a>
+          <span>Preços</span>
+          <Link href="/demonstracao">Demonstração</Link>
         </div>
-        <div>
-          <strong>Conta</strong>
-          <Link href="/cadastrar">Criar conta</Link>
-          <Link href="/entrar">Entrar</Link>
+
+        <div className={styles.footerColumn}>
+          <strong>Empresa</strong>
+          <a href="#historia">Sobre nós</a>
+          <a href="#seguranca">Segurança</a>
+          <span>Contato</span>
         </div>
-        <div>
-          <strong>AUREUM</strong>
-          <a href="#historia">Nossa história</a>
-          <span>Amor • Ordo • Progressus</span>
+
+        <div className={styles.footerColumn}>
+          <strong>Suporte</strong>
+          <span>Central de ajuda</span>
+          <span>Privacidade</span>
+          <span>Termos de uso</span>
+        </div>
+
+        <div className={styles.social}>
+          <strong>Siga-nos</strong>
+          <div>
+            <span>◎</span>
+            <span>▶</span>
+            <span>in</span>
+          </div>
         </div>
 
         <p className={styles.copyright}>

@@ -7,15 +7,16 @@ export const metadata: Metadata = {
     template: "%s | AUREUM",
   },
   description:
-    "O valor do AU. O poder de UM. Contas, cartões, metas e a vida financeira da sua casa em um só lugar.",
+    "Organize contas, cartões, metas e a vida financeira da sua casa em uma experiência clara, elegante e moderna.",
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    shortcut: "/favicon.svg",
+    icon: [{ url: "/brand/aureum-emblem-hq.png", type: "image/png" }],
+    shortcut: "/brand/aureum-emblem-hq.png",
+    apple: "/brand/aureum-emblem-hq.png",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#03142f",
+  themeColor: "#00142f",
 };
 
 export default function RootLayout({
