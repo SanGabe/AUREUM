@@ -34,37 +34,37 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="light"] {
-  --a-page-bg: #f3ede3;
-  --a-page-bg-2: #ebe2d5;
-  --a-sidebar-1: #fffaf3;
-  --a-sidebar-2: #f0e5d5;
-  --a-surface: #fffaf4;
-  --a-surface-2: #f2e7d8;
+  --a-page-bg: #f4efe6;
+  --a-page-bg-2: #ebe2d4;
+  --a-sidebar-1: #fffdf8;
+  --a-sidebar-2: #f3eadc;
+  --a-surface: #fffdf8;
+  --a-surface-2: #f5ecdf;
   --a-surface-3: #ffffff;
   --a-elevated: #ffffff;
   --a-input: #ffffff;
   --a-control-bg: #ffffff;
-  --a-control-text: #14283f;
-  --a-control-border: rgba(92,64,17,.34);
+  --a-control-text: #15263b;
+  --a-control-border: rgba(94,68,22,.28);
   --a-option-bg: #ffffff;
-  --a-option-text: #14283f;
-  --a-selected-bg: #eadbbf;
+  --a-option-text: #15263b;
+  --a-selected-bg: #efe2c8;
   --a-brand-chip-bg: #ffffff;
-  --a-text: #283b4f;
-  --a-heading: #0c243d;
-  --a-muted: #52677c;
-  --a-muted-2: #62778d;
-  --a-gold: #9d6808;
-  --a-gold-strong: #7d5003;
-  --a-gold-soft: rgba(157,104,8,.11);
-  --a-border: rgba(108,76,20,.28);
-  --a-border-soft: rgba(14,35,58,.14);
-  --a-shadow: 0 15px 38px rgba(57,42,18,.11);
-  --a-success: #0d7652;
-  --a-danger: #b23f3a;
-  --a-overlay: rgba(238,232,222,.88);
-  --a-focus: #075f9f;
-  --a-card-gradient: linear-gradient(145deg,#fffdf8,#f3e9dc);
+  --a-text: #213247;
+  --a-heading: #0c2038;
+  --a-muted: #5a6b7f;
+  --a-muted-2: #68798c;
+  --a-gold: #9b6a0d;
+  --a-gold-strong: #7f5608;
+  --a-gold-soft: rgba(155,106,13,.10);
+  --a-border: rgba(111,80,24,.22);
+  --a-border-soft: rgba(14,33,57,.11);
+  --a-shadow: 0 15px 36px rgba(62,45,17,.10);
+  --a-success: #137a55;
+  --a-danger: #b63d39;
+  --a-overlay: rgba(239,234,224,.84);
+  --a-focus: #0968b0;
+  --a-card-gradient: linear-gradient(145deg,#fffdf8,#f4ecdf);
 }
 
 html[data-theme="contrast"] {
@@ -169,5 +169,3 @@ html[data-theme="contrast"] :where([class*="card"],[class*="Card"],[class*="pane
     transition-duration: .01ms !important;
   }
 }
-
-/* AUREUM LIGHT THEME V6 */
