@@ -1,0 +1,136 @@
+.overlay {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(228, 170, 50, 0.055),
+      transparent 22rem
+    ),
+    rgba(0, 13, 31, 0.94);
+  backdrop-filter: blur(8px);
+  animation: overlayIn 180ms ease-out both;
+}
+
+.content {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.orbit {
+  --size: 86px;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+}
+
+.ring {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(228, 170, 50, 0.42);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(228, 170, 50, 0.035) inset,
+    0 0 30px rgba(228, 170, 50, 0.08);
+}
+
+.ring::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(228, 170, 50, 0.1);
+  border-radius: 50%;
+}
+
+.dot {
+  position: absolute;
+  inset: 0;
+  animation: orbit 900ms linear infinite;
+}
+
+.dot::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f7d778, #d99c2e);
+  box-shadow:
+    0 0 12px rgba(241, 195, 93, 0.7),
+    0 0 26px rgba(228, 170, 50, 0.35);
+  transform: translateX(-50%);
+}
+
+.centerMark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #e4aa32;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: 500;
+  opacity: 0.72;
+}
+
+.copy {
+  display: grid;
+  gap: 6px;
+}
+
+.copy strong {
+  color: #f5eee1;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.copy span {
+  color: #8092aa;
+  font-size: 12px;
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .orbit {
+    --size: 76px;
+  }
+
+  .copy strong {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+
+  .dot {
+    animation-duration: 1600ms;
+  }
+}
