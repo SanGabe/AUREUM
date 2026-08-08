@@ -274,3 +274,8 @@
     flex-wrap: wrap;
   }
 }
+.heroVisual img[src="/brand/aureum-seal.png"] {
+  border-radius: 50%;
+  clip-path: circle(50%);
+  object-fit: cover;
+}
