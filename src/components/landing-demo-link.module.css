@@ -1,0 +1,119 @@
+.overlay {
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0,10,25,.78);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  animation: overlayIn 150ms ease-out both;
+}
+
+.card {
+  min-width: 285px;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 27px 32px 24px;
+  border: 1px solid rgba(228,170,50,.29);
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(228,170,50,.065),transparent 11rem),
+    #041830;
+  box-shadow: 0 28px 70px rgba(0,0,0,.45);
+}
+
+.orbit {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+.ring {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(228,170,50,.42);
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(228,170,50,.08);
+}
+
+.ring::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(228,170,50,.09);
+  border-radius: 50%;
+}
+
+.dot {
+  position: absolute;
+  inset: 0;
+  animation: orbit 820ms linear infinite;
+}
+
+.dot::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#f8da7a,#d99d2e);
+  box-shadow:
+    0 0 11px rgba(241,195,93,.78),
+    0 0 24px rgba(228,170,50,.35);
+  transform: translateX(-50%);
+}
+
+.mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #e4aa32;
+  font-family: Georgia,"Times New Roman",serif;
+  font-size: 20px;
+  opacity: .75;
+}
+
+.copy {
+  display: grid;
+  gap: 5px;
+  text-align: center;
+}
+
+.copy strong {
+  color: #f4eee3;
+  font-family: Georgia,"Times New Roman",serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.copy span {
+  color: #8a9bb1;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+@keyframes orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+
+  .dot {
+    animation-duration: 1450ms;
+  }
+}

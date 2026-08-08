@@ -1,0 +1,116 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.trigger {
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 9px;
+  border: 1px solid rgba(228,170,50,.24);
+  border-radius: 7px;
+  color: #aeb9c8;
+  background: rgba(3,22,45,.42);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .035em;
+  cursor: pointer;
+  transition:
+    color .16s ease,
+    border-color .16s ease,
+    background .16s ease;
+}
+
+.trigger:hover,
+.trigger[aria-expanded="true"] {
+  color: #f0c15b;
+  border-color: rgba(228,170,50,.5);
+  background: rgba(228,170,50,.055);
+}
+
+.trigger svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trigger b {
+  color: #d7a332;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.menu {
+  position: absolute;
+  z-index: 200;
+  top: calc(100% + 9px);
+  right: 0;
+  width: 220px;
+  display: grid;
+  gap: 3px;
+  padding: 7px;
+  border: 1px solid rgba(228,170,50,.26);
+  border-radius: 11px;
+  background: #051a35;
+  box-shadow: 0 22px 55px rgba(0,0,0,.42);
+}
+
+.menu > a {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 31px 1fr;
+  gap: 9px;
+  align-items: center;
+  padding: 7px 8px;
+  border-radius: 7px;
+  color: #bcc7d5;
+  text-decoration: none;
+}
+
+.menu > a:hover,
+.menu > a.active {
+  color: #f0c15b;
+  background: rgba(228,170,50,.065);
+}
+
+.menu > a > span {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(228,170,50,.2);
+  border-radius: 50%;
+  color: #d8ad4e;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.menu div {
+  display: grid;
+  gap: 1px;
+}
+
+.menu strong {
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.menu small {
+  color: #72859e;
+  font-size: 8px;
+}
+
+@media (max-width: 1020px) {
+  .menu {
+    right: auto;
+    left: 0;
+  }
+}
