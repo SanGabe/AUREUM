@@ -8,7 +8,7 @@ export default function ParaQuemPage() {
       <PageHero
         eyebrow="PARA QUEM"
         title="Finanças pessoais que também entendem relações."
-        description="Use sozinho, em casal, com a família ou participando de diferentes Households sem misturar responsabilidades."
+        description="Use sozinho, em casal, com a família ou participando de diferentes Núcleos sem misturar responsabilidades."
       />
 
       <section className={styles.content}>
@@ -21,12 +21,12 @@ export default function ParaQuemPage() {
         <div className={styles.split}>
           <div className={styles.splitVisual}><img src="/brand/aureum-laurel-hq.png" alt="" /></div>
           <div className={styles.splitCopy}>
-            <p className={styles.eyebrow}>HOUSEHOLDS</p>
+            <p className={styles.eyebrow}>NÚCLEOS</p>
             <h2>Você pode pertencer a mais de uma realidade financeira.</h2>
-            <p>Uma pessoa pode ter sua Household pessoal e também participar da casa de um parceiro, dos pais ou de outra família. No AUREUM, acesso e propriedade são coisas diferentes.</p>
+            <p>Uma pessoa pode ter seu Núcleo pessoal e também participar do Núcleo de um parceiro, dos pais ou de outra família. No AUREUM, acesso e propriedade são coisas diferentes.</p>
             <div className={styles.checks}>
-              <div className={styles.check}><span>1</span><div><strong>Até 10 Households acessíveis</strong><p>Participe de diferentes espaços sem misturar dados.</p></div></div>
-              <div className={styles.check}><span>2</span><div><strong>Até 3 como proprietário</strong><p>Crie e administre seus próprios espaços.</p></div></div>
+              <div className={styles.check}><span>1</span><div><strong>Até 10 Núcleos acessíveis</strong><p>Participe de diferentes espaços sem misturar dados.</p></div></div>
+              <div className={styles.check}><span>2</span><div><strong>Até 3 como proprietário</strong><p>Crie e administre seus próprios Núcleos.</p></div></div>
               <div className={styles.check}><span>3</span><div><strong>Permissões por função</strong><p>Proprietário, administrador, colaborador financeiro e membro.</p></div></div>
             </div>
           </div>

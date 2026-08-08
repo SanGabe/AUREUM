@@ -14,7 +14,7 @@ export default function SignUpPage() {
         <div className={styles.brandCopy}>
           <p className={styles.eyebrow}>AMOR • ORDO • PROGRESSUS</p>
           <h2>Organize o presente para dar direção ao futuro.</h2>
-          <p>Crie sua conta. Na etapa seguinte você escolhe entre criar sua própria Household ou entrar em uma que já existe.</p>
+          <p>Crie sua conta. Na etapa seguinte você escolhe entre criar seu próprio Núcleo ou entrar em um que já existe.</p>
         </div>
         <img className={styles.authBird} src="/brand/aureum-footer-bird.svg" alt="" aria-hidden="true" />
       </section>

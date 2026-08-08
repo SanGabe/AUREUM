@@ -20,7 +20,7 @@ export default async function LoginPage({ searchParams }: Props) {
         <div className={styles.brandCopy}>
           <p className={styles.eyebrow}>SEU ESPAÇO FINANCEIRO</p>
           <h2>Clareza começa quando tudo volta para o mesmo lugar.</h2>
-          <p>Entre para acessar suas Households, movimentações, metas e permissões.</p>
+          <p>Entre para acessar seus Núcleos, movimentações, metas e permissões.</p>
         </div>
         <img className={styles.authBird} src="/brand/aureum-footer-bird.svg" alt="" aria-hidden="true" />
       </section>

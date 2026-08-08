@@ -7,7 +7,9 @@ export const metadata = { title: "Primeiros passos | AUREUM" };
 
 export default async function OnboardingPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) redirect("/entrar?next=/onboarding");
 
@@ -30,12 +32,14 @@ export default async function OnboardingPage() {
     .maybeSingle();
 
   let pendingHouseholdName: string | null = null;
+
   if (pending?.household_id) {
     const { data: household } = await supabase
       .from("households")
       .select("name")
       .eq("id", pending.household_id)
       .maybeSingle();
+
     pendingHouseholdName = household?.name ?? null;
   }
 
@@ -49,18 +53,31 @@ export default async function OnboardingPage() {
         <div className={styles.copy}>
           <span className={styles.eyebrow}>PRIMEIROS PASSOS</span>
           <h1>Como você quer começar?</h1>
-          <p>Crie seu próprio espaço financeiro ou entre em uma Household que já existe usando o código AUREUM enviado pelo proprietário.</p>
+          <p>
+            Crie seu próprio Núcleo financeiro ou entre em um Núcleo que já
+            existe usando o código AUREUM enviado pelo proprietário.
+          </p>
         </div>
 
         <OnboardingForm
-          pendingRequest={pending ? {
-            id: pending.id,
-            householdName: pendingHouseholdName,
-          } : null}
+          pendingRequest={
+            pending
+              ? {
+                  id: pending.id,
+                  householdName: pendingHouseholdName,
+                }
+              : null
+          }
           userId={user.id}
         />
       </section>
-      <img className={styles.bird} src="/brand/aureum-footer-bird.svg" alt="" aria-hidden="true" />
+
+      <img
+        className={styles.bird}
+        src="/brand/aureum-footer-bird.svg"
+        alt=""
+        aria-hidden="true"
+      />
     </main>
   );
 }

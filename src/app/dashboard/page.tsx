@@ -1,12 +1,32 @@
 import { redirect } from "next/navigation";
-import { DashboardView, type DashboardData, type DashboardTransaction } from "@/components/dashboard-view";
+import {
+  DashboardView,
+  type DashboardData,
+  type DashboardTransaction,
+} from "@/components/dashboard-view";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Dashboard" };
 
-type Props = { searchParams: Promise<{ household?: string }> };
-type Membership = { household_id: string; role: string };
-type Household = { id:string; name:string; default_currency:string; type:string; country_code:string };
+type Props = {
+  searchParams: Promise<{
+    household?: string;
+    month?: string;
+  }>;
+};
+
+type Membership = {
+  household_id: string;
+  role: string;
+};
+
+type Household = {
+  id: string;
+  name: string;
+  default_currency: string;
+  type: string;
+  country_code: string;
+};
 
 function roleLabel(role: string) {
   if (role === "owner") return "Proprietário";
@@ -15,60 +35,106 @@ function roleLabel(role: string) {
   return "Membro";
 }
 
+function currentMonth() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function normalizeMonth(value?: string) {
+  if (!value || !/^\d{4}-(0[1-9]|1[0-2])$/.test(value)) {
+    return currentMonth();
+  }
+
+  const [year] = value.split("-").map(Number);
+  if (year < 2000 || year > 2200) return currentMonth();
+
+  return value;
+}
+
+function monthBounds(value: string) {
+  const [year, month] = value.split("-").map(Number);
+  const start = new Date(Date.UTC(year, month - 1, 1));
+  const end = new Date(Date.UTC(year, month, 1));
+
+  return {
+    start: start.toISOString(),
+    end: end.toISOString(),
+    date: `${value}-01`,
+  };
+}
+
 export default async function DashboardPage({ searchParams }: Props) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) redirect("/entrar?next=/dashboard");
 
   const params = await searchParams;
+  const selectedMonth = normalizeMonth(params.month);
+  const bounds = monthBounds(selectedMonth);
 
   const { data: membershipsRaw, error: membershipsError } = await supabase
     .from("household_members")
     .select("household_id, role")
     .eq("user_id", user.id)
-    .order("joined_at", { ascending:true });
+    .order("joined_at", { ascending: true });
 
   if (membershipsError) console.error("Memberships:", membershipsError);
-  const memberships = (membershipsRaw ?? []) as Membership[];
 
+  const memberships = (membershipsRaw ?? []) as Membership[];
   if (!memberships.length) redirect("/onboarding");
 
-  const ids = memberships.map(m => m.household_id);
+  const ids = memberships.map((membership) => membership.household_id);
+
   const { data: householdRows, error: householdError } = await supabase
     .from("households")
     .select("id, name, default_currency, type, country_code")
     .in("id", ids);
 
-  if (householdError) console.error("Households:", householdError);
+  if (householdError) console.error("Núcleos:", householdError);
+
   const households = (householdRows ?? []) as Household[];
   if (!households.length) redirect("/onboarding");
 
   const selected =
     (params.household && ids.includes(params.household)
-      ? households.find(h => h.id === params.household)
+      ? households.find((household) => household.id === params.household)
       : null) ?? households[0];
 
-  const membership = memberships.find(m => m.household_id === selected.id)!;
+  const membership = memberships.find(
+    (item) => item.household_id === selected.id,
+  )!;
+
   const currency = selected.default_currency || "BRL";
 
-  // Summary is calculated inside PostgreSQL over ALL records, not a 1,000-row API page.
-  const { data: summaryRaw, error: summaryError } = await supabase
-    .rpc("aureum_dashboard_summary", { target_household: selected.id });
+  const { data: summaryRaw, error: summaryError } = await supabase.rpc(
+    "aureum_dashboard_summary_month",
+    {
+      target_household: selected.id,
+      target_month: bounds.date,
+    },
+  );
 
   if (summaryError) console.error("Dashboard summary:", summaryError);
 
   const summary =
     summaryRaw && typeof summaryRaw === "object"
-      ? summaryRaw as Record<string, unknown>
+      ? (summaryRaw as Record<string, unknown>)
       : {};
 
   const { data: recentRaw, error: recentError } = await supabase
     .from("transactions")
-    .select("id, description, type, amount, currency, occurred_at, categories(name), accounts(name), cards(name)")
+    .select(
+      "id, description, type, amount, currency, occurred_at, categories(name), accounts(name), cards(name)",
+    )
     .eq("household_id", selected.id)
     .eq("status", "posted")
-    .order("occurred_at", { ascending:false })
-    .limit(8);
+    .gte("occurred_at", bounds.start)
+    .lt("occurred_at", bounds.end)
+    .order("occurred_at", { ascending: false })
+    .limit(12);
 
   if (recentError) console.error("Recent transactions:", recentError);
 
@@ -84,8 +150,13 @@ export default async function DashboardPage({ searchParams }: Props) {
     cardName: row.cards?.name ?? null,
   }));
 
-  const { data: categoryRows, error: categoryError } = await supabase
-    .rpc("aureum_dashboard_categories", { target_household: selected.id });
+  const { data: categoryRows, error: categoryError } = await supabase.rpc(
+    "aureum_dashboard_categories_month",
+    {
+      target_household: selected.id,
+      target_month: bounds.date,
+    },
+  );
 
   if (categoryError) console.error("Dashboard categories:", categoryError);
 
@@ -100,7 +171,7 @@ export default async function DashboardPage({ searchParams }: Props) {
     .select("title, target_amount, current_amount")
     .eq("household_id", selected.id)
     .eq("status", "active")
-    .order("created_at", { ascending:true })
+    .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
 
@@ -114,14 +185,18 @@ export default async function DashboardPage({ searchParams }: Props) {
     cardSpendMonth: Number(summary.card_spend_month ?? 0),
     accountCount: Number(summary.account_count ?? 0),
     cardCount: Number(summary.card_count ?? 0),
-    ignoredCurrencyAccounts: Number(summary.ignored_currency_accounts ?? 0),
+    ignoredCurrencyAccounts: Number(
+      summary.ignored_currency_accounts ?? 0,
+    ),
     transactions: recent,
     categories,
-    goal: goalRow ? {
-      title: goalRow.title,
-      currentAmount: Number(goalRow.current_amount),
-      targetAmount: Number(goalRow.target_amount),
-    } : null,
+    goal: goalRow
+      ? {
+          title: goalRow.title,
+          currentAmount: Number(goalRow.current_amount),
+          targetAmount: Number(goalRow.target_amount),
+        }
+      : null,
   };
 
   const fullName =
@@ -134,12 +209,16 @@ export default async function DashboardPage({ searchParams }: Props) {
       data={data}
       demo={false}
       householdId={selected.id}
-      households={households.map(h => ({
-        id:h.id,
-        name:h.name,
-        roleLabel:roleLabel(memberships.find(m => m.household_id === h.id)?.role ?? "viewer"),
+      households={households.map((household) => ({
+        id: household.id,
+        name: household.name,
+        roleLabel: roleLabel(
+          memberships.find((item) => item.household_id === household.id)?.role ??
+            "viewer",
+        ),
       }))}
-      showLogout
+      selectedMonth={selectedMonth}
+      userEmail={user.email}
       userName={fullName}
       userSubtitle={`${selected.name} • ${roleLabel(membership.role)}`}
     />
