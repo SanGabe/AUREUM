@@ -2,14 +2,28 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { AppLocale } from "@/i18n/locales";
+import {
+  CURRENCY_CATALOG,
+  MAIN_CURRENCIES,
+  currencyLabel,
+} from "@/lib/aureum/currency-catalog";
 
 type RatesResponse = {
-  base: "USD";
-  fetchedAt: string | null;
-  currencies: string[];
+  base?: string;
+  fetchedAt?: string | null;
+  currencies?: string[];
 };
 
-const FALLBACK = ["BRL", "EUR", "GBP", "USD"];
+const FALLBACK_LIVE = [
+  "BRL",
+  "USD",
+  "EUR",
+  "GBP",
+  "CNY",
+  "JPY",
+  "CHF",
+  "CAD",
+];
 
 export function CurrencySelect({
   disabled,
@@ -24,7 +38,8 @@ export function CurrencySelect({
   onChange: (value: string) => void;
   value: string;
 }) {
-  const [codes, setCodes] = useState<string[]>(FALLBACK);
+  const [liveCodes, setLiveCodes] =
+    useState<string[]>(FALLBACK_LIVE);
 
   useEffect(() => {
     let active = true;
@@ -40,43 +55,66 @@ export function CurrencySelect({
       .then((payload) => {
         if (!active || !payload?.currencies?.length) return;
 
-        setCodes(
-          Array.from(new Set([...payload.currencies, value]))
-            .filter((code) => /^[A-Z]{3}$/.test(code))
-            .sort(),
+        setLiveCodes(
+          Array.from(
+            new Set([
+              ...FALLBACK_LIVE,
+              ...payload.currencies,
+            ]),
+          ).filter((code) => /^[A-Z]{3}$/.test(code)),
         );
       })
       .catch(() => {
-        // Fallback currencies remain available when the cache is not ready.
+        // The complete currency catalogue remains available.
       });
 
     return () => {
       active = false;
     };
-  }, [value]);
+  }, []);
 
-  const displayNames = useMemo(() => {
-    try {
-      return new Intl.DisplayNames([locale], { type: "currency" });
-    } catch {
-      return null;
-    }
-  }, [locale]);
-
-  const options = useMemo(
+  const main = useMemo(
     () =>
-      Array.from(new Set([...codes, value]))
-        .filter(Boolean)
-        .sort()
-        .map((code) => {
-          const name = displayNames?.of(code) ?? code;
-          return {
-            code,
-            label: name && name !== code ? `${name} — ${code}` : code,
-          };
-        }),
-    [codes, displayNames, value],
+      MAIN_CURRENCIES.map((item) => ({
+        code: item.code,
+        label: `${currencyLabel(item.code, locale)} — ${item.code}`,
+      })),
+    [locale],
   );
+
+  const others = useMemo(() => {
+    const catalogueCodes = new Set(
+      CURRENCY_CATALOG.map((currency) => currency.code),
+    );
+
+    const catalogue = CURRENCY_CATALOG.filter(
+      (currency) => currency.region !== "main",
+    ).map((item) => ({
+      code: item.code,
+      label: `${currencyLabel(item.code, locale)} — ${item.code}`,
+    }));
+
+    const providerExtras = liveCodes
+      .filter((code) => !catalogueCodes.has(code))
+      .sort()
+      .map((code) => ({
+        code,
+        label: `${currencyLabel(code, locale)} — ${code}`,
+      }));
+
+    return [...catalogue, ...providerExtras];
+  }, [liveCodes, locale]);
+
+  const extra =
+    value &&
+    !CURRENCY_CATALOG.some(
+      (currency) => currency.code === value,
+    )
+      ? {
+          code: value,
+          label: `${currencyLabel(value, locale)} — ${value}`,
+        }
+      : null;
 
   return (
     <select
@@ -85,11 +123,36 @@ export function CurrencySelect({
       onChange={(event) => onChange(event.target.value)}
       value={value}
     >
-      {options.map((option) => (
-        <option key={option.code} value={option.code}>
-          {option.label}
-        </option>
-      ))}
+      <optgroup
+        label={
+          locale === "pt-BR"
+            ? "Principais moedas"
+            : "Major currencies"
+        }
+      >
+        {main.map((option) => (
+          <option key={option.code} value={option.code}>
+            {option.label}
+          </option>
+        ))}
+      </optgroup>
+
+      <optgroup
+        label={
+          locale === "pt-BR"
+            ? "Outras moedas"
+            : "Other currencies"
+        }
+      >
+        {others.map((option) => (
+          <option key={option.code} value={option.code}>
+            {option.label}
+          </option>
+        ))}
+        {extra ? (
+          <option value={extra.code}>{extra.label}</option>
+        ) : null}
+      </optgroup>
     </select>
   );
 }

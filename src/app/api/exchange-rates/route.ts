@@ -8,7 +8,10 @@ export async function GET() {
 
   const { data, error } = await supabase
     .from("exchange_rates")
-    .select("currency_code, rate_per_usd, fetched_at, provider_updated_at")
+    .select(
+      "currency_code, rate_per_brl, fetched_at, provider_updated_at",
+    )
+    .not("rate_per_brl", "is", null)
     .order("currency_code");
 
   if (error) {
@@ -19,10 +22,15 @@ export async function GET() {
   }
 
   const rows = data ?? [];
-  const rates: Record<string, number> = { USD: 1 };
+  const rates: Record<string, number> = {
+    BRL: 1,
+  };
 
   for (const row of rows) {
-    rates[row.currency_code] = Number(row.rate_per_usd);
+    const value = Number(row.rate_per_brl);
+    if (Number.isFinite(value) && value > 0) {
+      rates[row.currency_code] = value;
+    }
   }
 
   const fetchedAt =
@@ -42,7 +50,7 @@ export async function GET() {
   return NextResponse.json(
     {
       provider: "freecurrencyapi",
-      base: "USD",
+      base: "BRL",
       fetchedAt,
       providerUpdatedAt,
       currencies: Object.keys(rates).sort(),
@@ -50,7 +58,8 @@ export async function GET() {
     },
     {
       headers: {
-        "Cache-Control": "public, max-age=300, stale-while-revalidate=900",
+        "Cache-Control":
+          "public, max-age=300, stale-while-revalidate=900",
       },
     },
   );
