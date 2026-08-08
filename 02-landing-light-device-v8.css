@@ -1,0 +1,281 @@
+/* AUREUM LIGHT DEVICE VISIBILITY V8
+   Adicionar ao final de src/app/landing.module.css
+*/
+
+/* ============================================================
+   LIGHT PAGE — CONTRASTE EXTERNO
+   ============================================================ */
+
+:global(html[data-theme="light"]) .page {
+  --cream: var(--a-heading);
+  --text: var(--a-text);
+  --muted: var(--a-muted);
+  --gold: var(--a-gold);
+  --gold-light: #9b6705;
+
+  color: var(--a-text);
+}
+
+:global(html[data-theme="light"]) .hero h1,
+:global(html[data-theme="light"]) .problemContent h2,
+:global(html[data-theme="light"]) .storyCopy h2,
+:global(html[data-theme="light"]) .finalText h2 {
+  color: var(--a-heading);
+}
+
+:global(html[data-theme="light"]) .heroText,
+:global(html[data-theme="light"]) .trustRow p,
+:global(html[data-theme="light"]) .bodyText,
+:global(html[data-theme="light"]) .problemItem p,
+:global(html[data-theme="light"]) .pillarCopy p,
+:global(html[data-theme="light"]) .storyFeatures p,
+:global(html[data-theme="light"]) .finalText p {
+  color: var(--a-muted);
+}
+
+:global(html[data-theme="light"]) .nav {
+  color: #455c73;
+}
+
+:global(html[data-theme="light"]) .nav a:hover {
+  color: var(--a-gold-strong);
+}
+
+:global(html[data-theme="light"]) .problemCard,
+:global(html[data-theme="light"]) .pillarCard,
+:global(html[data-theme="light"]) .story,
+:global(html[data-theme="light"]) .finalCta {
+  border-color: var(--a-border);
+  background: var(--a-surface);
+  box-shadow: var(--a-shadow);
+}
+
+
+/* ============================================================
+   DEVICE ISLAND
+   O mockup continua SEMPRE escuro, mesmo em tema claro.
+   ============================================================ */
+
+:global(html[data-theme="light"]) .phone {
+  background:
+    linear-gradient(
+      145deg,
+      #8d959f,
+      #353e48 23%,
+      #0b1119 58%,
+      #69737e
+    );
+  box-shadow:
+    0 34px 64px rgba(24,31,42,.28),
+    0 10px 24px rgba(24,31,42,.16),
+    inset 0 0 0 1px rgba(255,255,255,.14);
+}
+
+:global(html[data-theme="light"]) .phoneContent {
+  color: #edf2f8;
+  background:
+    linear-gradient(
+      180deg,
+      #071a34 0%,
+      #031125 58%,
+      #020b18 100%
+    );
+}
+
+:global(html[data-theme="light"]) .phoneNotch {
+  background: #0b1421;
+}
+
+:global(html[data-theme="light"]) .laptopScreen {
+  color: #edf2f8;
+  border-color: #515a66;
+  background: #030c19;
+  box-shadow:
+    0 35px 74px rgba(23,31,42,.25),
+    0 10px 24px rgba(23,31,42,.14),
+    inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+
+/* ============================================================
+   HEADINGS / BRAND DENTRO DOS MOCKUPS
+   Não usar o dourado escuro do light mode sobre fundo navy.
+   ============================================================ */
+
+:global(html[data-theme="light"]) .phoneBrand,
+:global(html[data-theme="light"]) .screenBrand {
+  color: #f0c15b;
+}
+
+:global(html[data-theme="light"]) .phoneBrand b {
+  color: #d7e0eb;
+}
+
+:global(html[data-theme="light"]) .phoneContent h3,
+:global(html[data-theme="light"]) .screenHeader {
+  color: #eef3f9;
+}
+
+
+/* ============================================================
+   CARDS INTERNOS
+   ============================================================ */
+
+:global(html[data-theme="light"]) .balanceCard,
+:global(html[data-theme="light"]) .miniAccount,
+:global(html[data-theme="light"]) .categoryCard {
+  border-color: rgba(132,168,206,.28);
+  background: #092443;
+}
+
+:global(html[data-theme="light"]) .cashChart,
+:global(html[data-theme="light"]) .screenMetrics > div {
+  border-color: rgba(132,168,206,.24);
+  background: #081f3b;
+}
+
+
+/* ============================================================
+   VALORES PRINCIPAIS
+   ============================================================ */
+
+:global(html[data-theme="light"]) .balanceCard strong,
+:global(html[data-theme="light"]) .miniAccount strong,
+:global(html[data-theme="light"]) .screenMetrics strong {
+  color: #f4f7fb;
+}
+
+:global(html[data-theme="light"]) .balanceCard span,
+:global(html[data-theme="light"]) .miniAccount span,
+:global(html[data-theme="light"]) .screenMetrics span {
+  color: #b4c3d5;
+}
+
+:global(html[data-theme="light"]) .balanceCard small {
+  color: #54daa4;
+}
+
+
+/* ============================================================
+   CATEGORIAS / DONUT
+   ============================================================ */
+
+:global(html[data-theme="light"]) .categoryCard span {
+  color: #e4ebf3;
+}
+
+:global(html[data-theme="light"]) .categoryCard small {
+  color: #a9b9cc;
+}
+
+:global(html[data-theme="light"]) .donut {
+  border-color: #42a7ff;
+  border-right-color: #efb94c;
+  border-bottom-color: #55d0aa;
+}
+
+
+/* ============================================================
+   GRÁFICO DO NOTEBOOK
+   ============================================================ */
+
+:global(html[data-theme="light"]) .gridLines path {
+  stroke: rgba(151,178,207,.18);
+}
+
+:global(html[data-theme="light"]) .chartGlow {
+  stroke: rgba(69,218,176,.17);
+}
+
+:global(html[data-theme="light"]) .chartLine {
+  stroke: #4cddb2;
+}
+
+:global(html[data-theme="light"]) .chartMonths {
+  color: #9fb2c8;
+}
+
+
+/* ============================================================
+   KPIs E METAS
+   ============================================================ */
+
+:global(html[data-theme="light"]) .income {
+  color: #52dda6;
+}
+
+:global(html[data-theme="light"]) .expense {
+  color: #ff7972;
+}
+
+:global(html[data-theme="light"]) .goalsCard p {
+  color: #bdcad9;
+}
+
+:global(html[data-theme="light"]) .goalsCard i {
+  background: #153756;
+}
+
+:global(html[data-theme="light"]) .goalsCard u {
+  background: #52d1a4;
+}
+
+
+/* ============================================================
+   CHASSI DO NOTEBOOK
+   ============================================================ */
+
+:global(html[data-theme="light"]) .laptopBase {
+  background:
+    linear-gradient(
+      180deg,
+      #89929c,
+      #424b56
+    );
+  box-shadow:
+    0 15px 28px rgba(22,29,39,.18);
+}
+
+:global(html[data-theme="light"]) .laptopBase span {
+  background: #4a535e;
+}
+
+
+/* ============================================================
+   HALO / SELO
+   ============================================================ */
+
+:global(html[data-theme="light"]) .heroBirdHalo {
+  opacity: .22;
+  filter:
+    saturate(.82)
+    contrast(1.08);
+}
+
+:global(html[data-theme="light"]) .heroBirdHalo::after {
+  border-color: rgba(145,96,8,.24);
+}
+
+
+/* ============================================================
+   BOTÃO DEMONSTRAÇÃO
+   ============================================================ */
+
+:global(html[data-theme="light"]) .secondaryButton {
+  color: var(--a-heading);
+  border-color: rgba(128,83,7,.42);
+  background: rgba(255,253,248,.96);
+  box-shadow:
+    0 9px 22px rgba(56,40,13,.08);
+}
+
+:global(html[data-theme="light"]) .secondaryButton:hover {
+  color: var(--a-gold-strong);
+  border-color: var(--a-gold);
+  background: #ffffff;
+}
+
+:global(html[data-theme="light"]) .playButton {
+  color: var(--a-gold-strong);
+  border-color: rgba(128,83,7,.55);
+}

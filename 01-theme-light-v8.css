@@ -1,0 +1,24 @@
+/* AUREUM LIGHT DEVICE VISIBILITY V8
+   Adicionar ao final de src/app/theme.css
+*/
+
+html[data-theme="light"] {
+  --a-text: #213247;
+  --a-heading: #0b213a;
+  --a-muted: #526980;
+  --a-muted-2: #647a90;
+
+  --a-gold: #9b6a0d;
+  --a-gold-strong: #7c5005;
+  --a-gold-soft: rgba(155,106,13,.10);
+
+  --a-border: rgba(103,73,20,.24);
+  --a-border-soft: rgba(12,31,53,.12);
+
+  --a-surface: #fffaf4;
+  --a-surface-2: #f4eadc;
+  --a-elevated: #ffffff;
+
+  --a-shadow:
+    0 15px 36px rgba(52,39,18,.10);
+}
