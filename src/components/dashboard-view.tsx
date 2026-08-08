@@ -8,6 +8,8 @@ import {
 import type { AppLocale, EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
+import { FinanceNavigation } from "@/components/finance-navigation";
+import { CurrencyRates, type ExchangeRateRow } from "@/components/currency-rates";
 import styles from "./dashboard-view.module.css";
 
 export type DashboardTransaction = {
@@ -34,6 +36,8 @@ export type DashboardData = {
   transactions: DashboardTransaction[];
   categories: { name: string; value: number; percent: number }[];
   goal: { title: string; currentAmount: number; targetAmount: number } | null;
+  exchangeRates?: ExchangeRateRow[];
+  fxFetchedAt?: string | null;
 };
 
 type Props = {
@@ -66,6 +70,8 @@ const demoData: DashboardData = {
     { name: "Groceries", value: 696, percent: 32 },
   ],
   goal: { title: "Example goal", currentAmount: 20000, targetAmount: 35000 },
+  exchangeRates: [],
+  fxFetchedAt: null,
 };
 
 function money(value: number, currency: string, locale: AppLocale) {
@@ -214,16 +220,18 @@ export function DashboardView({
             <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" />
           </Link>
 
-          <nav className={styles.sidebarNav}>
-            <a className={styles.activeLink} href="#resumo"><span>◫</span>{text.overview}</a>
-            <a href="#transacoes"><span>↕</span>{text.transactions}</a>
-            <a href="#categorias"><span>◌</span>{text.categories}</a>
-            <a href="#metas"><span>◎</span>{text.goals}</a>
-          </nav>
+          <FinanceNavigation
+            active="dashboard"
+            demo={demo}
+            householdId={householdId}
+            locale={locale}
+            month={selectedMonth}
+          />
 
           {!demo && householdId ? (
             <ProfileMenu
               currentNucleusId={householdId}
+              currentSection="dashboard"
               nuclei={households}
               selectedMonth={selectedMonth}
               userEmail={userEmail}
@@ -265,6 +273,7 @@ export function DashboardView({
             <div className={styles.periodBar}>
               <MonthNavigator
                 currentNucleusId={householdId}
+                currentSection="dashboard"
                 selectedMonth={selectedMonth}
                 locale={locale}
                 dashboardPath={dashboardPath}
@@ -346,6 +355,30 @@ export function DashboardView({
                 <div><strong>{d.cardCount}</strong><span>{text.cards}</span></div>
                 <div><strong>{d.transactions.length}</strong><span>{text.inPeriod}</span></div>
               </div>
+            </article>
+
+            <article className={styles.panel}>
+              <div className={styles.panelHead}>
+                <div>
+                  <p>{locale === "pt-BR" ? "CÂMBIO" : "FOREIGN EXCHANGE"}</p>
+                  <h2>{locale === "pt-BR" ? "Principais moedas" : "Major currencies"}</h2>
+                </div>
+                {!demo ? (
+                  <Link
+                    href={`${locale === "pt-BR" ? "/cotacoes" : `${prefix}/exchange-rates`}?household=${encodeURIComponent(householdId ?? "")}&month=${encodeURIComponent(selectedMonth)}`}
+                    style={{ color: "#d9ad4d", fontSize: 8, textDecoration: "none" }}
+                  >
+                    {locale === "pt-BR" ? "Ver todas" : "View all"}
+                  </Link>
+                ) : null}
+              </div>
+
+              <CurrencyRates
+                compact
+                fetchedAt={d.fxFetchedAt}
+                locale={locale}
+                rates={d.exchangeRates ?? []}
+              />
             </article>
           </section>
         </section>

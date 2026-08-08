@@ -9,6 +9,7 @@ import type { AppLocale } from "@/i18n/locales";
 import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
+import { financeSectionPath, joinNucleusPath, type FinanceSection } from "@/components/finance-navigation";
 import styles from "./dashboard-view.module.css";
 
 export type NucleusOption = {
@@ -66,11 +67,13 @@ export function MonthNavigator({
   selectedMonth,
   locale = "pt-BR",
   dashboardPath = "/dashboard",
+  currentSection = "dashboard",
 }: {
   currentNucleusId: string;
   selectedMonth: string;
   locale?: AppLocale;
   dashboardPath?: string;
+  currentSection?: FinanceSection;
 }) {
   const router = useRouter();
   const { startLoading } = useDashboardActionLoading();
@@ -102,8 +105,13 @@ export function MonthNavigator({
     }
 
     startLoading(en?.dashboard.loadingPeriod ?? "Carregando período...");
+    const targetPath =
+      currentSection === "dashboard"
+        ? dashboardPath
+        : financeSectionPath(currentSection, locale);
+
     router.push(
-      `${dashboardPath}?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(value)}`,
+      `${targetPath}?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(value)}`,
     );
     setOpen(false);
   }
@@ -201,6 +209,7 @@ export function MonthNavigator({
 
 export function ProfileMenu({
   currentNucleusId,
+  currentSection = "dashboard",
   nuclei,
   selectedMonth,
   userEmail,
@@ -209,6 +218,7 @@ export function ProfileMenu({
   locale = "pt-BR",
 }: {
   currentNucleusId: string;
+  currentSection?: FinanceSection;
   nuclei: NucleusOption[];
   selectedMonth: string;
   userEmail?: string;
@@ -241,14 +251,44 @@ export function ProfileMenu({
 
   const prefix =
     locale === "pt-BR" ? "" : localePrefix(locale as EnglishLocale);
-  const dashboardPath = `${prefix}/dashboard`;
+  const currentSectionPath = financeSectionPath(currentSection, locale);
 
   function changeNucleus(id: string) {
+    if (id === "__join__") {
+      startLoading(
+        locale === "pt-BR"
+          ? "Abrindo solicitação de Núcleo..."
+          : "Opening Nucleus request...",
+      );
+      router.push(
+        `${joinNucleusPath(locale)}?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(selectedMonth)}`,
+      );
+      setOpen(false);
+      return;
+    }
+
     if (id === currentNucleusId) return;
 
     startLoading(en?.dashboard.changingNucleus ?? "Trocando de Núcleo...");
     router.push(
-      `${dashboardPath}?household=${encodeURIComponent(id)}&month=${encodeURIComponent(selectedMonth)}`,
+      `${currentSectionPath}?household=${encodeURIComponent(id)}&month=${encodeURIComponent(selectedMonth)}`,
+    );
+    setOpen(false);
+  }
+
+  function changeLanguage(nextLocale: AppLocale) {
+    if (nextLocale === locale) return;
+
+    startLoading(
+      locale === "pt-BR"
+        ? "Trocando idioma..."
+        : "Switching language...",
+    );
+
+    const targetPath = financeSectionPath(currentSection, nextLocale);
+
+    router.push(
+      `${targetPath}?household=${encodeURIComponent(currentNucleusId)}&month=${encodeURIComponent(selectedMonth)}`,
     );
     setOpen(false);
   }
@@ -310,6 +350,26 @@ export function ProfileMenu({
                   {nucleus.name} — {nucleus.roleLabel}
                 </option>
               ))}
+              <option disabled value="__separator__">
+                ────────────────
+              </option>
+              <option value="__join__">
+                ＋ {locale === "pt-BR" ? "Adicionar Núcleo existente" : "Join existing Nucleus"}
+              </option>
+            </select>
+          </label>
+
+          <label className={styles.profileNucleus}>
+            <span>{locale === "pt-BR" ? "IDIOMA" : "LANGUAGE"}</span>
+            <select
+              onChange={(event) =>
+                changeLanguage(event.target.value as AppLocale)
+              }
+              value={locale}
+            >
+              <option value="pt-BR">Português — Brasil</option>
+              <option value="en-US">English — United States</option>
+              <option value="en-GB">English — United Kingdom</option>
             </select>
           </label>
 

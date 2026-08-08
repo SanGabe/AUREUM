@@ -1,0 +1,104 @@
+.full,
+.compact {
+  display: grid;
+  gap: 13px;
+}
+
+.rateList {
+  display: grid;
+  gap: 8px;
+}
+
+.rateRow {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 13px;
+  border: 1px solid rgba(228,170,50,.13);
+  border-radius: 9px;
+  background: rgba(7,31,61,.46);
+}
+
+.currencyIdentity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.currencyIdentity > span {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(228,170,50,.25);
+  border-radius: 50%;
+  color: #efbd4d;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .04em;
+}
+
+.currencyIdentity div,
+.rateValue {
+  display: grid;
+  gap: 2px;
+}
+
+.currencyIdentity strong,
+.rateValue strong {
+  color: #e9edf3;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.currencyIdentity small,
+.rateValue small,
+.updated {
+  color: #70859e;
+  font-size: 8px;
+}
+
+.rateValue {
+  text-align: right;
+}
+
+.rateValue strong {
+  color: #f0c15b;
+  font-size: 13px;
+}
+
+.updated {
+  margin: 0;
+  text-align: right;
+}
+
+.empty {
+  padding: 26px;
+  border: 1px dashed rgba(228,170,50,.16);
+  border-radius: 10px;
+  color: #71859e;
+  text-align: center;
+  font-size: 10px;
+}
+
+.compact .rateRow {
+  min-height: 52px;
+  padding: 8px 10px;
+}
+
+.compact .currencyIdentity > span {
+  width: 31px;
+  height: 31px;
+}
+
+@media(max-width:650px) {
+  .rateRow {
+    align-items: flex-start;
+  }
+
+  .rateValue {
+    min-width: 95px;
+  }
+}
