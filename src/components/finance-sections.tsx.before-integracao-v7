@@ -71,13 +71,6 @@ function categoryLabel(name: string | null | undefined, locale: FinanceContext["
   return map[name] ?? name;
 }
 
-function kindLabel(kind: string | null | undefined, locale: FinanceContext["locale"]) {
-  const pt = { income: "Receita", expense: "Despesa", both: "Ambos" } as const;
-  const en = { income: "Income", expense: "Expense", both: "Both" } as const;
-  const key = (kind ?? "") as keyof typeof pt;
-  return locale === "pt-BR" ? (pt[key] ?? kind ?? "—") : (en[key] ?? kind ?? "—");
-}
-
 function empty(locale: FinanceContext["locale"], pt: string, en: string) {
   return <div className={styles.empty}>{locale === "pt-BR" ? pt : en}</div>;
 }
@@ -309,11 +302,6 @@ export async function CategoriesSection({
         </div>
 
         <CategoryForm
-          categories={(rows ?? []).map((row: any) => ({
-            id: row.id,
-            name: row.name,
-            kind: row.kind,
-          })) as any}
           householdId={context.nucleus.id}
           locale={locale}
           role={context.role}

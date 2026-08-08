@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CurrencySelect } from "@/components/currency-select";
@@ -10,7 +10,6 @@ import type { MembershipRole } from "@/lib/aureum/finance-context";
 import styles from "./finance-page.module.css";
 
 type Choice = { id: string; name: string };
-type EditableCategory = Choice & { kind?: string | null };
 
 function text(locale: AppLocale) {
   const en = locale !== "pt-BR";
@@ -342,248 +341,59 @@ export function TransactionForm({
 }
 
 export function CategoryForm({
-  categories = [],
   householdId,
   locale,
   role,
 }: {
-  categories?: EditableCategory[];
   householdId: string;
   locale: AppLocale;
   role: MembershipRole;
 }) {
   const state = useResult(locale);
   const manager = role === "owner" || role === "admin";
-  const [selectedId, setSelectedId] = useState("");
-  const [name, setName] = useState("");
-  const [kind, setKind] = useState<"expense" | "income" | "both">("expense");
-
-  const editing = Boolean(selectedId);
-
-  const presets = useMemo(
-    () =>
-      locale === "pt-BR"
-        ? [
-            "Salário",
-            "13º Salário — 1ª parcela",
-            "13º Salário — 2ª parcela",
-            "14º Salário",
-            "PLR",
-            "Bônus / Premiação",
-            "Comissão",
-            "Vale Alimentação",
-            "Vale Refeição",
-            "Cartão Bônus",
-            "Aluguel recebido",
-            "Ajustes",
-          ]
-        : [
-            "Salary",
-            "13th salary — first instalment",
-            "13th salary — second instalment",
-            "14th salary",
-            "Profit sharing",
-            "Bonus / Award",
-            "Commission",
-            "Meal allowance",
-            "Food allowance",
-            "Bonus card",
-            "Rent received",
-            "Adjustments",
-          ],
-    [locale],
-  );
-
-  useEffect(() => {
-    if (!selectedId) {
-      setName("");
-      setKind("expense");
-      return;
-    }
-
-    const current = categories.find((item) => item.id === selectedId);
-    if (!current) return;
-
-    setName(current.name ?? "");
-    setKind(
-      current.kind === "income" || current.kind === "both"
-        ? current.kind
-        : "expense",
-    );
-  }, [selectedId, categories]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!manager) return state.fail(state.t.denied);
 
-    const cleanName = name.trim();
-    if (!cleanName) {
-      return state.fail(
-        locale === "pt-BR"
-          ? "Informe um nome para a categoria."
-          : "Enter a category name.",
-      );
-    }
-
     state.begin();
+    const form = new FormData(event.currentTarget);
     const supabase = createClient();
 
-    const payload = {
+    const { error } = await supabase.from("categories").insert({
       household_id: householdId,
-      name: cleanName,
-      kind,
-      icon: null,
-    };
+      name: String(form.get("name") ?? "").trim(),
+      kind: String(form.get("kind") ?? "expense"),
+      icon: String(form.get("icon") ?? "").trim() || null,
+    });
 
-    if (editing) {
-      const { error } = await supabase
-        .from("categories")
-        .update({
-          name: payload.name,
-          kind: payload.kind,
-          icon: payload.icon,
-        })
-        .eq("id", selectedId)
-        .eq("household_id", householdId);
-
-      if (error) return state.fail(error.message);
-      state.ok(
-        locale === "pt-BR"
-          ? "Categoria atualizada com sucesso."
-          : "Category updated successfully.",
-      );
-    } else {
-      const { error } = await supabase.from("categories").insert(payload);
-      if (error) return state.fail(error.message);
-      state.ok();
-    }
-
-    setSelectedId("");
-    setName("");
-    setKind("expense");
+    if (error) return state.fail(error.message);
+    state.ok();
+    event.currentTarget.reset();
   }
 
   return (
     <div className={styles.formCard}>
-      <h2>
-        {editing
-          ? locale === "pt-BR"
-            ? "Editar categoria"
-            : "Edit category"
-          : locale === "pt-BR"
-            ? "Nova categoria"
-            : "New category"}
-      </h2>
-
-      {!manager ? (
-        <div className={styles.notice} style={{ marginTop: 14 }}>
-          {state.t.denied}
-        </div>
-      ) : null}
-
+      <h2>{locale === "pt-BR" ? "Nova categoria" : "New category"}</h2>
       <form onSubmit={submit}>
         <div className={styles.formGrid}>
           <label className={styles.field}>
-            {locale === "pt-BR"
-              ? "Editar categoria existente"
-              : "Edit existing category"}
-            <select
-              onChange={(event) => setSelectedId(event.target.value)}
-              value={selectedId}
-            >
-              <option value="">
-                {locale === "pt-BR"
-                  ? "Criar nova categoria"
-                  : "Create a new category"}
-              </option>
-              {categories.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <div className={styles.helperText}>
-            {locale === "pt-BR"
-              ? "Use este campo para ajustar categorias de receita, despesa ou ambos diretamente na página."
-              : "Use this field to adjust income, expense or mixed categories directly on the page."}
-          </div>
-
-          <label className={styles.field}>
             {locale === "pt-BR" ? "Nome" : "Name"}
-            <input
-              name="name"
-              onChange={(event) => setName(event.target.value)}
-              required
-              value={name}
-            />
+            <input name="name" required />
           </label>
-
           <label className={styles.field}>
             {locale === "pt-BR" ? "Tipo" : "Type"}
-            <select
-              name="kind"
-              onChange={(event) =>
-                setKind(
-                  event.target.value as "expense" | "income" | "both",
-                )
-              }
-              value={kind}
-            >
-              <option value="expense">
-                {locale === "pt-BR" ? "Despesa" : "Expense"}
-              </option>
-              <option value="income">
-                {locale === "pt-BR" ? "Receita" : "Income"}
-              </option>
-              <option value="both">
-                {locale === "pt-BR" ? "Ambos" : "Both"}
-              </option>
+            <select name="kind">
+              <option value="expense">{locale === "pt-BR" ? "Despesa" : "Expense"}</option>
+              <option value="income">{locale === "pt-BR" ? "Receita" : "Income"}</option>
+              <option value="both">{locale === "pt-BR" ? "Ambos" : "Both"}</option>
             </select>
           </label>
         </div>
-
-        {kind === "income" || kind === "both" ? (
-          <div>
-            <p className={styles.helperLabel}>
-              {locale === "pt-BR"
-                ? "Seções de receita rápidas"
-                : "Quick income sections"}
-            </p>
-            <div className={styles.chipGroup}>
-              {presets.map((preset) => (
-                <button
-                  className={styles.chipButton}
-                  key={preset}
-                  onClick={() => {
-                    setName(preset);
-                    setKind("income");
-                  }}
-                  type="button"
-                >
-                  {preset}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : null}
-
         {state.error ? <div className={styles.error}>{state.error}</div> : null}
         {state.message ? <div className={styles.success}>{state.message}</div> : null}
-
-        <button
-          className={styles.primaryButton}
-          disabled={!manager || state.loading}
-          type="submit"
-        >
-          {state.loading
-            ? state.t.saving
-            : editing
-              ? locale === "pt-BR"
-                ? "Atualizar categoria"
-                : "Update category"
-              : state.t.save}
+        <button className={styles.primaryButton} disabled={!manager || state.loading}>
+          {state.loading ? state.t.saving : state.t.save}
         </button>
       </form>
     </div>

@@ -2,12 +2,12 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { AppLocale } from "@/i18n/locales";
 import {
+import { ThemeHeaderSelect } from "@/components/theme-selector";
   FinanceNavigation,
   demoFinanceSectionPath,
   financeSectionLabel,
   type FinanceSection,
 } from "@/components/finance-navigation";
-import { ThemeHeaderSelect } from "@/components/theme-selector";
 import { MobileFinanceNav } from "@/components/mobile-finance-nav";
 import { PaymentBrandLogo } from "@/components/payment-brand";
 import { CurrencyRates } from "@/components/currency-rates";

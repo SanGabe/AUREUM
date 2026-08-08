@@ -2,7 +2,6 @@ import Link from "next/link";
 import { LandingDemoLink } from "@/components/landing-demo-link";
 import { LanguageMenu } from "@/components/language-menu";
 import styles from "./landing.module.css";
-import { ThemeHeaderSelect } from "@/components/theme-selector";
 
 function IconShield() {
   return (
@@ -226,7 +225,6 @@ export default function Home() {
         </nav>
 
         <div className={styles.headerActions}>
-          <ThemeHeaderSelect locale="pt-BR" />
           <Link className={styles.headerPrimary} href="/cadastrar">
             Criar minha conta
           </Link>

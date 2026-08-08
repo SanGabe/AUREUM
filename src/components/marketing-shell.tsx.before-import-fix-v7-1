@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
+import { ThemeHeaderSelect } from "@/components/theme-selector";
   LanguageMenu,
   type LanguageRoute,
 } from "@/components/language-menu";
-import { ThemeHeaderSelect } from "@/components/theme-selector";
 import styles from "./marketing.module.css";
 
 type Active =

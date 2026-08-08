@@ -4,7 +4,6 @@ import {
   LanguageMenu,
   type LanguageRoute,
 } from "@/components/language-menu";
-import { ThemeHeaderSelect } from "@/components/theme-selector";
 import styles from "./marketing.module.css";
 
 type Active =
@@ -60,7 +59,6 @@ export function MarketingShell({
         </nav>
 
         <div className={styles.headerActions}>
-          <ThemeHeaderSelect locale="pt-BR" />
           <Link className={styles.primarySmall} href="/cadastrar">Criar minha conta</Link>
           <Link className={styles.secondarySmall} href="/entrar">Entrar</Link>
         </div>

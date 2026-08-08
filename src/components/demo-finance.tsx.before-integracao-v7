@@ -7,7 +7,6 @@ import {
   financeSectionLabel,
   type FinanceSection,
 } from "@/components/finance-navigation";
-import { ThemeHeaderSelect } from "@/components/theme-selector";
 import { MobileFinanceNav } from "@/components/mobile-finance-nav";
 import { PaymentBrandLogo } from "@/components/payment-brand";
 import { CurrencyRates } from "@/components/currency-rates";
@@ -124,7 +123,6 @@ function DemoShell({
           </div>
 
           <div className={styles.demoHeaderActions}>
-            <ThemeHeaderSelect locale={locale} />
             <span className={pageStyles.nucleusBadge}>
               {DEMO_NUCLEUS.name}
             </span>
