@@ -35,13 +35,53 @@ const EN_PATHS: Record<FinanceSection, string> = {
   approvals: "/approvals",
 };
 
+const PT_DEMO_PATHS: Record<FinanceSection, string> = {
+  dashboard: "/demonstracao",
+  transactions: "/demonstracao/transacoes",
+  categories: "/demonstracao/categorias",
+  goals: "/demonstracao/metas",
+  accounts: "/demonstracao/contas",
+  investments: "/demonstracao/investimentos",
+  "exchange-rates": "/demonstracao/cotacoes",
+  approvals: "/demonstracao/aprovacoes",
+};
+
+const EN_DEMO_PATHS: Record<FinanceSection, string> = {
+  dashboard: "/demo",
+  transactions: "/demo/transactions",
+  categories: "/demo/categories",
+  goals: "/demo/goals",
+  accounts: "/demo/accounts",
+  investments: "/demo/investments",
+  "exchange-rates": "/demo/exchange-rates",
+  approvals: "/demo/approvals",
+};
+
+export const FINANCE_SECTIONS: FinanceSection[] = [
+  "dashboard",
+  "transactions",
+  "categories",
+  "goals",
+  "accounts",
+  "investments",
+  "exchange-rates",
+  "approvals",
+];
+
 export function financeSectionPath(
   section: FinanceSection,
   locale: AppLocale,
 ) {
   if (locale === "pt-BR") return PT_PATHS[section];
-
   return `${localePrefix(locale as EnglishLocale)}${EN_PATHS[section]}`;
+}
+
+export function demoFinanceSectionPath(
+  section: FinanceSection,
+  locale: AppLocale,
+) {
+  if (locale === "pt-BR") return PT_DEMO_PATHS[section];
+  return `${localePrefix(locale as EnglishLocale)}${EN_DEMO_PATHS[section]}`;
 }
 
 export function joinNucleusPath(locale: AppLocale) {
@@ -49,33 +89,25 @@ export function joinNucleusPath(locale: AppLocale) {
   return `${localePrefix(locale as EnglishLocale)}/nuclei/join`;
 }
 
-function labels(locale: AppLocale) {
-  if (locale === "pt-BR") {
-    return {
-      dashboard: "Resumo",
-      transactions: "Transações",
-      categories: "Categorias",
-      goals: "Metas",
-      accounts: "Contas & Bancos",
-      investments: "Investimentos",
-      "exchange-rates": "Cotações",
-      approvals: "Aprovações",
-    } satisfies Record<FinanceSection, string>;
-  }
-
-  return {
-    dashboard: "Overview",
-    transactions: "Transactions",
-    categories: "Categories",
-    goals: "Goals",
-    accounts: "Accounts & Banks",
-    investments: "Investments",
-    "exchange-rates": "Exchange rates",
-    approvals: "Approvals",
-  } satisfies Record<FinanceSection, string>;
+export function financeSectionLabel(
+  section: FinanceSection,
+  locale: AppLocale,
+) {
+  const pt = locale === "pt-BR";
+  const labels: Record<FinanceSection, [string, string]> = {
+    dashboard: ["Resumo", "Overview"],
+    transactions: ["Transações", "Transactions"],
+    categories: ["Categorias", "Categories"],
+    goals: ["Metas", "Goals"],
+    accounts: ["Contas & Bancos", "Accounts & Banks"],
+    investments: ["Investimentos", "Investments"],
+    "exchange-rates": ["Cotações", "Exchange rates"],
+    approvals: ["Aprovações", "Approvals"],
+  };
+  return pt ? labels[section][0] : labels[section][1];
 }
 
-const ICONS: Record<FinanceSection, string> = {
+export const FINANCE_ICONS: Record<FinanceSection, string> = {
   dashboard: "◫",
   transactions: "↕",
   categories: "◌",
@@ -99,57 +131,34 @@ export function FinanceNavigation({
   month?: string;
   demo?: boolean;
 }) {
-  const text = labels(locale);
+  const query = new URLSearchParams();
 
-  if (demo) {
-    return (
-      <nav className={styles.sidebarNav}>
-        <a className={styles.activeLink} href="#resumo">
-          <span>{ICONS.dashboard}</span>
-          {text.dashboard}
-        </a>
-        <a href="#transacoes">
-          <span>{ICONS.transactions}</span>
-          {text.transactions}
-        </a>
-        <a href="#categorias">
-          <span>{ICONS.categories}</span>
-          {text.categories}
-        </a>
-        <a href="#metas">
-          <span>{ICONS.goals}</span>
-          {text.goals}
-        </a>
-      </nav>
-    );
+  if (!demo) {
+    if (householdId) query.set("household", householdId);
+    if (month) query.set("month", month);
   }
 
-  const query = new URLSearchParams();
-  if (householdId) query.set("household", householdId);
-  if (month) query.set("month", month);
-  const suffix = query.toString() ? `?${query.toString()}` : "";
-
-  const sections: FinanceSection[] = [
-    "dashboard",
-    "transactions",
-    "categories",
-    "goals",
-    "accounts",
-    "investments",
-    "exchange-rates",
-    "approvals",
-  ];
+  const suffix =
+    !demo && query.toString()
+      ? `?${query.toString()}`
+      : "";
 
   return (
     <nav className={styles.sidebarNav}>
-      {sections.map((section) => (
+      {FINANCE_SECTIONS.map((section) => (
         <Link
-          className={active === section ? styles.activeLink : ""}
-          href={`${financeSectionPath(section, locale)}${suffix}`}
+          className={
+            active === section ? styles.activeLink : ""
+          }
+          href={
+            demo
+              ? demoFinanceSectionPath(section, locale)
+              : `${financeSectionPath(section, locale)}${suffix}`
+          }
           key={section}
         >
-          <span>{ICONS[section]}</span>
-          {text[section]}
+          <span>{FINANCE_ICONS[section]}</span>
+          {financeSectionLabel(section, locale)}
         </Link>
       ))}
     </nav>

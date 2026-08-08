@@ -5,7 +5,11 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { AppLocale } from "@/i18n/locales";
 import {
+  demoFinanceSectionPath,
+  financeSectionLabel,
   financeSectionPath,
+  FINANCE_ICONS,
+  FINANCE_SECTIONS,
   joinNucleusPath,
   type FinanceSection,
 } from "@/components/finance-navigation";
@@ -20,46 +24,20 @@ const MAIN: FinanceSection[] = [
   "goals",
 ];
 
-const ALL: FinanceSection[] = [
-  "dashboard",
-  "transactions",
-  "categories",
-  "goals",
-  "accounts",
-  "investments",
-  "exchange-rates",
-  "approvals",
-];
-
-const ICONS: Record<FinanceSection, string> = {
-  dashboard: "◫",
-  transactions: "↕",
-  categories: "◌",
-  goals: "◎",
-  accounts: "▤",
-  investments: "↗",
-  "exchange-rates": "¤",
-  approvals: "✓",
-};
-
 function labels(locale: AppLocale) {
   const pt = locale === "pt-BR";
   return {
-    dashboard: pt ? "Resumo" : "Overview",
-    transactions: pt ? "Transações" : "Transactions",
-    categories: pt ? "Categorias" : "Categories",
-    goals: pt ? "Metas" : "Goals",
-    accounts: pt ? "Contas" : "Accounts",
-    investments: pt ? "Investimentos" : "Investments",
-    "exchange-rates": pt ? "Cotações" : "Rates",
-    approvals: pt ? "Aprovações" : "Approvals",
     more: pt ? "Mais" : "More",
     nucleus: pt ? "Núcleo" : "Nucleus",
     language: pt ? "Idioma" : "Language",
     appearance: pt ? "Aparência" : "Appearance",
-    addNucleus: pt ? "Adicionar Núcleo existente" : "Join existing Nucleus",
+    addNucleus: pt
+      ? "Adicionar Núcleo existente"
+      : "Join existing Nucleus",
     close: pt ? "Fechar menu" : "Close menu",
-  } satisfies Record<string, string>;
+    demo: pt ? "Demonstração" : "Demo",
+    exit: pt ? "Sair da demonstração" : "Exit demo",
+  };
 }
 
 function buildHref(
@@ -98,37 +76,27 @@ export function MobileFinanceNav({
   const [open, setOpen] = useState(false);
 
   const current = useMemo(
-    () => nuclei.find((item) => item.id === currentNucleusId),
+    () =>
+      nuclei.find(
+        (item) => item.id === currentNucleusId,
+      ),
     [currentNucleusId, nuclei],
   );
 
-  if (demo) {
-    const home = locale === "pt-BR" ? "/" : `/${locale.toLowerCase()}`;
+  const home =
+    locale === "pt-BR"
+      ? "/"
+      : `/${locale.toLowerCase()}`;
 
-    return (
-      <>
-        <header className={styles.topbar}>
-          <Link aria-label="AUREUM" className={styles.logo} href={home}>
-            <img src="/brand/aureum-logo-hq.png" alt="AUREUM" />
-          </Link>
-          <div className={styles.topbarCopy}>
-            <strong>{locale === "pt-BR" ? "Demonstração" : "Demo"}</strong>
-            <small>AUREUM</small>
-          </div>
-          <Link className={styles.menuButton} href={home} aria-label={locale === "pt-BR" ? "Voltar" : "Back"}>
-            ←
-          </Link>
-        </header>
-
-        <nav className={styles.bottomNav}>
-          <a href="#resumo"><span>◫</span><small>{t.dashboard}</small></a>
-          <a href="#transacoes"><span>↕</span><small>{t.transactions}</small></a>
-          <a href="#categorias"><span>◌</span><small>{t.categories}</small></a>
-          <a href="#metas"><span>◎</span><small>{t.goals}</small></a>
-          <Link href={home}><span>⌂</span><small>{locale === "pt-BR" ? "Início" : "Home"}</small></Link>
-        </nav>
-      </>
-    );
+  function href(section: FinanceSection) {
+    return demo
+      ? demoFinanceSectionPath(section, locale)
+      : buildHref(
+          section,
+          locale,
+          currentNucleusId,
+          month,
+        );
   }
 
   function changeNucleus(id: string) {
@@ -142,16 +110,30 @@ export function MobileFinanceNav({
 
     if (id === currentNucleusId) return;
 
-    router.push(buildHref(active, locale, id, month));
+    router.push(
+      buildHref(active, locale, id, month),
+    );
     setOpen(false);
   }
 
   function changeLanguage(next: AppLocale) {
     if (next === locale) return;
 
-    router.push(
-      buildHref(active, next, currentNucleusId, month),
-    );
+    if (demo) {
+      router.push(
+        demoFinanceSectionPath(active, next),
+      );
+    } else {
+      router.push(
+        buildHref(
+          active,
+          next,
+          currentNucleusId,
+          month,
+        ),
+      );
+    }
+
     setOpen(false);
   }
 
@@ -161,13 +143,30 @@ export function MobileFinanceNav({
         <Link
           aria-label="AUREUM"
           className={styles.logo}
-          href={financeSectionPath("dashboard", locale)}
+          href={
+            demo
+              ? demoFinanceSectionPath(
+                  "dashboard",
+                  locale,
+                )
+              : financeSectionPath(
+                  "dashboard",
+                  locale,
+                )
+          }
         >
-          <img src="/brand/aureum-logo-hq.png" alt="AUREUM" />
+          <img
+            src="/brand/aureum-logo-hq.png"
+            alt="AUREUM"
+          />
         </Link>
 
         <div className={styles.topbarCopy}>
-          <strong>{current?.name ?? "AUREUM"}</strong>
+          <strong>
+            {demo
+              ? t.demo
+              : current?.name ?? "AUREUM"}
+          </strong>
           <small>{userName}</small>
         </div>
 
@@ -185,23 +184,24 @@ export function MobileFinanceNav({
       <nav className={styles.bottomNav}>
         {MAIN.map((section) => (
           <Link
-            className={active === section ? styles.active : ""}
-            href={buildHref(
-              section,
-              locale,
-              currentNucleusId,
-              month,
-            )}
+            className={
+              active === section ? styles.active : ""
+            }
+            href={href(section)}
             key={section}
           >
-            <span>{ICONS[section]}</span>
-            <small>{t[section]}</small>
+            <span>{FINANCE_ICONS[section]}</span>
+            <small>
+              {financeSectionLabel(section, locale)}
+            </small>
           </Link>
         ))}
 
         <button
           aria-expanded={open}
-          className={!MAIN.includes(active) ? styles.active : ""}
+          className={
+            !MAIN.includes(active) ? styles.active : ""
+          }
           onClick={() => setOpen(true)}
           type="button"
         >
@@ -219,14 +219,20 @@ export function MobileFinanceNav({
           <aside
             aria-label={t.more}
             className={styles.drawer}
-            onClick={(event) => event.stopPropagation()}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
             <div className={styles.drawerHandle} />
 
             <header className={styles.drawerHeader}>
               <div>
                 <strong>AUREUM</strong>
-                <small>{current?.name ?? ""}</small>
+                <small>
+                  {demo
+                    ? t.demo
+                    : current?.name ?? ""}
+                </small>
               </div>
 
               <button
@@ -239,57 +245,85 @@ export function MobileFinanceNav({
             </header>
 
             <nav className={styles.allLinks}>
-              {ALL.map((section) => (
+              {FINANCE_SECTIONS.map((section) => (
                 <Link
-                  className={active === section ? styles.active : ""}
-                  href={buildHref(
-                    section,
-                    locale,
-                    currentNucleusId,
-                    month,
-                  )}
+                  className={
+                    active === section
+                      ? styles.active
+                      : ""
+                  }
+                  href={href(section)}
                   key={section}
                   onClick={() => setOpen(false)}
                 >
-                  <span>{ICONS[section]}</span>
-                  <strong>{t[section]}</strong>
+                  <span>
+                    {FINANCE_ICONS[section]}
+                  </span>
+                  <strong>
+                    {financeSectionLabel(
+                      section,
+                      locale,
+                    )}
+                  </strong>
                 </Link>
               ))}
             </nav>
 
             <div className={styles.divider} />
 
-            <label className={styles.field}>
-              <span>{t.nucleus}</span>
-              <select
-                onChange={(event) =>
-                  changeNucleus(event.target.value)
-                }
-                value={currentNucleusId}
-              >
-                {nuclei.map((nucleus) => (
-                  <option key={nucleus.id} value={nucleus.id}>
-                    {nucleus.name} — {nucleus.roleLabel}
+            {!demo ? (
+              <label className={styles.field}>
+                <span>{t.nucleus}</span>
+                <select
+                  onChange={(event) =>
+                    changeNucleus(
+                      event.target.value,
+                    )
+                  }
+                  value={currentNucleusId}
+                >
+                  {nuclei.map((nucleus) => (
+                    <option
+                      key={nucleus.id}
+                      value={nucleus.id}
+                    >
+                      {nucleus.name} —{" "}
+                      {nucleus.roleLabel}
+                    </option>
+                  ))}
+                  <option
+                    disabled
+                    value="__separator__"
+                  >
+                    ─────────────
                   </option>
-                ))}
-                <option disabled value="__separator__">
-                  ─────────────
-                </option>
-                <option value="__join__">＋ {t.addNucleus}</option>
-              </select>
-            </label>
+                  <option value="__join__">
+                    ＋ {t.addNucleus}
+                  </option>
+                </select>
+              </label>
+            ) : null}
 
             <label className={styles.field}>
               <span>{t.language}</span>
               <select
                 onChange={(event) =>
-                  changeLanguage(event.target.value as AppLocale)
+                  changeLanguage(
+                    event.target
+                      .value as AppLocale,
+                  )
                 }
                 value={locale}
               >
-                <option value="pt-BR">Português — Brasil</option>
-                <option value="en-US">English — United States</option>
-                <option value="en-GB">English — United Kingdom</option>
+                <option value="pt-BR">
+                  Português — Brasil
+                </option>
+                <option value="en-US">
+                  English — United States
+                </option>
+                <option value="en-GB">
+                  English — United Kingdom
+                </option>
               </select>
             </label>
 
@@ -297,6 +331,18 @@ export function MobileFinanceNav({
               <span>{t.appearance}</span>
               <ThemeButtons locale={locale} />
             </div>
+
+            {demo ? (
+              <>
+                <div className={styles.divider} />
+                <Link
+                  href={home}
+                  onClick={() => setOpen(false)}
+                >
+                  ← {t.exit}
+                </Link>
+              </>
+            ) : null}
           </aside>
         </div>
       ) : null}

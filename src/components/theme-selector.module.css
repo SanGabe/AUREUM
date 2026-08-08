@@ -1,34 +1,124 @@
-.field,
-.compact {
+.picker {
+  position: relative;
   display: grid;
-  gap: 6px;
+  gap: 7px;
+  min-width: 190px;
 }
 
-.field > span,
-.compact > span {
+.compact {
+  min-width: 154px;
+}
+
+.label {
   color: var(--a-gold);
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 850;
   letter-spacing: .13em;
   text-transform: uppercase;
 }
 
-.field select,
-.compact select {
+.trigger {
   width: 100%;
-  min-height: 40px;
-  padding: 0 10px;
-  border: 1px solid var(--a-border);
-  border-radius: 8px;
-  outline: 0;
-  color: var(--a-text);
-  background: var(--a-input);
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 12px;
+  border: 1px solid var(--a-control-border,var(--a-border));
+  border-radius: 9px;
+  color: var(--a-control-text,var(--a-text));
+  background: var(--a-control-bg,var(--a-input));
+  box-shadow: 0 1px 0 rgba(255,255,255,.02) inset;
+  cursor: pointer;
   font: inherit;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
 }
 
-.compact select {
-  min-height: 36px;
+.compact .trigger {
+  min-height: 38px;
+  font-size: 11px;
+}
+
+.trigger:hover,
+.trigger[aria-expanded="true"] {
+  border-color: var(--a-gold);
+}
+
+.triggerLabel {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.triggerLabel i,
+.menu i {
+  width: 16px;
+  color: var(--a-gold-strong);
+  font-style: normal;
+  text-align: center;
+}
+
+.chevron,
+.chevronOpen {
+  flex: 0 0 auto;
+  color: var(--a-muted);
+  transition: transform .16s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.menu {
+  position: absolute;
+  z-index: 500;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  padding: 5px;
+  border: 1px solid var(--a-control-border,var(--a-border));
+  border-radius: 10px;
+  background: var(--a-elevated,var(--a-surface));
+  box-shadow: var(--a-shadow);
+}
+
+.menu button {
+  width: 100%;
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: 18px minmax(0,1fr) 18px;
+  gap: 8px;
+  align-items: center;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 7px;
+  color: var(--a-text);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  text-align: left;
+}
+
+.menu button:hover {
+  color: var(--a-gold-strong);
+  background: var(--a-gold-soft);
+}
+
+.menu button.selected {
+  color: var(--a-heading);
+  background: var(--a-selected-bg,var(--a-gold-soft));
+}
+
+.menu b {
+  color: var(--a-success);
+  font-size: 11px;
+  text-align: center;
 }
 
 .buttons {
@@ -38,29 +128,36 @@
 }
 
 .buttons button {
-  min-height: 42px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
   padding: 0 10px;
-  border: 1px solid var(--a-border);
-  border-radius: 8px;
+  border: 1px solid var(--a-control-border,var(--a-border));
+  border-radius: 9px;
   color: var(--a-muted);
-  background: var(--a-surface-2);
+  background: var(--a-control-bg,var(--a-surface-2));
   cursor: pointer;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 750;
 }
 
 .buttons button:hover,
-.buttons button.active {
+.buttons button.active,
+.buttons button[aria-pressed="true"] {
   color: var(--a-gold-strong);
   border-color: var(--a-gold);
-  background: var(--a-gold-soft);
+  background: var(--a-selected-bg,var(--a-gold-soft));
 }
 
 @media(max-width:520px) {
+  .picker,
+  .compact {
+    min-width: 0;
+    width: 100%;
+  }
+
   .buttons {
     grid-template-columns: 1fr;
   }
@@ -69,24 +166,4 @@
     justify-content: flex-start;
     padding-inline: 14px;
   }
-}
-
-
-.headerSelect {
-  width: 112px;
-  min-height: 34px;
-  padding: 0 7px;
-  border: 1px solid var(--a-border);
-  border-radius: 7px;
-  outline: 0;
-  color: var(--a-muted);
-  background: var(--a-surface);
-  font: inherit;
-  font-size: 9px;
-  font-weight: 700;
-}
-
-.headerSelect:hover {
-  color: var(--a-gold-strong);
-  border-color: var(--a-gold);
 }

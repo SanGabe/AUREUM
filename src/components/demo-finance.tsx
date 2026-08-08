@@ -1,0 +1,727 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
+import type { AppLocale } from "@/i18n/locales";
+import {
+  FinanceNavigation,
+  demoFinanceSectionPath,
+  financeSectionLabel,
+  type FinanceSection,
+} from "@/components/finance-navigation";
+import { MobileFinanceNav } from "@/components/mobile-finance-nav";
+import { PaymentBrandLogo } from "@/components/payment-brand";
+import { CurrencyRates } from "@/components/currency-rates";
+import { DashboardAnalytics } from "@/components/dashboard-analytics";
+import {
+  accountTypeLabel,
+  categoryDisplayLabel,
+  categoryKindLabel,
+  investmentClassLabel,
+  transactionTypeLabel,
+} from "@/lib/aureum/financial-labels";
+import {
+  DEMO_ACCOUNTS,
+  DEMO_ANALYTICS,
+  DEMO_APPROVALS,
+  DEMO_CARDS,
+  DEMO_CATEGORIES,
+  DEMO_GOALS,
+  DEMO_INVESTMENTS,
+  DEMO_MONTH,
+  DEMO_NUCLEUS,
+  DEMO_RATES,
+  DEMO_TRANSACTIONS,
+} from "@/lib/aureum/demo-data";
+import shellStyles from "./dashboard-view.module.css";
+import pageStyles from "./finance-page.module.css";
+import styles from "./demo-finance.module.css";
+
+function money(
+  value: number,
+  currency: string,
+  locale: AppLocale,
+) {
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+    }).format(value);
+  } catch {
+    return `${currency} ${value.toFixed(2)}`;
+  }
+}
+
+function DemoShell({
+  active,
+  children,
+  description,
+  locale,
+  title,
+}: {
+  active: FinanceSection;
+  children: ReactNode;
+  description: string;
+  locale: AppLocale;
+  title: string;
+}) {
+  const home =
+    locale === "pt-BR"
+      ? "/"
+      : `/${locale.toLowerCase()}`;
+
+  return (
+    <main className={shellStyles.shell} lang={locale}>
+      <aside className={shellStyles.sidebar}>
+        <Link className={shellStyles.brand} href={home}>
+          <img
+            src="/brand/aureum-logo-motto-hq.png"
+            alt="AUREUM"
+          />
+        </Link>
+
+        <FinanceNavigation
+          active={active}
+          demo
+          locale={locale}
+          month={DEMO_MONTH}
+        />
+
+        <div className={shellStyles.demoUser}>
+          <span>DE</span>
+          <div>
+            <strong>
+              {locale === "pt-BR"
+                ? "Conta demonstrativa"
+                : "Demo account"}
+            </strong>
+            <small>{DEMO_NUCLEUS.name}</small>
+          </div>
+        </div>
+      </aside>
+
+      <MobileFinanceNav
+        active={active}
+        demo
+        locale={locale}
+        month={DEMO_MONTH}
+        userName={
+          locale === "pt-BR"
+            ? "Conta demonstrativa"
+            : "Demo account"
+        }
+      />
+
+      <section className={shellStyles.content}>
+        <header className={pageStyles.pageHeader}>
+          <div>
+            <p className={pageStyles.eyebrow}>
+              {locale === "pt-BR"
+                ? "DEMONSTRAÇÃO AUREUM"
+                : "AUREUM DEMO"}
+            </p>
+            <h1>{title}</h1>
+            <p>{description}</p>
+          </div>
+
+          <div className={styles.demoHeaderActions}>
+            <span className={pageStyles.nucleusBadge}>
+              {DEMO_NUCLEUS.name}
+            </span>
+            <Link className={styles.exitDemo} href={home}>
+              {locale === "pt-BR"
+                ? "Sair da demonstração"
+                : "Exit demo"}
+            </Link>
+          </div>
+        </header>
+
+        <nav className={styles.demoBreadcrumbs}>
+          <Link
+            href={demoFinanceSectionPath(
+              "dashboard",
+              locale,
+            )}
+          >
+            {locale === "pt-BR"
+              ? "Visão geral"
+              : "Overview"}
+          </Link>
+          <span>›</span>
+          <strong>
+            {financeSectionLabel(active, locale)}
+          </strong>
+        </nav>
+
+        {children}
+      </section>
+    </main>
+  );
+}
+
+export function DemoDashboard({
+  locale,
+}: {
+  locale: AppLocale;
+}) {
+  const pt = locale === "pt-BR";
+
+  return (
+    <DemoShell
+      active="dashboard"
+      description={
+        pt
+          ? "Explore uma experiência completa do AUREUM com dados fictícios, sem precisar criar conta."
+          : "Explore a complete AUREUM experience using fictional data, without creating an account."
+      }
+      locale={locale}
+      title={pt ? "Visão geral" : "Overview"}
+    >
+      <section className={styles.heroKpis}>
+        <article>
+          <span>{pt ? "Patrimônio acompanhado" : "Tracked assets"}</span>
+          <strong>
+            {money(
+              DEMO_ANALYTICS.trackedAssets,
+              "BRL",
+              locale,
+            )}
+          </strong>
+          <small>
+            {pt
+              ? "Contas + investimentos"
+              : "Accounts + investments"}
+          </small>
+        </article>
+        <article>
+          <span>{pt ? "Receitas" : "Income"}</span>
+          <strong className={styles.positive}>
+            {money(DEMO_ANALYTICS.income, "BRL", locale)}
+          </strong>
+          <small>{pt ? "Agosto de 2026" : "August 2026"}</small>
+        </article>
+        <article>
+          <span>{pt ? "Despesas" : "Expenses"}</span>
+          <strong className={styles.negative}>
+            {money(DEMO_ANALYTICS.expenses, "BRL", locale)}
+          </strong>
+          <small>{pt ? "Agosto de 2026" : "August 2026"}</small>
+        </article>
+        <article>
+          <span>{pt ? "Economia" : "Savings"}</span>
+          <strong className={styles.positive}>
+            {money(DEMO_ANALYTICS.savings, "BRL", locale)}
+          </strong>
+          <small>
+            {pt ? "Taxa de economia" : "Savings rate"}:{" "}
+            {DEMO_ANALYTICS.savingsRate.toFixed(1)}%
+          </small>
+        </article>
+      </section>
+
+      <DashboardAnalytics
+        data={DEMO_ANALYTICS}
+        locale={locale}
+        showKpis={false}
+      />
+
+      <section className={styles.overviewGrid}>
+        <article className={styles.demoCard}>
+          <header>
+            <div>
+              <span>{pt ? "NÚCLEO" : "NUCLEUS"}</span>
+              <h2>{DEMO_NUCLEUS.name}</h2>
+            </div>
+            <code>{DEMO_NUCLEUS.joinCode}</code>
+          </header>
+          <div className={styles.miniStats}>
+            <div>
+              <strong>{DEMO_NUCLEUS.members.length}</strong>
+              <span>{pt ? "Membros" : "Members"}</span>
+            </div>
+            <div>
+              <strong>{DEMO_ACCOUNTS.length}</strong>
+              <span>{pt ? "Contas" : "Accounts"}</span>
+            </div>
+            <div>
+              <strong>{DEMO_CARDS.length}</strong>
+              <span>{pt ? "Cartões" : "Cards"}</span>
+            </div>
+          </div>
+        </article>
+
+        <article className={styles.demoCard}>
+          <header>
+            <div>
+              <span>{pt ? "META PRINCIPAL" : "MAIN GOAL"}</span>
+              <h2>{DEMO_GOALS[0].title}</h2>
+            </div>
+            <strong>
+              {Math.round(
+                (DEMO_GOALS[0].current /
+                  DEMO_GOALS[0].target) *
+                  100,
+              )}
+              %
+            </strong>
+          </header>
+          <div className={styles.goalTrack}>
+            <i
+              style={{
+                width: `${Math.min(
+                  100,
+                  (DEMO_GOALS[0].current /
+                    DEMO_GOALS[0].target) *
+                    100,
+                )}%`,
+              }}
+            />
+          </div>
+          <p>
+            {money(
+              DEMO_GOALS[0].current,
+              DEMO_GOALS[0].currency,
+              locale,
+            )}{" "}
+            /{" "}
+            {money(
+              DEMO_GOALS[0].target,
+              DEMO_GOALS[0].currency,
+              locale,
+            )}
+          </p>
+        </article>
+
+        <article className={styles.demoCard}>
+          <header>
+            <div>
+              <span>{pt ? "CARTÃO PRINCIPAL" : "MAIN CARD"}</span>
+              <h2>{DEMO_CARDS[0].name}</h2>
+            </div>
+            <PaymentBrandLogo brand={DEMO_CARDS[0].brand} />
+          </header>
+          <div className={styles.cardNumber}>
+            •••• •••• •••• {DEMO_CARDS[0].last4}
+          </div>
+          <div className={styles.cardMeta}>
+            <span>
+              {pt ? "Fatura" : "Pending"}
+              <strong>
+                {money(
+                  DEMO_CARDS[0].pending,
+                  DEMO_CARDS[0].currency,
+                  locale,
+                )}
+              </strong>
+            </span>
+            <span>
+              {pt ? "Limite" : "Limit"}
+              <strong>
+                {money(
+                  DEMO_CARDS[0].limit,
+                  DEMO_CARDS[0].currency,
+                  locale,
+                )}
+              </strong>
+            </span>
+          </div>
+        </article>
+
+        <article className={styles.demoCard}>
+          <header>
+            <div>
+              <span>{pt ? "CÂMBIO" : "FOREIGN EXCHANGE"}</span>
+              <h2>{pt ? "Principais moedas" : "Major currencies"}</h2>
+            </div>
+            <Link
+              href={demoFinanceSectionPath("exchange-rates", locale)}
+            >
+              {pt ? "Ver todas" : "View all"}
+            </Link>
+          </header>
+          <CurrencyRates
+            compact
+            fetchedAt="2026-08-08T02:00:00-03:00"
+            locale={locale}
+            rates={DEMO_RATES}
+          />
+        </article>
+      </section>
+
+      <article className={`${styles.tableCard} ${styles.recentTable}`}>
+        <div className={styles.tableTitleRow}>
+          <div>
+            <span>{pt ? "MOVIMENTAÇÃO" : "ACTIVITY"}</span>
+            <h2>{pt ? "Transações recentes" : "Recent transactions"}</h2>
+          </div>
+          <Link href={demoFinanceSectionPath("transactions", locale)}>
+            {pt ? "Ver todas" : "View all"}
+          </Link>
+        </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>{pt ? "Data" : "Date"}</th>
+              <th>{pt ? "Descrição" : "Description"}</th>
+              <th>{pt ? "Categoria" : "Category"}</th>
+              <th>{pt ? "Valor" : "Amount"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {DEMO_TRANSACTIONS.slice(0, 5).map((row) => (
+              <tr key={row.id}>
+                <td>{row.date}</td>
+                <td><strong>{row.description}</strong></td>
+                <td>{row.category ?? "—"}</td>
+                <td className={row.type === "income" ? styles.positive : row.type === "expense" ? styles.negative : styles.gold}>
+                  {row.type === "income" ? "+" : row.type === "expense" ? "−" : "↔"}{" "}
+                  {money(row.amount, row.currency, locale)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </article>
+    </DemoShell>
+  );
+}
+
+export function DemoFinanceSection({
+  locale,
+  section,
+}: {
+  locale: AppLocale;
+  section: Exclude<FinanceSection, "dashboard">;
+}) {
+  const pt = locale === "pt-BR";
+
+  if (section === "transactions") {
+    return (
+      <DemoShell
+        active={section}
+        description={
+          pt
+            ? "Uma amostra de receitas, despesas e transferências em diferentes contas e cartões."
+            : "A sample of income, expenses and transfers across accounts and cards."
+        }
+        locale={locale}
+        title={pt ? "Transações" : "Transactions"}
+      >
+        <div className={styles.tableCard}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>{pt ? "Data" : "Date"}</th>
+                <th>{pt ? "Descrição" : "Description"}</th>
+                <th>{pt ? "Tipo" : "Type"}</th>
+                <th>{pt ? "Categoria" : "Category"}</th>
+                <th>{pt ? "Conta / cartão" : "Account / card"}</th>
+                <th>{pt ? "Valor" : "Amount"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DEMO_TRANSACTIONS.map((row) => (
+                <tr key={row.id}>
+                  <td>{row.date}</td>
+                  <td><strong>{row.description}</strong></td>
+                  <td>{transactionTypeLabel(row.type, locale)}</td>
+                  <td>{row.category ?? "—"}</td>
+                  <td>{row.card ?? row.account ?? "—"}</td>
+                  <td className={row.type === "income" ? styles.positive : row.type === "expense" ? styles.negative : styles.gold}>
+                    {row.type === "income" ? "+" : row.type === "expense" ? "−" : "↔"}{" "}
+                    {money(row.amount, row.currency, locale)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </DemoShell>
+    );
+  }
+
+  if (section === "categories") {
+    return (
+      <DemoShell
+        active={section}
+        description={
+          pt
+            ? "Categorias de receita e despesa prontas para organizar o Núcleo."
+            : "Income and expense categories ready to organise the Nucleus."
+        }
+        locale={locale}
+        title={pt ? "Categorias" : "Categories"}
+      >
+        <div className={styles.cardGrid}>
+          {DEMO_CATEGORIES.map((row) => (
+            <article className={styles.demoCard} key={row.id}>
+              <header>
+                <div>
+                  <span>{categoryKindLabel(row.kind, locale)}</span>
+                  <h2>
+                    {categoryDisplayLabel(
+                      {
+                        name: row.name,
+                        systemCode: row.systemCode,
+                      },
+                      locale,
+                    )}
+                  </h2>
+                </div>
+                <strong>{money(row.total, "BRL", locale)}</strong>
+              </header>
+            </article>
+          ))}
+        </div>
+      </DemoShell>
+    );
+  }
+
+  if (section === "goals") {
+    return (
+      <DemoShell
+        active={section}
+        description={
+          pt
+            ? "Metas financeiras com valor atual, objetivo e prazo."
+            : "Financial goals with current value, target and deadline."
+        }
+        locale={locale}
+        title={pt ? "Metas" : "Goals"}
+      >
+        <div className={styles.cardGrid}>
+          {DEMO_GOALS.map((goal) => {
+            const percent = Math.min(
+              100,
+              (goal.current / goal.target) * 100,
+            );
+            return (
+              <article className={styles.demoCard} key={goal.id}>
+                <header>
+                  <div>
+                    <span>{pt ? "META ATIVA" : "ACTIVE GOAL"}</span>
+                    <h2>{goal.title}</h2>
+                  </div>
+                  <strong>{percent.toFixed(0)}%</strong>
+                </header>
+                <div className={styles.goalTrack}>
+                  <i style={{ width: `${percent}%` }} />
+                </div>
+                <p>
+                  {money(goal.current, goal.currency, locale)} /{" "}
+                  {money(goal.target, goal.currency, locale)}
+                </p>
+                <small>
+                  {pt ? "Prazo" : "Deadline"}: {goal.targetDate}
+                </small>
+              </article>
+            );
+          })}
+        </div>
+      </DemoShell>
+    );
+  }
+
+  if (section === "accounts") {
+    return (
+      <DemoShell
+        active={section}
+        description={
+          pt
+            ? "Contas em moedas diferentes, benefícios e cartões com bandeira e final."
+            : "Accounts in multiple currencies, benefits and cards with brand and last four digits."
+        }
+        locale={locale}
+        title={pt ? "Contas & Bancos" : "Accounts & Banks"}
+      >
+        <div className={styles.splitGrid}>
+          <section>
+            <h2 className={styles.sectionTitle}>
+              {pt ? "Contas" : "Accounts"}
+            </h2>
+            <div className={styles.cardGrid}>
+              {DEMO_ACCOUNTS.map((account) => (
+                <article className={styles.demoCard} key={account.id}>
+                  <header>
+                    <div>
+                      <span>
+                        {accountTypeLabel(account.type, locale)}
+                      </span>
+                      <h2>{account.name}</h2>
+                    </div>
+                    <strong>{account.currency}</strong>
+                  </header>
+                  <p>{account.institution}</p>
+                  <b>
+                    {money(
+                      account.balance,
+                      account.currency,
+                      locale,
+                    )}
+                  </b>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <h2 className={styles.sectionTitle}>
+              {pt ? "Cartões" : "Cards"}
+            </h2>
+            <div className={styles.cardGrid}>
+              {DEMO_CARDS.map((card) => (
+                <article
+                  className={`${styles.demoCard} ${styles.paymentCard}`}
+                  key={card.id}
+                >
+                  <header>
+                    <div>
+                      <span>{card.issuer}</span>
+                      <h2>{card.name}</h2>
+                    </div>
+                    <PaymentBrandLogo brand={card.brand} />
+                  </header>
+                  <div className={styles.cardNumber}>
+                    •••• •••• •••• {card.last4}
+                  </div>
+                  <div className={styles.cardMeta}>
+                    <span>
+                      {pt ? "Fatura" : "Pending"}{" "}
+                      <strong>
+                        {money(
+                          card.pending,
+                          card.currency,
+                          locale,
+                        )}
+                      </strong>
+                    </span>
+                    <span>
+                      {pt ? "Limite" : "Limit"}{" "}
+                      <strong>
+                        {money(
+                          card.limit,
+                          card.currency,
+                          locale,
+                        )}
+                      </strong>
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+      </DemoShell>
+    );
+  }
+
+  if (section === "investments") {
+    return (
+      <DemoShell
+        active={section}
+        description={
+          pt
+            ? "Posições com ticker, classe, custo médio e valor atual."
+            : "Positions with ticker, class, average cost and current value."
+        }
+        locale={locale}
+        title={pt ? "Investimentos" : "Investments"}
+      >
+        <div className={styles.tableCard}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>{pt ? "Ativo" : "Asset"}</th>
+                <th>{pt ? "Classe" : "Class"}</th>
+                <th>{pt ? "Quantidade" : "Quantity"}</th>
+                <th>{pt ? "Preço médio" : "Average price"}</th>
+                <th>{pt ? "Preço atual" : "Current price"}</th>
+                <th>{pt ? "Valor" : "Value"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DEMO_INVESTMENTS.map((row) => (
+                <tr key={row.id}>
+                  <td>
+                    <strong>{row.symbol}</strong>
+                    <small>{row.name}</small>
+                  </td>
+                  <td>{investmentClassLabel(row.assetClass, locale)}</td>
+                  <td>{row.quantity}</td>
+                  <td>{money(row.averagePrice, row.currency, locale)}</td>
+                  <td>{money(row.currentPrice, row.currency, locale)}</td>
+                  <td>{money(row.currentPrice * row.quantity, row.currency, locale)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </DemoShell>
+    );
+  }
+
+  if (section === "exchange-rates") {
+    return (
+      <DemoShell
+        active={section}
+        description={
+          pt
+            ? "Exemplo das cotações armazenadas no cache do AUREUM."
+            : "Example exchange rates stored in AUREUM's cache."
+        }
+        locale={locale}
+        title={pt ? "Cotações" : "Exchange rates"}
+      >
+        <article className={styles.demoCard}>
+          <CurrencyRates
+            fetchedAt="2026-08-08T02:00:00-03:00"
+            locale={locale}
+            rates={DEMO_RATES}
+          />
+        </article>
+      </DemoShell>
+    );
+  }
+
+  return (
+    <DemoShell
+      active="approvals"
+      description={
+        pt
+          ? "Exemplos de solicitações de entrada e lançamentos aguardando decisão."
+          : "Examples of access requests and entries awaiting a decision."
+      }
+      locale={locale}
+      title={pt ? "Aprovações" : "Approvals"}
+    >
+      <div className={styles.cardGrid}>
+        {DEMO_APPROVALS.map((approval) => (
+          <article className={styles.demoCard} key={approval.id}>
+            <header>
+              <div>
+                <span>
+                  {approval.type === "join"
+                    ? pt
+                      ? "ENTRADA NO NÚCLEO"
+                      : "NUCLEUS ACCESS"
+                    : pt
+                      ? "LANÇAMENTO"
+                      : "ENTRY"}
+                </span>
+                <h2>{approval.person}</h2>
+              </div>
+              <b>{pt ? "Pendente" : "Pending"}</b>
+            </header>
+            <p>{approval.description}</p>
+            <div className={styles.demoActions}>
+              <button type="button">
+                {pt ? "Aprovar" : "Approve"}
+              </button>
+              <button type="button">
+                {pt ? "Rejeitar" : "Reject"}
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </DemoShell>
+  );
+}

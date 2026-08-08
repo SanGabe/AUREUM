@@ -1,5 +1,9 @@
-import { DashboardView } from "@/components/dashboard-view";
-export const metadata = { title: "Demonstração | AUREUM" };
+import { DemoDashboard } from "@/components/demo-finance";
+
+export const metadata = {
+  title: "Demonstração | AUREUM",
+};
+
 export default function DemonstrationPage() {
-  return <DashboardView demo userName="Visitante" userSubtitle="Demonstração AUREUM" />;
+  return <DemoDashboard locale="pt-BR" />;
 }

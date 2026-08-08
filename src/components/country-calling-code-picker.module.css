@@ -1,0 +1,118 @@
+.wrap {
+  position: relative;
+  min-width: 112px;
+}
+
+.trigger {
+  width: 100%;
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 24px 1fr 14px;
+  gap: 7px;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid var(--a-control-border,var(--a-border));
+  border-radius: 9px;
+  color: var(--a-control-text,var(--a-text));
+  background: var(--a-control-bg,var(--a-input));
+  cursor: pointer;
+  font: inherit;
+}
+
+.flag {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.trigger strong {
+  font-size: 11px;
+  text-align: left;
+}
+
+.chevron {
+  color: var(--a-muted);
+  font-size: 11px;
+}
+
+.popover {
+  position: absolute;
+  z-index: 600;
+  top: calc(100% + 6px);
+  left: 0;
+  width: min(340px,calc(100vw - 30px));
+  overflow: hidden;
+  padding: 7px;
+  border: 1px solid var(--a-border);
+  border-radius: 11px;
+  color: var(--a-text);
+  background: var(--a-elevated,var(--a-surface));
+  box-shadow: var(--a-shadow);
+}
+
+.popover > input {
+  width: 100%;
+  min-height: 40px;
+  margin-bottom: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--a-control-border);
+  border-radius: 8px;
+  color: var(--a-control-text);
+  background: var(--a-control-bg);
+  font: inherit;
+  font-size: 11px;
+}
+
+.options {
+  max-height: 270px;
+  overflow-y: auto;
+  display: grid;
+  gap: 3px;
+}
+
+.options button {
+  min-height: 40px;
+  display: grid;
+  grid-template-columns: 28px minmax(0,1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 7px;
+  color: var(--a-text);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  text-align: left;
+}
+
+.options button:hover,
+.options button.active {
+  color: var(--a-gold-strong);
+  background: var(--a-selected-bg,var(--a-gold-soft));
+}
+
+.options button > span:first-child {
+  font-size: 17px;
+}
+
+.options button strong {
+  color: var(--a-muted);
+  font-size: 9px;
+}
+
+@media(max-width:520px) {
+  .wrap {
+    min-width: 100px;
+  }
+
+  .popover {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    top: auto;
+    width: auto;
+    max-height: 70dvh;
+  }
+}

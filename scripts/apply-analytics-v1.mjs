@@ -264,7 +264,7 @@ update("src/components/finance-forms.tsx", (input) => {
 
   s = s.replace(
     `{locale === "pt-BR" ? "Ambos" : "Both"}`,
-    `{locale === "pt-BR" ? "Receita e despesa" : "Income and expense"}`,
+    `{locale === "pt-BR" ? "Ambos" : "Both"}`,
   );
 
   const oldAccountOptions = `            <select name="type">\n              <option value="checking">{locale === "pt-BR" ? "Conta corrente" : "Checking"}</option>\n              <option value="savings">{locale === "pt-BR" ? "Poupança" : "Savings"}</option>\n              <option value="cash">{locale === "pt-BR" ? "Dinheiro" : "Cash"}</option>\n              <option value="wallet">{locale === "pt-BR" ? "Carteira digital" : "Wallet"}</option>\n              <option value="investment">{locale === "pt-BR" ? "Conta de investimentos" : "Investment account"}</option>\n              <option value="other">{locale === "pt-BR" ? "Outra" : "Other"}</option>\n            </select>`;

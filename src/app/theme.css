@@ -7,17 +7,25 @@ html[data-theme="dark"] {
   --a-surface: #03172f;
   --a-surface-2: #061f3e;
   --a-surface-3: #04152c;
-  --a-input: #04152c;
+  --a-elevated: #08213f;
+  --a-input: #061a35;
+  --a-control-bg: #061a35;
+  --a-control-text: #edf1f6;
+  --a-control-border: rgba(228,170,50,.24);
+  --a-option-bg: #071d38;
+  --a-option-text: #edf1f6;
+  --a-selected-bg: rgba(228,170,50,.12);
+  --a-brand-chip-bg: #ffffff;
   --a-text: #e7ecf4;
   --a-heading: #f5eee1;
-  --a-muted: #899ab1;
-  --a-muted-2: #71859f;
+  --a-muted: #91a3ba;
+  --a-muted-2: #7a8ea7;
   --a-gold: #e4aa32;
   --a-gold-strong: #f0c15b;
-  --a-gold-soft: rgba(228,170,50,.07);
+  --a-gold-soft: rgba(228,170,50,.08);
   --a-border: rgba(228,170,50,.20);
-  --a-border-soft: rgba(255,255,255,.07);
-  --a-shadow: 0 24px 55px rgba(0,0,0,.38);
+  --a-border-soft: rgba(255,255,255,.08);
+  --a-shadow: 0 22px 52px rgba(0,0,0,.34);
   --a-success: #55d39f;
   --a-danger: #ed7770;
   --a-overlay: rgba(0,10,25,.78);
@@ -26,29 +34,37 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="light"] {
-  --a-page-bg: #f7f3ea;
-  --a-page-bg-2: #eee6d8;
+  --a-page-bg: #f4efe6;
+  --a-page-bg-2: #ebe2d4;
   --a-sidebar-1: #fffdf8;
-  --a-sidebar-2: #f1e8d9;
+  --a-sidebar-2: #f3eadc;
   --a-surface: #fffdf8;
-  --a-surface-2: #f9f2e7;
+  --a-surface-2: #f5ecdf;
   --a-surface-3: #ffffff;
+  --a-elevated: #ffffff;
   --a-input: #ffffff;
-  --a-text: #17283d;
-  --a-heading: #0b1d33;
-  --a-muted: #5f7084;
-  --a-muted-2: #6e7e91;
-  --a-gold: #a87513;
-  --a-gold-strong: #8a5c08;
-  --a-gold-soft: rgba(168,117,19,.09);
-  --a-border: rgba(129,91,23,.22);
-  --a-border-soft: rgba(14,33,57,.10);
-  --a-shadow: 0 18px 40px rgba(57,40,10,.10);
-  --a-success: #16845c;
+  --a-control-bg: #ffffff;
+  --a-control-text: #15263b;
+  --a-control-border: rgba(94,68,22,.28);
+  --a-option-bg: #ffffff;
+  --a-option-text: #15263b;
+  --a-selected-bg: #efe2c8;
+  --a-brand-chip-bg: #ffffff;
+  --a-text: #213247;
+  --a-heading: #0c2038;
+  --a-muted: #5a6b7f;
+  --a-muted-2: #68798c;
+  --a-gold: #9b6a0d;
+  --a-gold-strong: #7f5608;
+  --a-gold-soft: rgba(155,106,13,.10);
+  --a-border: rgba(111,80,24,.22);
+  --a-border-soft: rgba(14,33,57,.11);
+  --a-shadow: 0 15px 36px rgba(62,45,17,.10);
+  --a-success: #137a55;
   --a-danger: #b63d39;
-  --a-overlay: rgba(248,244,235,.82);
-  --a-focus: #1264a3;
-  --a-card-gradient: linear-gradient(145deg,#fffdf8,#f7efe2);
+  --a-overlay: rgba(239,234,224,.84);
+  --a-focus: #0968b0;
+  --a-card-gradient: linear-gradient(145deg,#fffdf8,#f4ecdf);
 }
 
 html[data-theme="contrast"] {
@@ -59,14 +75,22 @@ html[data-theme="contrast"] {
   --a-surface: #000000;
   --a-surface-2: #080808;
   --a-surface-3: #000000;
+  --a-elevated: #000000;
   --a-input: #000000;
+  --a-control-bg: #000000;
+  --a-control-text: #ffffff;
+  --a-control-border: #ffffff;
+  --a-option-bg: #000000;
+  --a-option-text: #ffffff;
+  --a-selected-bg: #252000;
+  --a-brand-chip-bg: #ffffff;
   --a-text: #ffffff;
   --a-heading: #ffffff;
   --a-muted: #ffffff;
   --a-muted-2: #ffffff;
   --a-gold: #ffd400;
   --a-gold-strong: #ffe765;
-  --a-gold-soft: rgba(255,212,0,.14);
+  --a-gold-soft: rgba(255,212,0,.16);
   --a-border: #ffffff;
   --a-border-soft: #ffffff;
   --a-shadow: none;
@@ -79,6 +103,11 @@ html[data-theme="contrast"] {
 
 html {
   background: var(--a-page-bg);
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
 }
 
 body {
@@ -97,6 +126,26 @@ body {
   outline-offset: 3px;
 }
 
+:where(input,select,textarea) {
+  color: var(--a-control-text) !important;
+  border-color: var(--a-control-border) !important;
+  background-color: var(--a-control-bg) !important;
+}
+
+:where(select) {
+  color-scheme: inherit;
+}
+
+:where(select option,select optgroup) {
+  color: var(--a-option-text);
+  background: var(--a-option-bg);
+}
+
+:where(input::placeholder,textarea::placeholder) {
+  color: var(--a-muted-2);
+  opacity: .9;
+}
+
 html[data-theme="contrast"] :where(a) {
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
@@ -104,6 +153,10 @@ html[data-theme="contrast"] :where(a) {
 
 html[data-theme="contrast"] :where(button,input,select,textarea) {
   border-width: 2px !important;
+}
+
+html[data-theme="contrast"] :where([class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"]) {
+  box-shadow: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

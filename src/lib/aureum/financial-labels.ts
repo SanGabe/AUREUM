@@ -11,7 +11,7 @@ export function categoryKindLabel(
   if (kind === "expense") return pt ? "Despesa" : "Expense";
   if (kind === "income") return pt ? "Receita" : "Income";
   if (kind === "both")
-    return pt ? "Receita e despesa" : "Income and expense";
+    return pt ? "Ambos" : "Both";
 
   return kind;
 }

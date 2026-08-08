@@ -1,0 +1,29 @@
+.logo {
+  min-width: 58px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 7px;
+  border: 1px solid var(--a-border-soft);
+  border-radius: 7px;
+  background: var(--a-brand-chip-bg,#fff);
+}
+
+.logo img {
+  display: block;
+  width: 100%;
+  max-width: 54px;
+  height: 100%;
+  object-fit: contain;
+}
+
+.compact {
+  min-width: 42px;
+  height: 22px;
+  padding: 3px 5px;
+}
+
+.compact img {
+  max-width: 38px;
+}
