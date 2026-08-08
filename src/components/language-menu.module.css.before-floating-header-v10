@@ -153,26 +153,3 @@
 :global(html[data-theme="light"]) .menu small {
   color: var(--a-muted);
 }
-
-/* AUREUM FLOATING HEADER V10
-   Adicionar ao final de src/components/language-menu.module.css
-*/
-
-.trigger {
-  height: 42px;
-  min-height: 42px;
-  padding: 0 11px;
-  border-radius: 9px;
-}
-
-.wrap {
-  flex: 0 0 auto;
-}
-
-
-@media (max-width: 720px) {
-  .trigger {
-    height: 40px;
-    min-height: 40px;
-  }
-}

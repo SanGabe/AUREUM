@@ -1,0 +1,226 @@
+/* AUREUM FLOATING HEADER V10
+   Adicionar ao final de src/app/landing.module.css
+*/
+
+.header {
+  position: sticky;
+  z-index: 300;
+  top: 12px;
+
+  width: min(1480px, calc(100% - 40px));
+  height: 76px;
+  min-height: 76px;
+  margin-top: 12px;
+
+  grid-template-columns:
+    minmax(190px, 218px)
+    minmax(420px, 1fr)
+    auto;
+
+  gap: 20px;
+
+  padding: 0 18px;
+
+  border: 1px solid var(--a-border);
+  border-radius: 16px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--a-page-bg) 82%,
+      transparent
+    );
+
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, .14),
+    inset 0 1px 0 rgba(255, 255, 255, .035);
+
+  backdrop-filter:
+    blur(18px)
+    saturate(145%);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(145%);
+}
+
+.headerLogo {
+  width: 195px;
+  height: 62px;
+}
+
+.nav {
+  min-width: 0;
+  gap: clamp(20px, 2vw, 36px);
+  white-space: nowrap;
+}
+
+.headerActions {
+  display: flex;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+.headerPrimary,
+.headerSecondary {
+  flex: 0 0 auto;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 17px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+
+.headerPrimary {
+  min-width: 142px;
+}
+
+.headerSecondary {
+  min-width: 78px;
+}
+
+
+/* Light theme */
+
+:global(html[data-theme="light"]) .header {
+  border-color: rgba(112, 79, 21, .22);
+
+  background:
+    rgba(255, 252, 246, .82);
+
+  box-shadow:
+    0 15px 38px rgba(49, 37, 18, .10),
+    inset 0 1px 0 rgba(255, 255, 255, .82);
+}
+
+
+/* Dark theme */
+
+:global(html[data-theme="dark"]) .header {
+  border-color: rgba(228, 170, 50, .16);
+
+  background:
+    rgba(1, 19, 42, .82);
+
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, .25),
+    inset 0 1px 0 rgba(255, 255, 255, .025);
+}
+
+
+/* High contrast */
+
+:global(html[data-theme="contrast"]) .header {
+  border: 2px solid #fff;
+  background: rgba(0, 0, 0, .96);
+  box-shadow: none;
+}
+
+
+/* Desktop intermediário */
+
+@media (max-width: 1320px) {
+  .header {
+    width: min(1240px, calc(100% - 28px));
+
+    grid-template-columns:
+      188px
+      minmax(350px, 1fr)
+      auto;
+
+    gap: 14px;
+    padding-inline: 14px;
+  }
+
+  .headerLogo {
+    width: 176px;
+  }
+
+  .nav {
+    gap: 20px;
+    font-size: 13px;
+  }
+
+  .headerPrimary {
+    min-width: 128px;
+    padding-inline: 13px;
+  }
+
+  .headerSecondary {
+    min-width: 68px;
+    padding-inline: 12px;
+  }
+}
+
+
+/* Tablet:
+   esconde navegação central e mantém ações em linha */
+
+@media (max-width: 1060px) {
+  .header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .headerActions {
+    justify-self: end;
+  }
+}
+
+
+/* Mobile */
+
+@media (max-width: 720px) {
+  .header {
+    top: 8px;
+    width: calc(100% - 18px);
+    height: 68px;
+    min-height: 68px;
+    margin-top: 8px;
+    padding-inline: 10px;
+    border-radius: 14px;
+  }
+
+  .headerLogo {
+    width: 154px;
+    height: 54px;
+  }
+
+  .headerPrimary {
+    display: none;
+  }
+
+  .headerActions {
+    gap: 7px;
+  }
+
+  .headerSecondary {
+    height: 40px;
+    min-height: 40px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .header {
+    grid-template-columns:
+      minmax(118px, 1fr)
+      auto;
+  }
+
+  .headerLogo {
+    width: 138px;
+  }
+
+  .headerSecondary {
+    min-width: 62px;
+    padding-inline: 10px;
+    font-size: 11px;
+  }
+}
