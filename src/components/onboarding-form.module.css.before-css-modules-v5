@@ -40,15 +40,15 @@
   background: var(--a-surface-2);
 }
 
-.form input,
-.form select {
+input,
+select {
   color: var(--a-control-text);
   border-color: var(--a-control-border);
   background: var(--a-control-bg);
 }
 
-.form select option,
-.form select optgroup {
+select option,
+select optgroup {
   color: var(--a-option-text);
   background: var(--a-option-bg);
 }

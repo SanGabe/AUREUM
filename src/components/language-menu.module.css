@@ -27,9 +27,9 @@
 
 .trigger:hover,
 .trigger[aria-expanded="true"] {
-  color: #f0c15b;
+  color: var(--a-gold-strong);
   border-color: rgba(228,170,50,.5);
-  background: rgba(228,170,50,.055);
+  background: var(--a-gold-soft);
 }
 
 .trigger svg {
@@ -59,7 +59,7 @@
   padding: 7px;
   border: 1px solid rgba(228,170,50,.26);
   border-radius: 11px;
-  background: #051a35;
+  background: var(--a-surface);
   box-shadow: 0 22px 55px rgba(0,0,0,.42);
 }
 
@@ -71,13 +71,13 @@
   align-items: center;
   padding: 7px 8px;
   border-radius: 7px;
-  color: #bcc7d5;
+  color: var(--a-text);
   text-decoration: none;
 }
 
 .menu > a:hover,
 .menu > a.active {
-  color: #f0c15b;
+  color: var(--a-gold-strong);
   background: rgba(228,170,50,.065);
 }
 
@@ -86,9 +86,9 @@
   height: 29px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,170,50,.2);
+  border: 1px solid var(--a-border);
   border-radius: 50%;
-  color: #d8ad4e;
+  color: var(--a-gold-strong);
   font-size: 8px;
   font-weight: 850;
 }

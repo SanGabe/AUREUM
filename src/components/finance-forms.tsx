@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CurrencySelect } from "@/components/currency-select";
+import { ACCOUNT_TYPE_OPTIONS } from "@/lib/aureum/financial-labels";
 import type { AppLocale } from "@/i18n/locales";
 import type { MembershipRole } from "@/lib/aureum/finance-context";
 import styles from "./finance-page.module.css";
@@ -534,12 +535,11 @@ export function AccountForm({
           <label className={styles.field}>
             {locale === "pt-BR" ? "Tipo" : "Type"}
             <select name="type">
-              <option value="checking">{locale === "pt-BR" ? "Conta corrente" : "Checking"}</option>
-              <option value="savings">{locale === "pt-BR" ? "Poupança" : "Savings"}</option>
-              <option value="cash">{locale === "pt-BR" ? "Dinheiro" : "Cash"}</option>
-              <option value="wallet">{locale === "pt-BR" ? "Carteira digital" : "Wallet"}</option>
-              <option value="investment">{locale === "pt-BR" ? "Conta de investimentos" : "Investment account"}</option>
-              <option value="other">{locale === "pt-BR" ? "Outra" : "Other"}</option>
+              {ACCOUNT_TYPE_OPTIONS.map(([value, pt, en]) => (
+                <option key={value} value={value}>
+                  {locale === "pt-BR" ? pt : en}
+                </option>
+              ))}
             </select>
           </label>
           <label className={styles.field}>

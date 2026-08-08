@@ -11,6 +11,10 @@ import { getEnglishCopy } from "@/i18n/english-copy";
 import { FinanceNavigation } from "@/components/finance-navigation";
 import { CurrencyRates, type ExchangeRateRow } from "@/components/currency-rates";
 import { MobileFinanceNav } from "@/components/mobile-finance-nav";
+import {
+  DashboardAnalytics,
+  type DashboardAnalyticsData,
+} from "@/components/dashboard-analytics";
 import styles from "./dashboard-view.module.css";
 
 export type DashboardTransaction = {
@@ -39,6 +43,7 @@ export type DashboardData = {
   goal: { title: string; currentAmount: number; targetAmount: number } | null;
   exchangeRates?: ExchangeRateRow[];
   fxFetchedAt?: string | null;
+  analytics?: DashboardAnalyticsData | null;
 };
 
 type Props = {
@@ -73,6 +78,49 @@ const demoData: DashboardData = {
   goal: { title: "Example goal", currentAmount: 20000, targetAmount: 35000 },
   exchangeRates: [],
   fxFetchedAt: null,
+  analytics: {
+    currency: "USD",
+    trackedAssets: 32800,
+    cashValue: 20418.73,
+    investmentValue: 12381.27,
+    income: 4702,
+    expenses: 2596.44,
+    savings: 2105.56,
+    savingsRate: 44.78,
+    monthly: [
+      { month: "2026-01", income: 4100, expenses: 2900, cashFlow: 1200, liquidBalance: 9800 },
+      { month: "2026-02", income: 4300, expenses: 3100, cashFlow: 1200, liquidBalance: 11000 },
+      { month: "2026-03", income: 4200, expenses: 2700, cashFlow: 1500, liquidBalance: 12500 },
+      { month: "2026-04", income: 5900, expenses: 3300, cashFlow: 2600, liquidBalance: 15100 },
+      { month: "2026-05", income: 4400, expenses: 2850, cashFlow: 1550, liquidBalance: 16650 },
+      { month: "2026-06", income: 4500, expenses: 3100, cashFlow: 1400, liquidBalance: 18050 },
+      { month: "2026-07", income: 4600, expenses: 3250, cashFlow: 1350, liquidBalance: 19400 },
+      { month: "2026-08", income: 4702, expenses: 2596.44, cashFlow: 2105.56, liquidBalance: 20418.73 },
+    ],
+    expenseCategories: [
+      { name: "Moradia", systemCode: "housing", total: 1480, percentage: 57 },
+      { name: "Supermercado", systemCode: "groceries", total: 696, percentage: 27 },
+      { name: "Transporte", systemCode: "transport", total: 240, percentage: 9 },
+      { name: "Lazer", systemCode: "leisure", total: 180.44, percentage: 7 },
+    ],
+    incomeCategories: [
+      { name: "Salário", systemCode: "salary", total: 2702, percentage: 57 },
+      { name: "Vale Alimentação", systemCode: "food_allowance", total: 1000, percentage: 21 },
+      { name: "Vale Refeição", systemCode: "meal_allowance", total: 600, percentage: 13 },
+      { name: "Bônus / Premiação", systemCode: "bonus", total: 400, percentage: 9 },
+    ],
+    accountTypes: [
+      { key: "checking", value: 12800 },
+      { key: "savings", value: 5600 },
+      { key: "food_benefit", value: 1200 },
+      { key: "wallet", value: 818.73 },
+    ],
+    investmentTypes: [
+      { key: "stock", value: 6300 },
+      { key: "fixed_income", value: 4081.27 },
+      { key: "etf", value: 2000 },
+    ],
+  },
 };
 
 function money(value: number, currency: string, locale: AppLocale) {
@@ -142,10 +190,23 @@ export function DashboardView({
       ? null
       : getEnglishCopy(locale as EnglishLocale);
 
+  const demoCurrency =
+    locale === "en-GB"
+      ? "GBP"
+      : locale === "pt-BR"
+        ? "BRL"
+        : "USD";
+
   const d = demo
     ? {
         ...demoData,
-        currency: locale === "en-GB" ? "GBP" : locale === "pt-BR" ? "BRL" : "USD",
+        currency: demoCurrency,
+        analytics: demoData.analytics
+          ? {
+              ...demoData.analytics,
+              currency: demoCurrency,
+            }
+          : null,
       }
     : data!;
 
@@ -302,11 +363,84 @@ export function DashboardView({
           ) : null}
 
           <section className={styles.summary} id="resumo">
-            <article><span>{text.balance}</span><strong>{money(d.consolidatedBalance,d.currency,locale)}</strong><small>{d.accountCount} {text.accountsMainCurrency}</small></article>
-            <article><span>{text.income}</span><strong className={styles.positive}>{money(d.incomeMonth,d.currency,locale)}</strong><small>{text.confirmed}</small></article>
-            <article><span>{text.expenses}</span><strong className={styles.negative}>{money(d.expensesMonth,d.currency,locale)}</strong><small>{text.officialOnly}</small></article>
-            <article><span>{text.cardSpend}</span><strong>{money(d.cardSpendMonth,d.currency,locale)}</strong><small>{d.cardCount} {text.cardsRegistered}</small></article>
+            <article>
+              <span>
+                {d.analytics
+                  ? locale === "pt-BR"
+                    ? "Patrimônio acompanhado"
+                    : "Tracked assets"
+                  : text.balance}
+              </span>
+              <strong>
+                {money(
+                  d.analytics?.trackedAssets ?? d.consolidatedBalance,
+                  d.currency,
+                  locale,
+                )}
+              </strong>
+              <small>
+                {d.analytics
+                  ? locale === "pt-BR"
+                    ? "Contas + investimentos"
+                    : "Accounts + investments"
+                  : `${d.accountCount} ${text.accountsMainCurrency}`}
+              </small>
+            </article>
+
+            <article>
+              <span>{text.income}</span>
+              <strong className={styles.positive}>
+                {money(d.incomeMonth,d.currency,locale)}
+              </strong>
+              <small>{text.confirmed}</small>
+            </article>
+
+            <article>
+              <span>{text.expenses}</span>
+              <strong className={styles.negative}>
+                {money(d.expensesMonth,d.currency,locale)}
+              </strong>
+              <small>{text.officialOnly}</small>
+            </article>
+
+            <article>
+              <span>
+                {d.analytics
+                  ? locale === "pt-BR"
+                    ? "Economia do mês"
+                    : "Monthly savings"
+                  : text.cardSpend}
+              </span>
+              <strong
+                className={
+                  d.analytics
+                    ? d.analytics.savings >= 0
+                      ? styles.positive
+                      : styles.negative
+                    : ""
+                }
+              >
+                {money(
+                  d.analytics?.savings ?? d.cardSpendMonth,
+                  d.currency,
+                  locale,
+                )}
+              </strong>
+              <small>
+                {d.analytics
+                  ? `${locale === "pt-BR" ? "Taxa de economia" : "Savings rate"}: ${d.analytics.savingsRate.toFixed(1)}%`
+                  : `${d.cardCount} ${text.cardsRegistered}`}
+              </small>
+            </article>
           </section>
+
+          {d.analytics ? (
+            <DashboardAnalytics
+              data={d.analytics}
+              locale={locale}
+              showKpis={false}
+            />
+          ) : null}
 
           {d.ignoredCurrencyAccounts > 0 ? (
             <p className={styles.currencyNote}>

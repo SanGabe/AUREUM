@@ -2,8 +2,8 @@
   min-height: 100vh;
   display: grid;
   grid-template-columns: 270px 1fr;
-  color: #e7ecf4;
-  background: #000e22;
+  color: var(--a-text);
+  background: var(--a-page-bg);
 }
 
 .sidebar {
@@ -13,8 +13,8 @@
   display: flex;
   flex-direction: column;
   padding: 25px 20px 18px;
-  border-right: 1px solid rgba(228,170,50,.15);
-  background: linear-gradient(180deg,#031a35,#001126);
+  border-right: 1px solid var(--a-border);
+  background: linear-gradient(180deg,var(--a-sidebar-1),var(--a-sidebar-2));
 }
 
 .brand {
@@ -43,15 +43,15 @@
   gap: 10px;
   padding: 0 12px;
   border-radius: 8px;
-  color: #91a2b9;
+  color: var(--a-muted);
   text-decoration: none;
   font-size: 13px;
 }
 
 .sidebarNav a:hover,
 .sidebarNav .activeLink {
-  color: #f0c15b;
-  background: rgba(228,170,50,.06);
+  color: var(--a-gold-strong);
+  background: var(--a-gold-soft);
 }
 
 .profileWrap {
@@ -68,8 +68,8 @@
   align-items: center;
   padding: 13px 8px 4px 0;
   border: 0;
-  border-top: 1px solid rgba(255,255,255,.07);
-  color: #e7ecf4;
+  border-top: 1px solid var(--a-border-soft);
+  color: var(--a-text);
   background: transparent;
   text-align: left;
   cursor: pointer;
@@ -82,8 +82,8 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: #07152d;
-  background: linear-gradient(135deg,#efc15b,#c98c20);
+  color: var(--a-page-bg-2);
+  background: linear-gradient(135deg,var(--a-gold-strong),#c98c20);
   font-size: 11px;
   font-weight: 900;
 }
@@ -100,14 +100,14 @@
 
 .profileButtonCopy small {
   overflow: hidden;
-  color: #7f91a9;
+  color: var(--a-muted);
   font-size: 9px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .profileChevron {
-  color: #71859f;
+  color: var(--a-muted-2);
   font-size: 13px;
   text-align: center;
 }
@@ -120,9 +120,9 @@
   left: -8px;
   overflow: hidden;
   padding: 10px;
-  border: 1px solid rgba(228,170,50,.27);
+  border: 1px solid var(--a-border);
   border-radius: 13px;
-  background: #061b35;
+  background: var(--a-elevated);
   box-shadow: 0 24px 55px rgba(0,0,0,.42);
 }
 
@@ -140,8 +140,8 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: #07152d;
-  background: #d9a12d;
+  color: var(--a-page-bg-2);
+  background: var(--a-gold);
   font-size: 11px;
   font-weight: 900;
 }
@@ -161,7 +161,7 @@
 
 .profileMenuIdentity small {
   overflow: hidden;
-  color: #7e91aa;
+  color: var(--a-muted);
   font-size: 9px;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -170,7 +170,7 @@
 .profileDivider {
   height: 1px;
   margin: 7px 0;
-  background: rgba(255,255,255,.065);
+  background: var(--a-border-soft);
 }
 
 .profileNucleus {
@@ -180,7 +180,7 @@
 }
 
 .profileNucleus > span {
-  color: #dba632;
+  color: var(--a-gold);
   font-size: 8px;
   font-weight: 850;
   letter-spacing: .14em;
@@ -190,16 +190,16 @@
   width: 100%;
   min-height: 38px;
   padding: 0 9px;
-  border: 1px solid rgba(228,170,50,.2);
+  border: 1px solid var(--a-border);
   border-radius: 7px;
   outline: 0;
-  color: #e7ecf4;
-  background: #04152c;
+  color: var(--a-text);
+  background: var(--a-input);
   font-size: 10px;
 }
 
 .profileNucleus option {
-  color: #07152d;
+  color: var(--a-page-bg-2);
 }
 
 .profileLinks {
@@ -214,16 +214,16 @@
   align-items: center;
   padding: 9px 7px;
   border-radius: 7px;
-  color: #bcc7d5;
+  color: var(--a-text);
 }
 
 .profileLinks a:hover {
-  color: #f0c15b;
-  background: rgba(228,170,50,.055);
+  color: var(--a-gold-strong);
+  background: var(--a-gold-soft);
 }
 
 .profileLinks > a > span {
-  color: #d9a12d;
+  color: var(--a-gold);
   text-align: center;
 }
 
@@ -238,7 +238,7 @@
 }
 
 .profileLinks small {
-  color: #70839d;
+  color: var(--a-muted-2);
   font-size: 8px;
 }
 
@@ -251,7 +251,7 @@
   padding: 0 8px;
   border: 0;
   border-radius: 7px;
-  color: #dc8580;
+  color: var(--a-danger);
   background: transparent;
   font: inherit;
   font-size: 10px;
@@ -273,7 +273,7 @@
   gap: 10px;
   align-items: center;
   padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,.07);
+  border-top: 1px solid var(--a-border-soft);
 }
 
 .demoUser div {
@@ -286,7 +286,7 @@
 }
 
 .demoUser small {
-  color: #7f91a9;
+  color: var(--a-muted);
   font-size: 9px;
 }
 
@@ -305,7 +305,7 @@
 
 .eyebrow {
   margin: 0 0 7px;
-  color: #e4aa32;
+  color: var(--a-gold);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .16em;
@@ -313,7 +313,7 @@
 
 .top h1 {
   margin: 0;
-  color: #f5eee1;
+  color: var(--a-heading);
   font-family: Georgia,serif;
   font-size: clamp(2.4rem,5vw,4.2rem);
   font-weight: 500;
@@ -322,7 +322,7 @@
 
 .top p:not(.eyebrow) {
   margin: 8px 0 0;
-  color: #899ab1;
+  color: var(--a-muted);
   font-size: 13px;
 }
 
@@ -337,14 +337,14 @@
 }
 
 .liveBadge {
-  color: #5bd6a4;
+  color: var(--a-success);
   border: 1px solid rgba(91,214,164,.25);
   background: rgba(91,214,164,.06);
 }
 
 .demoBadge {
-  color: #efc15d;
-  border: 1px solid rgba(228,170,50,.25);
+  color: var(--a-gold-strong);
+  border: 1px solid var(--a-border);
 }
 
 .periodBar {
@@ -362,7 +362,7 @@
 }
 
 .periodLabel {
-  color: #71849e;
+  color: var(--a-muted-2);
   font-size: 8px;
   font-weight: 850;
   letter-spacing: .14em;
@@ -377,16 +377,16 @@
 .monthArrow,
 .monthMain {
   min-height: 40px;
-  border: 1px solid rgba(228,170,50,.19);
-  color: #d7e0ea;
-  background: #041a34;
+  border: 1px solid var(--a-border);
+  color: var(--a-text);
+  background: var(--a-surface-2);
   cursor: pointer;
 }
 
 .monthArrow {
   display: grid;
   place-items: center;
-  color: #dca833;
+  color: var(--a-gold);
   font-family: Georgia,serif;
   font-size: 22px;
 }
@@ -417,7 +417,7 @@
 
 .calendarIcon,
 .chevron {
-  color: #dca833;
+  color: var(--a-gold);
 }
 
 .monthPopover {
@@ -427,9 +427,9 @@
   left: 34px;
   width: 310px;
   padding: 13px;
-  border: 1px solid rgba(228,170,50,.25);
+  border: 1px solid var(--a-border);
   border-radius: 12px;
-  background: #061b35;
+  background: var(--a-elevated);
   box-shadow: 0 24px 55px rgba(0,0,0,.4);
 }
 
@@ -441,7 +441,7 @@
 }
 
 .monthPopoverHeader strong {
-  color: #f2ece1;
+  color: var(--a-heading);
   font-family: Georgia,serif;
   font-size: 17px;
   font-weight: 500;
@@ -451,10 +451,10 @@
 .monthPopoverHeader button {
   width: 32px;
   height: 32px;
-  border: 1px solid rgba(228,170,50,.14);
+  border: 1px solid var(--a-border);
   border-radius: 7px;
-  color: #dca833;
-  background: #03152d;
+  color: var(--a-gold);
+  background: var(--a-surface-3);
   cursor: pointer;
 }
 
@@ -466,10 +466,10 @@
 
 .monthGrid button {
   min-height: 38px;
-  border: 1px solid rgba(255,255,255,.055);
+  border: 1px solid var(--a-border-soft);
   border-radius: 7px;
-  color: #8fa1b8;
-  background: #04162e;
+  color: var(--a-muted);
+  background: var(--a-surface-3);
   font-size: 9px;
   font-weight: 750;
   cursor: pointer;
@@ -477,18 +477,18 @@
 
 .monthGrid button:hover,
 .monthGrid .monthActive {
-  color: #07152d;
-  border-color: #e1a632;
-  background: linear-gradient(135deg,#efc15b,#d69b29);
+  color: var(--a-page-bg-2);
+  border-color: var(--a-gold);
+  background: linear-gradient(135deg,var(--a-gold-strong),#d69b29);
 }
 
 .todayButton {
   width: 100%;
   min-height: 35px;
   margin-top: 9px;
-  border: 1px solid rgba(228,170,50,.17);
+  border: 1px solid var(--a-border);
   border-radius: 7px;
-  color: #d8b45a;
+  color: var(--a-gold-strong);
   background: transparent;
   font-size: 9px;
   cursor: pointer;
@@ -507,41 +507,41 @@
   align-content: center;
   gap: 7px;
   padding: 20px;
-  border: 1px solid rgba(228,170,50,.19);
+  border: 1px solid var(--a-border);
   border-radius: 12px;
-  background: linear-gradient(145deg,#061f3e,#03152c);
+  background: linear-gradient(145deg,var(--a-surface-2),var(--a-surface-3));
 }
 
 .summary span {
-  color: #8fa0b6;
+  color: var(--a-muted);
   font-size: 11px;
 }
 
 .summary strong {
-  color: #f4eee3;
+  color: var(--a-heading);
   font-size: clamp(1.35rem,2.4vw,2rem);
 }
 
 .summary small {
-  color: #687d99;
+  color: var(--a-muted-2);
   font-size: 10px;
 }
 
 .positive {
-  color: #55d39f !important;
+  color: var(--a-success) !important;
 }
 
 .negative {
-  color: #ed7770 !important;
+  color: var(--a-danger) !important;
 }
 
 .currencyNote {
   margin: 0 0 13px;
   padding: 10px 13px;
-  border: 1px solid rgba(228,170,50,.15);
+  border: 1px solid var(--a-border);
   border-radius: 8px;
   color: #b5a470;
-  background: rgba(228,170,50,.04);
+  background: var(--a-gold-soft);
   font-size: 11px;
 }
 
@@ -554,9 +554,9 @@
 .panel {
   min-height: 290px;
   padding: 22px;
-  border: 1px solid rgba(228,170,50,.18);
+  border: 1px solid var(--a-border);
   border-radius: 12px;
-  background: #03172f;
+  background: var(--a-surface);
 }
 
 .wide {
@@ -573,7 +573,7 @@
 
 .panelHead p {
   margin: 0 0 4px;
-  color: #dca833;
+  color: var(--a-gold);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: .14em;
@@ -582,14 +582,14 @@
 
 .panelHead h2 {
   margin: 0;
-  color: #f1ece2;
+  color: var(--a-heading);
   font-family: Georgia,serif;
   font-size: 22px;
   font-weight: 500;
 }
 
 .panelHead > span {
-  color: #f0c15b;
+  color: var(--a-gold-strong);
   font-family: Georgia,serif;
   font-size: 22px;
 }
@@ -604,7 +604,7 @@
   gap: 11px;
   align-items: center;
   padding: 12px 0;
-  border-top: 1px solid rgba(255,255,255,.055);
+  border-top: 1px solid var(--a-border-soft);
 }
 
 .transaction:first-child {
@@ -616,9 +616,9 @@
   height: 31px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,170,50,.18);
+  border: 1px solid var(--a-border);
   border-radius: 8px;
-  color: #e4aa32;
+  color: var(--a-gold);
 }
 
 .transaction > div:nth-child(2) {
@@ -648,7 +648,7 @@
 }
 
 .goalAmount strong {
-  color: #f5eee1;
+  color: var(--a-heading);
   font-size: 28px;
 }
 
@@ -694,7 +694,7 @@
 }
 
 .category span {
-  color: #7e91aa;
+  color: var(--a-muted);
   font-size: 10px;
 }
 
@@ -730,13 +730,13 @@
   gap: 4px;
   text-align: center;
   padding: 17px 8px;
-  border: 1px solid rgba(228,170,50,.13);
+  border: 1px solid var(--a-border);
   border-radius: 9px;
   background: #051d38;
 }
 
 .structure strong {
-  color: #f0c15b;
+  color: var(--a-gold-strong);
   font-size: 24px;
 }
 
@@ -858,7 +858,7 @@
   border: 1px solid rgba(228,170,50,.28);
   border-radius: 16px;
   background:
-    radial-gradient(circle at 50% 0%,rgba(228,170,50,.06),transparent 12rem),
+    radial-gradient(circle at 50% 0%,var(--a-gold-soft),transparent 12rem),
     #041830;
   box-shadow:
     0 28px 70px rgba(0,0,0,.45),
@@ -916,7 +916,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  color: #e4aa32;
+  color: var(--a-gold);
   font-family: Georgia,serif;
   font-size: 20px;
   opacity: .72;
@@ -929,14 +929,14 @@
 }
 
 .actionLoadingCopy strong {
-  color: #f4eee3;
+  color: var(--a-heading);
   font-family: Georgia,serif;
   font-size: 19px;
   font-weight: 500;
 }
 
 .actionLoadingCopy span {
-  color: #7589a3;
+  color: var(--a-muted);
   font-size: 10px;
 }
 
@@ -976,4 +976,265 @@
   .actionLoadingDot {
     animation-duration: 1500ms;
   }
+}
+
+/* AUREUM GLOBAL UX DEMO V2 */
+.shell {
+  grid-template-columns: 248px minmax(0,1fr);
+  color: var(--a-text);
+  background: var(--a-page-bg);
+}
+
+.sidebar {
+  padding: 24px 18px 18px;
+  border-color: var(--a-border);
+  background: linear-gradient(180deg,var(--a-sidebar-1),var(--a-sidebar-2));
+}
+
+.brand {
+  width: 188px;
+  height: 72px;
+  margin-bottom: 30px;
+}
+
+.sidebarNav {
+  gap: 6px;
+}
+
+.sidebarNav a {
+  min-height: 44px;
+  gap: 10px;
+  padding: 0 12px;
+  color: var(--a-muted);
+  font-size: 12px;
+}
+
+.sidebarNav a:hover,
+.sidebarNav .activeLink {
+  color: var(--a-gold-strong);
+  background: var(--a-gold-soft);
+}
+
+.content {
+  width: min(100%,1560px);
+  margin: 0 auto;
+  padding: 38px clamp(28px,3.6vw,58px) 64px;
+}
+
+.profileButton,
+.profileMenu {
+  color: var(--a-text);
+}
+
+.profileMenu {
+  overflow: visible;
+  border-color: var(--a-border);
+  background: var(--a-elevated);
+  box-shadow: var(--a-shadow);
+}
+
+.profileNucleus > span {
+  color: var(--a-gold);
+  font-size: 9px;
+}
+
+.profileNucleus select {
+  min-height: 42px;
+  padding: 0 11px;
+  color: var(--a-control-text);
+  border-color: var(--a-control-border);
+  background: var(--a-control-bg);
+  font-size: 11px;
+}
+
+.profileNucleus option,
+.profileNucleus optgroup {
+  color: var(--a-option-text);
+  background: var(--a-option-bg);
+}
+
+.profileLinks strong {
+  font-size: 11px;
+}
+
+.profileLinks small {
+  color: var(--a-muted-2);
+  font-size: 9px;
+}
+
+.top {
+  margin-bottom: 20px;
+}
+
+.top h1 {
+  font-size: clamp(3rem,4.8vw,4.6rem);
+}
+
+.top p:not(.eyebrow) {
+  max-width: 780px;
+  color: var(--a-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.eyebrow {
+  color: var(--a-gold);
+  font-size: 10px;
+}
+
+.periodLabel {
+  color: var(--a-muted-2);
+  font-size: 9px;
+}
+
+.monthControl {
+  grid-template-columns: 40px minmax(210px,auto) 40px;
+}
+
+.monthArrow,
+.monthMain {
+  min-height: 44px;
+  color: var(--a-control-text);
+  border-color: var(--a-control-border);
+  background: var(--a-control-bg);
+}
+
+.monthMain strong {
+  font-size: 11px;
+}
+
+.monthPopover {
+  width: 330px;
+  color: var(--a-text);
+  border-color: var(--a-border);
+  background: var(--a-elevated);
+  box-shadow: var(--a-shadow);
+}
+
+.monthPopoverHeader button,
+.monthGrid button {
+  color: var(--a-text);
+  border-color: var(--a-border-soft);
+  background: var(--a-surface-2);
+}
+
+.summary {
+  gap: 12px;
+}
+
+.summary article {
+  min-height: 128px;
+  padding: 18px;
+  color: var(--a-text);
+  border-color: var(--a-border);
+  background: var(--a-card-gradient);
+}
+
+.summary span {
+  color: var(--a-muted);
+  font-size: 11px;
+}
+
+.summary strong {
+  font-size: clamp(1.45rem,2vw,2rem);
+}
+
+.summary small {
+  color: var(--a-muted-2);
+  font-size: 9px;
+}
+
+.panel {
+  color: var(--a-text);
+  border-color: var(--a-border);
+  background: var(--a-surface);
+  box-shadow: var(--a-shadow);
+}
+
+.panelHead p {
+  color: var(--a-gold);
+  font-size: 9px;
+}
+
+.panelHead h2 {
+  color: var(--a-heading);
+  font-size: 20px;
+}
+
+.transaction strong,
+.category strong {
+  font-size: 11px;
+}
+
+.transaction small,
+.category span {
+  font-size: 9px;
+}
+
+@media(min-width:1600px) {
+  .shell {
+    grid-template-columns: 260px minmax(0,1fr);
+  }
+
+  .content {
+    width: min(100%,1640px);
+    padding-inline: clamp(42px,4vw,74px);
+  }
+}
+
+@media(max-width:1180px) {
+  .shell {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .sidebar {
+    padding-inline: 14px;
+  }
+
+  .brand {
+    width: 170px;
+  }
+
+  .content {
+    padding-inline: 24px;
+  }
+}
+
+@media(max-width:1024px) {
+  .shell {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+    padding: 28px 20px 112px;
+  }
+}
+
+@media(max-width:700px) {
+  .content {
+    padding: 20px 12px 108px;
+  }
+
+  .top h1 {
+    font-size: clamp(2.3rem,12vw,3.5rem);
+  }
+}
+
+/* AUREUM PROFILE AUTH V3 */
+.profileMenuIdentity > span,
+.profileAvatar {
+  overflow: hidden;
+}
+
+.profileMenuIdentity > span img,
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }

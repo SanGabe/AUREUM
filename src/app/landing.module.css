@@ -1,9 +1,9 @@
 .page {
-  --bg: #00142f;
+  --bg: var(--a-page-bg-2);
   --bg-dark: #000b1d;
   --panel: #031c3a;
   --panel-light: #072443;
-  --gold: #e4aa32;
+  --gold: var(--a-gold);
   --gold-light: #f1c35d;
   --cream: #f4eee2;
   --text: #e3e9f2;
@@ -1238,3 +1238,20 @@
 
 .pillarCard { text-decoration: none; transition: transform .18s ease, border-color .18s ease; }
 .pillarCard:hover { transform: translateY(-3px); border-color: rgba(226,170,50,.5); }
+
+/* AUREUM GLOBAL UX DEMO V2 */
+.page {
+  color: var(--a-text);
+  background: var(--a-page-bg);
+}
+
+.header {
+  color: var(--a-text);
+}
+
+.problemCard,
+.history,
+.finalCta {
+  border-color: var(--a-border);
+  background-color: var(--a-surface);
+}

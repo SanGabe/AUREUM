@@ -16,6 +16,12 @@ import {
   monthBounds,
   roleLabel,
 } from "@/lib/aureum/finance-context";
+import {
+  accountTypeLabel,
+  categoryDisplayLabel,
+  categoryKindLabel,
+  investmentClassLabel,
+} from "@/lib/aureum/financial-labels";
 import styles from "./finance-page.module.css";
 
 function money(value: number, currency: string, locale: FinanceContext["locale"]) {
@@ -81,7 +87,7 @@ export async function TransactionsSection({
       context.supabase
         .from("transactions")
         .select(
-          "id, description, type, amount, currency, occurred_at, status, origin, reimbursable, categories(name), accounts(name), cards(name)",
+          "id, description, type, amount, currency, occurred_at, status, origin, reimbursable, categories(name,system_code), accounts(name), cards(name)",
         )
         .eq("household_id", context.nucleus.id)
         .gte("occurred_at", bounds.start)
@@ -90,7 +96,7 @@ export async function TransactionsSection({
         .limit(200),
       context.supabase
         .from("categories")
-        .select("id, name")
+        .select("id, name, system_code")
         .eq("household_id", context.nucleus.id)
         .order("name"),
       context.supabase
@@ -158,7 +164,10 @@ export async function TransactionsSection({
                     </td>
                     <td>
                       {[
-                        categoryLabel(row.categories?.name, locale),
+                        categoryDisplayLabel({
+                          name: row.categories?.name,
+                          systemCode: row.categories?.system_code,
+                        }, locale),
                         row.accounts?.name,
                         row.cards?.name,
                       ]
@@ -198,7 +207,7 @@ export async function TransactionsSection({
         <TransactionForm
           accounts={(accountsResult.data ?? []) as any}
           cards={(cardsResult.data ?? []) as any}
-          categories={(categoriesResult.data ?? []).map((item: any) => ({ ...item, name: categoryLabel(item.name, locale) ?? item.name })) as any}
+          categories={(categoriesResult.data ?? []).map((item: any) => ({ ...item, name: categoryDisplayLabel({ name: item.name, systemCode: item.system_code }, locale) })) as any}
           currency={context.nucleus.default_currency}
           householdId={context.nucleus.id}
           locale={locale}
@@ -221,7 +230,7 @@ export async function CategoriesSection({
   const [categoriesResult, monthlyResult] = await Promise.all([
     context.supabase
       .from("categories")
-      .select("id, name, kind, icon, created_at")
+      .select("id, name, kind, icon, system_code, created_at")
       .eq("household_id", context.nucleus.id)
       .order("name"),
     context.supabase.rpc("aureum_dashboard_categories_month", {
@@ -272,8 +281,8 @@ export async function CategoriesSection({
                   const month = monthly.get(row.name);
                   return (
                     <tr key={row.id}>
-                      <td><strong>{categoryLabel(row.name, locale)}</strong></td>
-                      <td><span className={styles.tag}>{row.kind}</span></td>
+                      <td><strong>{categoryDisplayLabel({ name: row.name, systemCode: row.system_code }, locale)}</strong></td>
+                      <td><span className={styles.tag}>{categoryKindLabel(row.kind, locale)}</span></td>
                       <td>
                         {money(
                           Number(month?.total ?? 0),
@@ -446,7 +455,7 @@ export async function AccountsSection({
                   <tr key={row.id}>
                     <td><strong>{row.name}</strong></td>
                     <td>{row.institution || "—"}</td>
-                    <td><span className={styles.tag}>{row.type}</span></td>
+                    <td><span className={styles.tag}>{accountTypeLabel(row.type, locale)}</span></td>
                     <td>{money(Number(row.opening_balance), row.currency, locale)}</td>
                   </tr>
                 ))}
@@ -625,7 +634,7 @@ export async function InvestmentsSection({
                         <strong>{row.symbol || row.name}</strong>
                         <div>{row.symbol ? row.name : row.institution || ""}</div>
                       </td>
-                      <td><span className={styles.tag}>{row.asset_class}</span></td>
+                      <td><span className={styles.tag}>{investmentClassLabel(row.asset_class, locale)}</span></td>
                       <td>{Number(row.quantity)}</td>
                       <td>{money(Number(row.average_price), row.currency, locale)}</td>
                       <td>{money(current, row.currency, locale)}</td>
@@ -663,7 +672,7 @@ export async function ExchangeRatesSection({
   const { data: rows } = await context.supabase
     .from("exchange_rates")
     .select("currency_code, rate_per_brl, fetched_at")
-    .in("currency_code", ["USD", "EUR", "GBP", "JPY", "CNY", "CHF", "CAD"])
+    .not("rate_per_brl", "is", null)
     .order("currency_code");
 
   const rates = (rows ?? [])

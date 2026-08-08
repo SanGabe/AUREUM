@@ -289,3 +289,16 @@
     padding-inline: 11px;
   }
 }
+
+/* AUREUM GLOBAL UX DEMO V2 */
+.field select {
+  color: var(--a-control-text);
+  border-color: var(--a-control-border);
+  background: var(--a-control-bg);
+}
+
+.field select option,
+.field select optgroup {
+  color: var(--a-option-text);
+  background: var(--a-option-bg);
+}

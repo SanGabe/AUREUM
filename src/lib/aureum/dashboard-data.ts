@@ -20,6 +20,7 @@ export async function loadDashboardData({
     categoryResult,
     goalResult,
     fxResult,
+    analyticsResult,
   ] = await Promise.all([
     supabase.rpc("aureum_dashboard_summary_month", {
       target_household: householdId,
@@ -51,8 +52,13 @@ export async function loadDashboardData({
     supabase
       .from("exchange_rates")
       .select("currency_code, rate_per_brl, fetched_at")
-      .in("currency_code", ["USD", "EUR", "GBP", "JPY", "CHF", "CAD", "CNY"])
+      .in("currency_code", ["USD", "EUR", "GBP", "ARS", "JPY", "CHF", "CAD", "CNY"])
       .order("currency_code"),
+    supabase.rpc("aureum_dashboard_analytics", {
+      target_household: householdId,
+      target_month: bounds.date,
+      months_back: 24,
+    }),
   ]);
 
   const summary =
@@ -96,6 +102,57 @@ export async function loadDashboardData({
       .sort()
       .at(-1) ?? null;
 
+  const analyticsRaw =
+    analyticsResult.data && typeof analyticsResult.data === "object"
+      ? (analyticsResult.data as Record<string, any>)
+      : null;
+
+  const analytics = analyticsRaw
+    ? {
+        currency: String(analyticsRaw.currency ?? currency),
+        trackedAssets: Number(analyticsRaw.tracked_assets ?? 0),
+        cashValue: Number(analyticsRaw.cash_value ?? 0),
+        investmentValue: Number(analyticsRaw.investment_value ?? 0),
+        income: Number(analyticsRaw.income ?? 0),
+        expenses: Number(analyticsRaw.expenses ?? 0),
+        savings: Number(analyticsRaw.savings ?? 0),
+        savingsRate: Number(analyticsRaw.savings_rate ?? 0),
+        monthly: (analyticsRaw.monthly ?? []).map((row: any) => ({
+          month: String(row.month),
+          income: Number(row.income ?? 0),
+          expenses: Number(row.expenses ?? 0),
+          cashFlow: Number(row.cash_flow ?? 0),
+          liquidBalance: Number(row.liquid_balance ?? 0),
+        })),
+        expenseCategories: (analyticsRaw.expense_categories ?? []).map(
+          (row: any) => ({
+            name: String(row.name ?? "Sem categoria"),
+            systemCode: row.system_code ? String(row.system_code) : null,
+            total: Number(row.total ?? 0),
+            percentage: Number(row.percentage ?? 0),
+          }),
+        ),
+        incomeCategories: (analyticsRaw.income_categories ?? []).map(
+          (row: any) => ({
+            name: String(row.name ?? "Sem categoria"),
+            systemCode: row.system_code ? String(row.system_code) : null,
+            total: Number(row.total ?? 0),
+            percentage: Number(row.percentage ?? 0),
+          }),
+        ),
+        accountTypes: (analyticsRaw.account_types ?? []).map((row: any) => ({
+          key: String(row.key ?? "other"),
+          value: Number(row.value ?? 0),
+        })),
+        investmentTypes: (analyticsRaw.investment_types ?? []).map(
+          (row: any) => ({
+            key: String(row.key ?? "other"),
+            value: Number(row.value ?? 0),
+          }),
+        ),
+      }
+    : null;
+
   return {
     currency,
     consolidatedBalance: Number(summary.consolidated_balance ?? 0),
@@ -116,5 +173,6 @@ export async function loadDashboardData({
       : null,
     exchangeRates,
     fxFetchedAt,
+    analytics,
   };
 }

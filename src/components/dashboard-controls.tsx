@@ -11,6 +11,7 @@ import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
 import { financeSectionPath, joinNucleusPath, type FinanceSection } from "@/components/finance-navigation";
 import { ThemeSelect } from "@/components/theme-selector";
+import { AccountAvatar } from "@/components/account-avatar";
 import styles from "./dashboard-view.module.css";
 
 export type NucleusOption = {
@@ -331,7 +332,7 @@ export function ProfileMenu({
       {open ? (
         <div className={styles.profileMenu}>
           <div className={styles.profileMenuIdentity}>
-            <span>{initials(userName)}</span>
+            <AccountAvatar name={userName} />
             <div>
               <strong>{userName}</strong>
               <small>{userEmail || en?.dashboard.profileSubtitle || "Conta AUREUM"}</small>
@@ -446,7 +447,7 @@ export function ProfileMenu({
         onClick={() => setOpen((value) => !value)}
         type="button"
       >
-        <span className={styles.profileAvatar}>{initials(userName)}</span>
+        <AccountAvatar className={styles.profileAvatar} name={userName} />
         <span className={styles.profileButtonCopy}>
           <strong>{userName.split(/\s+/)[0] || userName}</strong>
           <small>

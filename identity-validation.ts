@@ -18,13 +18,12 @@ export function formatCpf(value: string) {
     .replace(/\.(\d{3})(\d)/, ".$1-$2");
 }
 
-
 export function isValidCpf(value: string) {
   const cpf = onlyDigits(value);
 
   if (
     cpf.length !== 11 ||
-    /^(\\d)\\1{10}$/.test(cpf)
+    /^(\d)\1{10}$/.test(cpf)
   ) {
     return false;
   }
@@ -32,11 +31,7 @@ export function isValidCpf(value: string) {
   function calculateDigit(baseLength: number) {
     let sum = 0;
 
-    for (
-      let index = 0;
-      index < baseLength;
-      index += 1
-    ) {
+    for (let index = 0; index < baseLength; index += 1) {
       sum +=
         Number(cpf[index]) *
         (baseLength + 1 - index);
@@ -44,9 +39,7 @@ export function isValidCpf(value: string) {
 
     const remainder = (sum * 10) % 11;
 
-    return remainder === 10
-      ? 0
-      : remainder;
+    return remainder === 10 ? 0 : remainder;
   }
 
   const firstDigit = calculateDigit(9);
@@ -94,6 +87,7 @@ function classicCnpjDigit(
     );
 
   const rest = sum % 11;
+
   return rest < 2 ? 0 : 11 - rest;
 }
 
@@ -110,11 +104,13 @@ function alphaNumericCnpjDigit(
     .reduce(
       (total, char, index) =>
         total +
-        alphaNumericValue(char) * weights[index],
+        alphaNumericValue(char) *
+          weights[index],
       0,
     );
 
   const rest = sum % 11;
+
   return rest === 0 || rest === 1
     ? 0
     : 11 - rest;
@@ -123,50 +119,52 @@ function alphaNumericCnpjDigit(
 export function isValidCnpj(value: string) {
   const cnpj = normalizeCnpj(value);
 
-  if (cnpj.length !== 14) return false;
+  if (cnpj.length !== 14) {
+    return false;
+  }
 
   // Legacy numeric CNPJ.
-  if (/^\\d{14}$/.test(cnpj)) {
-    if (/^(\\d)\\1{13}$/.test(cnpj)) {
+  if (/^\d{14}$/.test(cnpj)) {
+    if (/^(\d)\1{13}$/.test(cnpj)) {
       return false;
     }
 
-    const first = classicCnpjDigit(
+    const firstDigit = classicCnpjDigit(
       cnpj.slice(0, 12),
       [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
     );
 
-    const second = classicCnpjDigit(
-      `${cnpj.slice(0, 12)}${first}`,
+    const secondDigit = classicCnpjDigit(
+      `${cnpj.slice(0, 12)}${firstDigit}`,
       [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
     );
 
     return (
-      first === Number(cnpj[12]) &&
-      second === Number(cnpj[13])
+      firstDigit === Number(cnpj[12]) &&
+      secondDigit === Number(cnpj[13])
     );
   }
 
   // New alphanumeric format:
-  // first 12 positions are A-Z / 0-9 and
-  // the two check digits remain numeric.
-  if (!/^[A-Z0-9]{12}\\d{2}$/.test(cnpj)) {
+  // the first 12 positions may contain A-Z / 0-9,
+  // while the two check digits remain numeric.
+  if (!/^[A-Z0-9]{12}\d{2}$/.test(cnpj)) {
     return false;
   }
 
-  const first = alphaNumericCnpjDigit(
+  const firstDigit = alphaNumericCnpjDigit(
     cnpj.slice(0, 12),
     [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
   );
 
-  const second = alphaNumericCnpjDigit(
-    `${cnpj.slice(0, 12)}${first}`,
+  const secondDigit = alphaNumericCnpjDigit(
+    `${cnpj.slice(0, 12)}${firstDigit}`,
     [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
   );
 
   return (
-    first === Number(cnpj[12]) &&
-    second === Number(cnpj[13])
+    firstDigit === Number(cnpj[12]) &&
+    secondDigit === Number(cnpj[13])
   );
 }
 
@@ -188,8 +186,11 @@ export function passwordChecks(
   };
 }
 
-export function isStrongEnoughPassword(password: string) {
+export function isStrongEnoughPassword(
+  password: string,
+) {
   const checks = passwordChecks(password);
+
   return Object.values(checks).every(Boolean);
 }
 

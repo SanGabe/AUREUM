@@ -73,7 +73,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  color: #e4aa32;
+  color: var(--a-gold);
   font-family: Georgia,"Times New Roman",serif;
   font-size: 20px;
   opacity: .75;
@@ -86,7 +86,7 @@
 }
 
 .copy strong {
-  color: #f4eee3;
+  color: var(--a-heading);
   font-family: Georgia,"Times New Roman",serif;
   font-size: 18px;
   font-weight: 500;

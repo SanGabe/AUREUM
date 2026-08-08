@@ -1,30 +1,95 @@
 .shell {
   min-height:100vh; display:grid; grid-template-columns:minmax(360px,1fr) minmax(420px,640px);
-  color:#e7ecf4; background:linear-gradient(135deg,#001730,#000b1c);
+  color:var(--a-text); background:linear-gradient(135deg,#001730,#000b1c);
 }
-.brandPanel { position:relative; overflow:hidden; min-height:100vh; padding:55px clamp(32px,7vw,110px); display:flex; flex-direction:column; justify-content:space-between; border-right:1px solid rgba(228,170,50,.15); background:radial-gradient(circle at 25% 25%,rgba(228,170,50,.07),transparent 28rem); }
+.brandPanel { position:relative; overflow:hidden; min-height:100vh; padding:55px clamp(32px,7vw,110px); display:flex; flex-direction:column; justify-content:space-between; border-right:1px solid var(--a-border); background:radial-gradient(circle at 25% 25%,rgba(228,170,50,.07),transparent 28rem); }
 .brandLogo { width:290px; height:125px; display:block; position:relative; z-index:2; }
 .brandLogo img { width:100%; height:100%; object-fit:contain; object-position:left top; }
 .brandCopy { max-width:650px; position:relative; z-index:2; margin:auto 0; }
 .eyebrow { margin:0 0 13px; color:#f1c35d; font-family:Georgia,serif; font-size:12px; font-weight:700; letter-spacing:.15em; }
-.brandCopy h2 { margin:0; color:#f5eee1; font-family:Georgia,serif; font-size:clamp(2.7rem,5vw,5rem); font-weight:500; line-height:1; letter-spacing:-.04em; }
+.brandCopy h2 { margin:0; color:var(--a-heading); font-family:Georgia,serif; font-size:clamp(2.7rem,5vw,5rem); font-weight:500; line-height:1; letter-spacing:-.04em; }
 .brandCopy p:not(.eyebrow) { max-width:620px; margin:22px 0 0; color:#a8b5c7; font-size:17px; line-height:1.65; }
 .authBird { position:absolute; right:-70px; bottom:-35px; width:390px; height:430px; object-fit:contain; opacity:.25; }
 .formPanel { min-height:100vh; display:grid; place-items:center; padding:40px 30px; }
 .card { width:min(100%,480px); }
 .header { margin-bottom:29px; }
-.header h1 { margin:0 0 10px; color:#f5eee1; font-family:Georgia,serif; font-size:clamp(2.4rem,6vw,3.7rem); font-weight:500; line-height:1.02; letter-spacing:-.04em; }
+.header h1 { margin:0 0 10px; color:var(--a-heading); font-family:Georgia,serif; font-size:clamp(2.4rem,6vw,3.7rem); font-weight:500; line-height:1.02; letter-spacing:-.04em; }
 .header p:not(.eyebrow) { margin:0; color:#9faec2; line-height:1.6; }
 .form { display:grid; gap:18px; }
 .field { display:grid; gap:8px; color:#dbe2ec; font-size:13px; font-weight:600; }
-.field input { min-height:54px; width:100%; padding:0 16px; border:1px solid rgba(228,170,50,.22); border-radius:10px; outline:0; color:#f5eee1; background:#041b36; font:inherit; }
-.field input:focus { border-color:#e4aa32; box-shadow:0 0 0 3px rgba(228,170,50,.1); }
+.field input { min-height:54px; width:100%; padding:0 16px; border:1px solid var(--a-border); border-radius:10px; outline:0; color:var(--a-heading); background:#041b36; font:inherit; }
+.field input:focus { border-color:var(--a-gold); box-shadow:0 0 0 3px rgba(228,170,50,.1); }
 .field input::placeholder { color:#6f829e; }
-.submit { min-height:55px; border:0; border-radius:9px; color:#07152d; background:linear-gradient(135deg,#f3c862,#d99c2e); font:inherit; font-weight:850; cursor:pointer; box-shadow:0 13px 30px rgba(217,156,46,.15); }
+.submit { min-height:55px; border:0; border-radius:9px; color:var(--a-page-bg-2); background:linear-gradient(135deg,#f3c862,#d99c2e); font:inherit; font-weight:850; cursor:pointer; box-shadow:0 13px 30px rgba(217,156,46,.15); }
 .submit:disabled { opacity:.65; cursor:wait; }
 .message,.error { padding:13px 14px; border-radius:10px; font-size:13px; line-height:1.5; }
-.message { color:#f2cb65; border:1px solid rgba(228,170,50,.25); background:rgba(228,170,50,.08); }
+.message { color:#f2cb65; border:1px solid var(--a-border); background:rgba(228,170,50,.08); }
 .error { color:#ffc4c4; border:1px solid rgba(255,100,100,.25); background:rgba(255,70,70,.07); }
 .footer { margin:22px 0 0; color:#8899b0; text-align:center; font-size:13px; }
-.footer a { color:#efc15d; font-weight:800; }
+.footer a { color:var(--a-gold-strong); font-weight:800; }
 @media(max-width:900px){ .shell{grid-template-columns:1fr}.brandPanel{min-height:280px;padding:30px 24px}.brandLogo{width:220px;height:90px}.brandCopy{margin:35px 0}.brandCopy h2{font-size:2.6rem}.authBird{width:240px;height:260px;opacity:.18}.formPanel{min-height:auto;padding:55px 24px 80px} }
+
+/* AUREUM GLOBAL UX DEMO V2 */
+.shell {
+  color: var(--a-text);
+  background: var(--a-page-bg);
+}
+
+.card,
+.formPanel {
+  color: var(--a-text);
+}
+
+.card {
+  border-color: var(--a-border);
+  background: var(--a-surface);
+  box-shadow: var(--a-shadow);
+}
+
+.card input,
+.card select {
+  color: var(--a-control-text);
+  border-color: var(--a-control-border);
+  background: var(--a-control-bg);
+}
+
+/* AUREUM PROFILE AUTH V3 */
+.signupShell {
+  grid-template-columns:
+    minmax(340px,.92fr)
+    minmax(620px,800px);
+}
+
+.signupCard {
+  width: min(100%,720px);
+}
+
+.signupShell .formPanel {
+  padding-inline: clamp(24px,3vw,48px);
+}
+
+@media(max-width:1100px) and (min-width:901px) {
+  .signupShell {
+    grid-template-columns:
+      minmax(300px,.72fr)
+      minmax(590px,1fr);
+  }
+
+  .signupShell .brandPanel {
+    padding-inline: 28px;
+  }
+
+  .signupShell .brandCopy h2 {
+    font-size: clamp(2.35rem,4.5vw,3.8rem);
+  }
+}
+
+@media(max-width:900px) {
+  .signupShell {
+    grid-template-columns: 1fr;
+  }
+
+  .signupCard {
+    width: min(100%,680px);
+  }
+}

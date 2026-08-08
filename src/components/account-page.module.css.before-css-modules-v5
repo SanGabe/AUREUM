@@ -189,16 +189,16 @@
   box-shadow: var(--a-shadow);
 }
 
-.form input,
-.form select,
-.form textarea {
+input,
+select,
+textarea {
   color: var(--a-control-text);
   border-color: var(--a-control-border);
   background: var(--a-control-bg);
 }
 
-.form select option,
-.form select optgroup {
+select option,
+select optgroup {
   color: var(--a-option-text);
   background: var(--a-option-bg);
 }

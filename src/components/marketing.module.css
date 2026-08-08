@@ -1,6 +1,6 @@
 .page {
-  --gold:#e4aa32; --gold-light:#f2c561; --cream:#f5eee1; --muted:#a7b4c7;
-  min-height:100vh; overflow-x:hidden; color:#e7ecf4;
+  --gold:var(--a-gold); --gold-light:#f2c561; --cream:var(--a-heading); --muted:#a7b4c7;
+  min-height:100vh; overflow-x:hidden; color:var(--a-text);
   background:radial-gradient(circle at 84% 5%,rgba(228,170,50,.05),transparent 30rem),
              linear-gradient(180deg,#011932 0%,#001229 50%,#000b1c 100%);
 }
@@ -15,14 +15,14 @@
 .headerActions { display:flex; justify-content:flex-end; gap:11px; }
 .primarySmall,.secondarySmall,.primaryButton { display:inline-flex; align-items:center; justify-content:center; border-radius:8px; font-weight:800; }
 .primarySmall,.secondarySmall { min-height:44px; padding:0 18px; font-size:13px; }
-.primarySmall,.primaryButton { color:#07152d; background:linear-gradient(135deg,#f3c963,#d99d2e); }
+.primarySmall,.primaryButton { color:var(--a-page-bg-2); background:linear-gradient(135deg,#f3c963,#d99d2e); }
 .secondarySmall { color:var(--cream); border:1px solid rgba(228,170,50,.56); }
 .hero { min-height:500px; display:grid; grid-template-columns:1fr 410px; gap:70px; align-items:center; padding:58px 0 72px; }
 .eyebrow { margin:0 0 14px; color:var(--gold-light); font-family:Georgia,serif; font-size:13px; font-weight:700; letter-spacing:.15em; }
 .hero h1 { max-width:840px; margin:0; color:var(--cream); font-family:Georgia,serif; font-size:clamp(3.3rem,6vw,5.6rem); font-weight:500; line-height:.99; letter-spacing:-.045em; }
 .heroText { max-width:760px; margin:24px 0 0; color:var(--muted); font-size:18px; line-height:1.62; }
 .heroVisual { position:relative; width:380px; height:380px; display:grid; place-items:center; justify-self:end; }
-.heroVisual span { position:absolute; border:1px solid rgba(228,170,50,.2); border-radius:50%; }
+.heroVisual span { position:absolute; border:1px solid var(--a-border); border-radius:50%; }
 .heroVisual span:first-child { inset:15px; } .heroVisual span:nth-child(2) { inset:58px; opacity:.55; }
 .heroVisual img { position:relative; z-index:2; width:250px; height:250px; object-fit:contain; }
 .content { padding:0 0 52px; }
@@ -42,7 +42,7 @@
 .splitVisual,.splitCopy { min-height:330px; border:1px solid rgba(228,170,50,.24); border-radius:15px; background:rgba(4,25,51,.76); }
 .splitVisual { display:grid; place-items:center; position:relative; overflow:hidden; }
 .splitVisual img { width:245px; height:245px; object-fit:contain; position:relative; z-index:2; }
-.splitVisual::before { content:""; position:absolute; width:320px; height:320px; border:1px solid rgba(228,170,50,.13); border-radius:50%; }
+.splitVisual::before { content:""; position:absolute; width:320px; height:320px; border:1px solid var(--a-border); border-radius:50%; }
 .splitCopy { padding:36px; }
 .split h2 { margin:3px 0 12px; font-size:clamp(2rem,3.5vw,3.1rem); line-height:1.05; }
 .splitCopy>p:not(.eyebrow) { color:var(--muted); line-height:1.62; }
@@ -63,7 +63,7 @@
   width: min(1320px, calc(100% - 64px));
   margin-inline: auto;
   padding: 0;
-  border-top: 1px solid rgba(228,170,50,.16);
+  border-top: 1px solid var(--a-border);
 }
 
 .footerTop {
@@ -175,7 +175,7 @@
   justify-content: space-between;
   gap: 24px;
   align-items: center;
-  border-top: 1px solid rgba(255,255,255,.055);
+  border-top: 1px solid var(--a-border-soft);
   color: #5f728d;
   font-size: 10px;
 }
@@ -278,4 +278,25 @@
   border-radius: 50%;
   clip-path: circle(50%);
   object-fit: cover;
+}
+
+/* AUREUM GLOBAL UX DEMO V2 */
+.page,
+.shell {
+  color: var(--a-text);
+  background: var(--a-page-bg);
+}
+
+.header,
+.card,
+.cta,
+.footer {
+  color: var(--a-text);
+}
+
+.card,
+.cta {
+  border-color: var(--a-border);
+  background: var(--a-surface);
+  box-shadow: var(--a-shadow);
 }
