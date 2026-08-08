@@ -15,20 +15,50 @@ export default function SobreNosPage() {
 
       <section className={styles.content}>
         <div className={styles.split}>
-          <div className={styles.splitVisual}><img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" /></div>
+          <div className={styles.splitVisual}>
+            <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" />
+          </div>
+
           <div className={styles.splitCopy}>
-            <p className={styles.eyebrow}>O NOME</p>
-            <h2>O valor do AU. O poder de UM.</h2>
-            <p><strong>AU</strong> remete ao símbolo químico do ouro: valor, patrimônio e solidez. <strong>UM</strong> traduz o objetivo do produto: reunir sua vida financeira em um único lugar.</p>
+            <p className={styles.eyebrow}>A IDEIA</p>
+            <h2>Tecnologia para transformar organização em liberdade.</h2>
+            <p>
+              O AUREUM nasceu de uma ideia simples: cuidar da vida financeira
+              não deveria significar manter planilhas espalhadas, anotações
+              desconectadas e informações difíceis de acompanhar. Criamos uma
+              experiência que une clareza, controle e colaboração para ajudar
+              pessoas e famílias a tomar decisões melhores.
+            </p>
           </div>
         </div>
 
         <div className={styles.cards3}>
-          <Link className={styles.card} href="/amor"><span className={styles.number}>AMOR</span><h3>Cuidar do que importa</h3><p>Finanças como ferramenta para proteger pessoas, objetivos e escolhas.</p></Link>
-          <Link className={styles.card} href="/ordo"><span className={styles.number}>ORDO</span><h3>Ordem que gera liberdade</h3><p>Método, estrutura e clareza para reduzir improviso.</p></Link>
-          <Link className={styles.card} href="/progressus"><span className={styles.number}>PROGRESSUS</span><h3>Evolução constante</h3><p>Decisões melhores hoje para construir mais possibilidades amanhã.</p></Link>
+          <Link className={styles.card} href="/amor">
+            <span className={styles.number}>AMOR</span>
+            <h3>Cuidar do que importa</h3>
+            <p>
+              Finanças como ferramenta para proteger pessoas, objetivos e escolhas.
+            </p>
+          </Link>
+
+          <Link className={styles.card} href="/ordo">
+            <span className={styles.number}>ORDO</span>
+            <h3>Ordem que gera liberdade</h3>
+            <p>
+              Método, estrutura e clareza para reduzir improviso.
+            </p>
+          </Link>
+
+          <Link className={styles.card} href="/progressus">
+            <span className={styles.number}>PROGRESSUS</span>
+            <h3>Evolução constante</h3>
+            <p>
+              Decisões melhores hoje para construir mais possibilidades amanhã.
+            </p>
+          </Link>
         </div>
       </section>
+
       <CTA />
     </MarketingShell>
   );
