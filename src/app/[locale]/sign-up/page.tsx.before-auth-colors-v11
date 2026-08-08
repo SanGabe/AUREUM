@@ -43,7 +43,14 @@ export default async function Page({
           <h2>{t.auth.signUpBrandTitle}</h2>
           <p>{t.auth.signUpBrandText}</p>
         </div>
-</section>
+
+        <img
+          className={styles.authBird}
+          src="/brand/aureum-footer-bird.svg"
+          alt=""
+          aria-hidden="true"
+        />
+      </section>
 
       <section className={styles.formPanel}>
         <div

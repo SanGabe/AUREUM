@@ -31,7 +31,14 @@ export default function SignUpPage() {
             entrar em um que já existe.
           </p>
         </div>
-</section>
+
+        <img
+          className={styles.authBird}
+          src="/brand/aureum-footer-bird.svg"
+          alt=""
+          aria-hidden="true"
+        />
+      </section>
 
       <section className={styles.formPanel}>
         <div

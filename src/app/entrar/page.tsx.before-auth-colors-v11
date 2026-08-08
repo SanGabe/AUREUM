@@ -22,7 +22,8 @@ export default async function LoginPage({ searchParams }: Props) {
           <h2>Clareza começa quando tudo volta para o mesmo lugar.</h2>
           <p>Entre para acessar seus Núcleos, movimentações, metas e permissões.</p>
         </div>
-</section>
+        <img className={styles.authBird} src="/brand/aureum-footer-bird.svg" alt="" aria-hidden="true" />
+      </section>
 
       <section className={styles.formPanel}>
         <div className={styles.card}>
