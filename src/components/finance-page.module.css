@@ -9,7 +9,7 @@
 
 .eyebrow {
   margin: 0 0 9px;
-  color: #e7ad35;
+  color: var(--a-gold);
   font-size: 8px;
   font-weight: 850;
   letter-spacing: .15em;
@@ -17,7 +17,7 @@
 
 .pageHeader h1 {
   margin: 0;
-  color: #f3eee4;
+  color: var(--a-heading);
   font-family: Georgia,"Times New Roman",serif;
   font-size: clamp(34px,4.2vw,58px);
   font-weight: 500;
@@ -27,7 +27,7 @@
 .pageHeader p:not(.eyebrow) {
   max-width: 760px;
   margin: 12px 0 0;
-  color: #8395ad;
+  color: var(--a-muted);
   font-size: 10px;
   line-height: 1.55;
 }
@@ -35,9 +35,9 @@
 .nucleusBadge {
   margin-top: 10px;
   padding: 8px 11px;
-  border: 1px solid rgba(228,170,50,.2);
+  border: 1px solid var(--a-border);
   border-radius: 999px;
-  color: #cfaa58;
+  color: var(--a-gold-strong);
   background: rgba(228,170,50,.04);
   font-size: 8px;
   font-weight: 750;
@@ -53,7 +53,7 @@
 }
 
 .toolbarText {
-  color: #72879f;
+  color: var(--a-muted);
   font-size: 9px;
 }
 
@@ -69,7 +69,7 @@
 .card,
 .formCard,
 .tableCard {
-  border: 1px solid rgba(228,170,50,.2);
+  border: 1px solid var(--a-border);
   border-radius: 11px;
   background: rgba(4,27,55,.75);
 }
@@ -82,7 +82,7 @@
 .formCard h2,
 .tableCard h2 {
   margin: 0;
-  color: #f0ece5;
+  color: var(--a-heading);
   font-family: Georgia,"Times New Roman",serif;
   font-size: 18px;
   font-weight: 500;
@@ -90,7 +90,7 @@
 
 .card > p {
   margin: 7px 0 0;
-  color: #7589a3;
+  color: var(--a-muted);
   font-size: 9px;
   line-height: 1.5;
 }
@@ -101,12 +101,12 @@
 }
 
 .metric span {
-  color: #7e91a8;
+  color: var(--a-muted);
   font-size: 8px;
 }
 
 .metric strong {
-  color: #f0c15b;
+  color: var(--a-gold-strong);
   font-family: Georgia,"Times New Roman",serif;
   font-size: 25px;
   font-weight: 500;
@@ -135,7 +135,7 @@
 }
 
 .table th {
-  color: #70849e;
+  color: var(--a-muted-2);
   font-size: 7px;
   font-weight: 800;
   letter-spacing: .08em;
@@ -148,28 +148,28 @@
 }
 
 .table td strong {
-  color: #edf0f4;
+  color: var(--a-text);
   font-weight: 650;
 }
 
-.positive { color: #42d3a1 !important; }
-.negative { color: #ff7070 !important; }
-.gold { color: #efba4b !important; }
+.positive { color: var(--a-success) !important; }
+.negative { color: var(--a-danger) !important; }
+.gold { color: var(--a-gold-strong) !important; }
 
 .tag {
   display: inline-flex;
   align-items: center;
   padding: 4px 7px;
-  border: 1px solid rgba(228,170,50,.15);
+  border: 1px solid var(--a-border);
   border-radius: 999px;
-  color: #c9a54e;
+  color: var(--a-gold-strong);
   background: rgba(228,170,50,.035);
   font-size: 7px;
 }
 
 .empty {
   padding: 45px 20px;
-  color: #6e829d;
+  color: var(--a-muted-2);
   text-align: center;
   font-size: 10px;
 }
@@ -193,7 +193,7 @@
 .field {
   display: grid;
   gap: 6px;
-  color: #8193a9;
+  color: var(--a-muted);
   font-size: 8px;
   font-weight: 700;
 }
@@ -204,7 +204,7 @@
   min-height: 38px;
   width: 100%;
   padding: 9px 10px;
-  border: 1px solid rgba(228,170,50,.18);
+  border: 1px solid var(--a-border);
   border-radius: 8px;
   outline: none;
   color: #e8edf3;
@@ -239,20 +239,20 @@
 }
 
 .primaryButton {
-  border: 1px solid #dba536;
+  border: 1px solid var(--a-gold);
   color: #06162d;
   background: linear-gradient(135deg,#f0c35d,#dca330);
 }
 
 .secondaryButton {
-  border: 1px solid rgba(228,170,50,.22);
+  border: 1px solid var(--a-border);
   color: #cbb26d;
   background: transparent;
 }
 
 .dangerButton {
   border: 1px solid rgba(255,105,105,.28);
-  color: #ff8d8d;
+  color: var(--a-danger);
   background: rgba(255,105,105,.04);
 }
 
@@ -273,20 +273,20 @@
 }
 
 .notice {
-  border: 1px solid rgba(228,170,50,.15);
+  border: 1px solid var(--a-border);
   color: #a99772;
   background: rgba(228,170,50,.035);
 }
 
 .success {
   border: 1px solid rgba(63,211,159,.2);
-  color: #57d7ac;
+  color: var(--a-success);
   background: rgba(63,211,159,.04);
 }
 
 .error {
   border: 1px solid rgba(255,105,105,.2);
-  color: #ff8d8d;
+  color: var(--a-danger);
   background: rgba(255,105,105,.04);
 }
 
@@ -300,7 +300,7 @@
   display: grid;
   gap: 10px;
   padding: 14px;
-  border: 1px solid rgba(228,170,50,.15);
+  border: 1px solid var(--a-border);
   border-radius: 9px;
   background: rgba(6,29,57,.58);
 }
@@ -312,13 +312,13 @@
 }
 
 .approvalCard header strong {
-  color: #edf0f4;
+  color: var(--a-text);
   font-size: 10px;
 }
 
 .approvalCard header span,
 .approvalCard p {
-  color: #7387a0;
+  color: var(--a-muted);
   font-size: 8px;
 }
 
@@ -354,5 +354,106 @@
 
   .table {
     min-width: 650px;
+  }
+}
+
+/* AUREUM RESPONSIVE THEME V1 */
+.pageHeader h1,
+.card h2,
+.formCard h2,
+.tableCard h2 {
+  color: var(--a-heading);
+}
+
+.card,
+.formCard,
+.tableCard {
+  border-color: var(--a-border);
+  background: var(--a-surface);
+  box-shadow: var(--a-shadow);
+}
+
+.field input,
+.field select,
+.field textarea {
+  color: var(--a-text);
+  background: var(--a-input);
+  border-color: var(--a-border);
+}
+
+.themeSetting {
+  display: grid;
+  gap: 8px;
+}
+
+.themeSetting > span {
+  color: var(--a-muted);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+@media(max-width:1180px) {
+  .grid3 {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:1024px) {
+  .pageHeader {
+    min-height: 118px;
+    padding-top: 4px;
+  }
+
+  .pageHeader h1 {
+    font-size: clamp(2.15rem,8vw,3.5rem);
+  }
+}
+
+@media(max-width:720px) {
+  .pageHeader {
+    min-height: 0;
+    display: grid;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .nucleusBadge {
+    margin: 0;
+  }
+
+  .grid2,
+  .grid3,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    align-items: stretch;
+  }
+
+  .tableCard {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 680px;
+  }
+
+  .formCard,
+  .card {
+    padding: 15px;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .dangerButton {
+    min-height: 44px;
+  }
+}
+
+@media(max-width:460px) {
+  .table {
+    min-width: 620px;
   }
 }

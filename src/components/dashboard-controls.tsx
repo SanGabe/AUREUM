@@ -10,6 +10,7 @@ import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
 import { financeSectionPath, joinNucleusPath, type FinanceSection } from "@/components/finance-navigation";
+import { ThemeSelect } from "@/components/theme-selector";
 import styles from "./dashboard-view.module.css";
 
 export type NucleusOption = {
@@ -372,6 +373,10 @@ export function ProfileMenu({
               <option value="en-GB">English — United Kingdom</option>
             </select>
           </label>
+
+          <div className={styles.profileNucleus}>
+            <ThemeSelect compact locale={locale} />
+          </div>
 
           <div className={styles.profileDivider} />
 

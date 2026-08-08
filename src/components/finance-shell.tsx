@@ -8,6 +8,7 @@ import {
 } from "@/components/finance-navigation";
 import type { FinanceContext } from "@/lib/aureum/finance-context";
 import { roleLabel } from "@/lib/aureum/finance-context";
+import { MobileFinanceNav } from "@/components/mobile-finance-nav";
 import type { AppLocale } from "@/i18n/locales";
 import styles from "./dashboard-view.module.css";
 import pageStyles from "./finance-page.module.css";
@@ -67,6 +68,25 @@ export function FinanceShell({
             locale={locale}
           />
         </aside>
+
+        <MobileFinanceNav
+          active={active}
+          currentNucleusId={context.nucleus.id}
+          locale={locale}
+          month={context.selectedMonth}
+          nuclei={context.nuclei.map((nucleus) => ({
+            id: nucleus.id,
+            name: nucleus.name,
+            roleLabel: roleLabel(
+              context.memberships.find(
+                (membership) =>
+                  membership.household_id === nucleus.id,
+              )?.role ?? "viewer",
+              locale,
+            ),
+          }))}
+          userName={context.userName}
+        />
 
         <section className={styles.content}>
           <header className={pageStyles.pageHeader}>

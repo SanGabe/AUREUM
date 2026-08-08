@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import "./theme.css";
 
 export const metadata: Metadata = {
   title: {
@@ -16,8 +18,32 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#00142f",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#00142f" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f3ea" },
+  ],
 };
+
+const themeBootScript = `
+(() => {
+  try {
+    const stored = localStorage.getItem("aureum-theme");
+    const theme =
+      stored === "light" || stored === "contrast" || stored === "dark"
+        ? stored
+        : "dark";
+
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme =
+      theme === "light" ? "light" : "dark";
+  } catch {
+    document.documentElement.dataset.theme = "dark";
+  }
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -25,8 +51,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body>{children}</body>
+    <html
+      data-theme="dark"
+      lang="pt-BR"
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: themeBootScript }}
+        />
+      </head>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

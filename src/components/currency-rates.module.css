@@ -16,9 +16,9 @@
   justify-content: space-between;
   gap: 18px;
   padding: 11px 13px;
-  border: 1px solid rgba(228,170,50,.13);
+  border: 1px solid var(--a-border);
   border-radius: 9px;
-  background: rgba(7,31,61,.46);
+  background: var(--a-surface-2);
 }
 
 .currencyIdentity {
@@ -32,9 +32,9 @@
   height: 38px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,170,50,.25);
+  border: 1px solid var(--a-border);
   border-radius: 50%;
-  color: #efbd4d;
+  color: var(--a-gold-strong);
   font-size: 9px;
   font-weight: 850;
   letter-spacing: .04em;
@@ -48,7 +48,7 @@
 
 .currencyIdentity strong,
 .rateValue strong {
-  color: #e9edf3;
+  color: var(--a-text);
   font-size: 11px;
   font-weight: 650;
 }
@@ -56,7 +56,7 @@
 .currencyIdentity small,
 .rateValue small,
 .updated {
-  color: #70859e;
+  color: var(--a-muted-2);
   font-size: 8px;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .rateValue strong {
-  color: #f0c15b;
+  color: var(--a-gold-strong);
   font-size: 13px;
 }
 
@@ -76,9 +76,9 @@
 
 .empty {
   padding: 26px;
-  border: 1px dashed rgba(228,170,50,.16);
+  border: 1px dashed var(--a-border);
   border-radius: 10px;
-  color: #71859e;
+  color: var(--a-muted-2);
   text-align: center;
   font-size: 10px;
 }

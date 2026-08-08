@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { CurrencySelect } from "@/components/currency-select";
+import { ThemeButtons } from "@/components/theme-selector";
 import type { AppLocale, EnglishLocale } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
 import styles from "./account-page.module.css";
@@ -79,6 +80,11 @@ export function SettingsForm({
           <option value="en-GB">English — United Kingdom</option>
         </select>
       </label>
+
+      <div className={styles.themeSetting}>
+        <span>{locale === "pt-BR" ? "Aparência" : "Appearance"}</span>
+        <ThemeButtons locale={locale} />
+      </div>
 
       <label>
         {en?.account.personalCurrency ?? "Moeda padrão pessoal"}

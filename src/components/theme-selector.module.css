@@ -1,0 +1,92 @@
+.field,
+.compact {
+  display: grid;
+  gap: 6px;
+}
+
+.field > span,
+.compact > span {
+  color: var(--a-gold);
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.field select,
+.compact select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--a-border);
+  border-radius: 8px;
+  outline: 0;
+  color: var(--a-text);
+  background: var(--a-input);
+  font: inherit;
+  font-size: 10px;
+}
+
+.compact select {
+  min-height: 36px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 7px;
+}
+
+.buttons button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 10px;
+  border: 1px solid var(--a-border);
+  border-radius: 8px;
+  color: var(--a-muted);
+  background: var(--a-surface-2);
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.buttons button:hover,
+.buttons button.active {
+  color: var(--a-gold-strong);
+  border-color: var(--a-gold);
+  background: var(--a-gold-soft);
+}
+
+@media(max-width:520px) {
+  .buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .buttons button {
+    justify-content: flex-start;
+    padding-inline: 14px;
+  }
+}
+
+
+.headerSelect {
+  width: 112px;
+  min-height: 34px;
+  padding: 0 7px;
+  border: 1px solid var(--a-border);
+  border-radius: 7px;
+  outline: 0;
+  color: var(--a-muted);
+  background: var(--a-surface);
+  font: inherit;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.headerSelect:hover {
+  color: var(--a-gold-strong);
+  border-color: var(--a-gold);
+}

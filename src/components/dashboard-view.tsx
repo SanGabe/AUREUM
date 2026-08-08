@@ -10,6 +10,7 @@ import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
 import { FinanceNavigation } from "@/components/finance-navigation";
 import { CurrencyRates, type ExchangeRateRow } from "@/components/currency-rates";
+import { MobileFinanceNav } from "@/components/mobile-finance-nav";
 import styles from "./dashboard-view.module.css";
 
 export type DashboardTransaction = {
@@ -249,6 +250,25 @@ export function DashboardView({
             </div>
           )}
         </aside>
+
+        {demo ? (
+          <MobileFinanceNav
+            active="dashboard"
+            demo
+            locale={locale}
+            month={selectedMonth}
+            userName={userName}
+          />
+        ) : householdId ? (
+          <MobileFinanceNav
+            active="dashboard"
+            currentNucleusId={householdId}
+            locale={locale}
+            month={selectedMonth}
+            nuclei={households}
+            userName={userName}
+          />
+        ) : null}
 
         <section className={styles.content}>
           <header className={styles.top}>
