@@ -1,248 +1,189 @@
 import Link from "next/link";
-import { SummaryCard } from "@/components/summary-card";
 import { LogoutButton } from "@/components/logout-button";
+import { HouseholdSwitcher } from "@/components/household-switcher";
+import styles from "./dashboard-view.module.css";
 
-const transactions = [
-  {
-    description: "Mercado São Luiz",
-    category: "Alimentação",
-    account: "Nubank",
-    value: "− R$ 186,42",
-  },
-  {
-    description: "Salário",
-    category: "Receita",
-    account: "XP",
-    value: "+ R$ 2.702,00",
-  },
-  {
-    description: "Steam",
-    category: "Jogos",
-    account: "XP Visa",
-    value: "− R$ 74,90",
-  },
-  {
-    description: "Reserva Portugal",
-    category: "Meta",
-    account: "XP",
-    value: "− R$ 500,00",
-  },
-];
+export type DashboardTransaction = {
+  id: string;
+  description: string;
+  type: "income" | "expense" | "transfer";
+  amount: number;
+  currency: string;
+  occurredAt: string;
+  categoryName: string | null;
+  accountName: string | null;
+  cardName: string | null;
+};
 
-const categories = [
-  { name: "Moradia", percent: 74, value: "R$ 1.480" },
-  { name: "Alimentação", percent: 58, value: "R$ 696" },
-  { name: "Transporte", percent: 36, value: "R$ 288" },
-  { name: "Lazer", percent: 22, value: "R$ 132" },
-];
+export type DashboardData = {
+  currency: string;
+  consolidatedBalance: number;
+  incomeMonth: number;
+  expensesMonth: number;
+  cardSpendMonth: number;
+  accountCount: number;
+  cardCount: number;
+  ignoredCurrencyAccounts: number;
+  transactions: DashboardTransaction[];
+  categories: { name: string; value: number; percent: number }[];
+  goal: { title: string; currentAmount: number; targetAmount: number } | null;
+};
 
-type DashboardViewProps = {
+type Props = {
   userName?: string;
   userSubtitle?: string;
+  householdId?: string;
+  households?: { id: string; name: string; roleLabel: string }[];
+  data?: DashboardData;
   demo?: boolean;
   showLogout?: boolean;
 };
 
-function getInitials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "U";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0]}${parts.at(-1)?.[0] ?? ""}`.toUpperCase();
+const demoData: DashboardData = {
+  currency: "BRL",
+  consolidatedBalance: 20418.73,
+  incomeMonth: 4702,
+  expensesMonth: 2596.44,
+  cardSpendMonth: 1347.8,
+  accountCount: 3,
+  cardCount: 2,
+  ignoredCurrencyAccounts: 0,
+  transactions: [
+    { id:"1", description:"Mercado São Luiz", type:"expense", amount:186.42, currency:"BRL", occurredAt:"2026-08-05T12:00:00Z", categoryName:"Alimentação", accountName:"Nubank", cardName:null },
+    { id:"2", description:"Salário", type:"income", amount:2702, currency:"BRL", occurredAt:"2026-08-01T12:00:00Z", categoryName:"Receita", accountName:"XP", cardName:null },
+  ],
+  categories: [
+    { name:"Moradia", value:1480, percent:74 },
+    { name:"Alimentação", value:696, percent:35 },
+  ],
+  goal: { title:"Exemplo de meta", currentAmount:20000, targetAmount:35000 },
+};
+
+function money(value: number, currency: string) {
+  try { return new Intl.NumberFormat("pt-BR",{style:"currency",currency}).format(value); }
+  catch { return `${currency} ${value.toFixed(2)}`; }
 }
+function initials(name:string){ const p=name.trim().split(/\s+/).filter(Boolean); return p.length>1?`${p[0][0]}${p[p.length-1][0]}`.toUpperCase():(p[0]?.slice(0,2).toUpperCase()||"U"); }
 
 export function DashboardView({
-  userName = "Gabriel",
-  userSubtitle = "Conta do casal",
-  demo = true,
-  showLogout = false,
-}: DashboardViewProps) {
+  userName="Usuário",
+  userSubtitle="AUREUM",
+  householdId,
+  households=[],
+  data,
+  demo=false,
+  showLogout=false,
+}: Props) {
+  const d = demo ? demoData : data!;
   const firstName = userName.split(/\s+/)[0] || "você";
+  const month = new Intl.DateTimeFormat("pt-BR",{month:"long",year:"numeric"}).format(new Date()).toUpperCase();
+  const goalPercent = d.goal && d.goal.targetAmount > 0 ? Math.min(100,(d.goal.currentAmount/d.goal.targetAmount)*100) : 0;
 
   return (
-    <main className="dashboard-shell">
-      <aside className="sidebar">
-        <Link className="brand brand-dashboard" href="/">
-          <img className="brand-emblem-small" src="/brand/aureum-monogram.png" alt="AUREUM" />
-          <span>AUREUM</span>
-        </Link>
+    <main className={styles.shell}>
+      <aside className={styles.sidebar}>
+        <Link className={styles.brand} href="/"><img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" /></Link>
 
-        <nav className="sidebar-nav" aria-label="Navegação principal">
-          <a className="sidebar-link sidebar-link-active" href="#resumo">
-            <span>◫</span> Resumo
-          </a>
-          <a className="sidebar-link" href="#transacoes">
-            <span>↕</span> Transações
-          </a>
-          <a className="sidebar-link" href="#cartoes">
-            <span>▣</span> Cartões
-          </a>
-          <a className="sidebar-link" href="#metas">
-            <span>◎</span> Metas
-          </a>
-          <a className="sidebar-link" href="#importacoes">
-            <span>⇧</span> Importações
-          </a>
-          {showLogout ? <LogoutButton /> : null}
+        {!demo && householdId && households.length ? (
+          <HouseholdSwitcher currentId={householdId} households={households} />
+        ) : null}
+
+        <nav className={styles.sidebarNav}>
+          <a className={styles.activeLink} href="#resumo"><span>◫</span>Resumo</a>
+          <a href="#transacoes"><span>↕</span>Transações</a>
+          <a href="#categorias"><span>◌</span>Categorias</a>
+          <a href="#metas"><span>◎</span>Metas</a>
+          {showLogout ? <LogoutButton className={styles.logout} /> : null}
         </nav>
 
-        <div className="sidebar-footer">
-          <span className="avatar">{getInitials(userName)}</span>
-          <div>
-            <strong>{firstName}</strong>
-            <small>{userSubtitle}</small>
-          </div>
+        <div className={styles.user}>
+          <span>{initials(userName)}</span>
+          <div><strong>{firstName}</strong><small>{userSubtitle}</small></div>
         </div>
       </aside>
 
-      <section className="dashboard-content" id="resumo">
-        <header className="dashboard-header">
+      <section className={styles.content}>
+        <header className={styles.top}>
           <div>
-            <p className="eyebrow dashboard-eyebrow">AGOSTO DE 2026</p>
+            <p className={styles.eyebrow}>{month}</p>
             <h1>Olá, {firstName}.</h1>
-            <p>
-              {demo
-                ? "Esta é uma demonstração visual com dados fictícios."
-                : "Seu acesso está protegido. Os valores ainda são demonstrativos nesta etapa."}
-            </p>
+            <p>{demo ? "Demonstração com dados de exemplo." : "Os números abaixo são calculados a partir dos registros desta Household."}</p>
           </div>
-          <button className="button button-primary" type="button">
-            + Nova transação
-          </button>
+          {!demo ? <span className={styles.liveBadge}>● DADOS DO BANCO</span> : <span className={styles.demoBadge}>DEMONSTRAÇÃO</span>}
         </header>
 
-        <section className="summary-grid" aria-label="Resumo financeiro">
-          <SummaryCard
-            label="Saldo consolidado"
-            value="R$ 20.418,73"
-            detail="Contas e reservas"
-            tone="positive"
-          />
-          <SummaryCard
-            label="Receitas do mês"
-            value="R$ 4.702,00"
-            detail="2 lançamentos confirmados"
-            tone="positive"
-          />
-          <SummaryCard
-            label="Despesas do mês"
-            value="R$ 2.596,44"
-            detail="55,2% das receitas"
-            tone="negative"
-          />
-          <SummaryCard
-            label="Próximas faturas"
-            value="R$ 1.347,80"
-            detail="Nubank e XP Visa"
-          />
+        <section className={styles.summary} id="resumo">
+          <article><span>Saldo consolidado</span><strong>{money(d.consolidatedBalance,d.currency)}</strong><small>{d.accountCount} conta(s) na moeda principal</small></article>
+          <article><span>Receitas do mês</span><strong className={styles.positive}>{money(d.incomeMonth,d.currency)}</strong><small>Lançamentos confirmados</small></article>
+          <article><span>Despesas do mês</span><strong className={styles.negative}>{money(d.expensesMonth,d.currency)}</strong><small>Somente transações oficiais</small></article>
+          <article><span>Gastos em cartões</span><strong>{money(d.cardSpendMonth,d.currency)}</strong><small>{d.cardCount} cartão(ões) cadastrado(s)</small></article>
         </section>
 
-        <section className="dashboard-grid">
-          <article className="panel panel-wide" id="transacoes">
-            <div className="panel-heading">
-              <div>
-                <p className="panel-kicker">MOVIMENTAÇÃO</p>
-                <h2>Transações recentes</h2>
-              </div>
-              <button className="text-button" type="button">
-                Ver todas
-              </button>
-            </div>
+        {d.ignoredCurrencyAccounts > 0 ? (
+          <p className={styles.currencyNote}>Existem {d.ignoredCurrencyAccounts} conta(s) em outra moeda. Elas não são somadas ao saldo consolidado sem conversão cambial.</p>
+        ) : null}
 
-            <div className="transaction-list">
-              {transactions.map((transaction) => (
-                <div className="transaction-row" key={transaction.description}>
-                  <span className="transaction-icon">
-                    {transaction.value.startsWith("+") ? "↙" : "↗"}
-                  </span>
-                  <div className="transaction-description">
-                    <strong>{transaction.description}</strong>
-                    <small>
-                      {transaction.category} • {transaction.account}
-                    </small>
-                  </div>
-                  <strong
-                    className={
-                      transaction.value.startsWith("+")
-                        ? "value-positive"
-                        : "value-negative"
-                    }
-                  >
-                    {transaction.value}
-                  </strong>
-                </div>
-              ))}
-            </div>
+        <section className={styles.grid}>
+          <article className={`${styles.panel} ${styles.wide}`} id="transacoes">
+            <div className={styles.panelHead}><div><p>Movimentação</p><h2>Transações recentes</h2></div></div>
+            {d.transactions.length ? (
+              <div className={styles.transactions}>
+                {d.transactions.map(t => {
+                  const sign = t.type === "income" ? "+" : t.type === "expense" ? "−" : "↔";
+                  const cls = t.type === "income" ? styles.positive : t.type === "expense" ? styles.negative : "";
+                  return (
+                    <div className={styles.transaction} key={t.id}>
+                      <span className={styles.txIcon}>{t.type === "income" ? "↙" : t.type === "expense" ? "↗" : "↔"}</span>
+                      <div>
+                        <strong>{t.description}</strong>
+                        <small>{[t.categoryName,t.accountName,t.cardName].filter(Boolean).join(" • ") || "Sem classificação"}</small>
+                      </div>
+                      <div className={styles.txValue}>
+                        <strong className={cls}>{sign} {money(t.amount,t.currency)}</strong>
+                        <small>{new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"short"}).format(new Date(t.occurredAt))}</small>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : <div className={styles.empty}><strong>Nenhuma transação ainda.</strong><p>Quando houver lançamentos oficiais nesta Household, eles aparecerão aqui.</p></div>}
           </article>
 
-          <article className="panel" id="metas">
-            <div className="panel-heading">
-              <div>
-                <p className="panel-kicker">OBJETIVO PRINCIPAL</p>
-                <h2>Portugal</h2>
-              </div>
-              <span className="goal-percentage">57%</span>
-            </div>
-            <div className="goal-amount">
-              <strong>R$ 20.000</strong>
-              <span>de R$ 35.000</span>
-            </div>
-            <div className="progress-track" aria-label="Meta 57% concluída">
-              <div className="progress-value" style={{ width: "57%" }} />
-            </div>
-            <p className="panel-note">
-              Mantendo o ritmo atual, a meta será alcançada antes da mudança.
-            </p>
+          <article className={styles.panel} id="metas">
+            <div className={styles.panelHead}><div><p>Objetivo</p><h2>{d.goal?.title ?? "Metas"}</h2></div>{d.goal ? <span>{goalPercent.toFixed(0)}%</span> : null}</div>
+            {d.goal ? (
+              <>
+                <div className={styles.goalAmount}><strong>{money(d.goal.currentAmount,d.currency)}</strong><span>de {money(d.goal.targetAmount,d.currency)}</span></div>
+                <div className={styles.progress}><i style={{width:`${goalPercent}%`}} /></div>
+              </>
+            ) : <div className={styles.empty}><strong>Nenhuma meta cadastrada.</strong><p>O dashboard não inventa objetivos: aqui entram apenas metas salvas no banco.</p></div>}
           </article>
 
-          <article className="panel panel-wide" id="cartoes">
-            <div className="panel-heading">
-              <div>
-                <p className="panel-kicker">ORÇAMENTO</p>
-                <h2>Gastos por categoria</h2>
+          <article className={`${styles.panel} ${styles.wide}`} id="categorias">
+            <div className={styles.panelHead}><div><p>Despesas do mês</p><h2>Gastos por categoria</h2></div></div>
+            {d.categories.length ? (
+              <div className={styles.categories}>
+                {d.categories.map(c => (
+                  <div className={styles.category} key={c.name}>
+                    <div><strong>{c.name}</strong><span>{money(c.value,d.currency)}</span></div>
+                    <div className={styles.progress}><i style={{width:`${c.percent}%`}} /></div>
+                    <span>{c.percent.toFixed(0)}%</span>
+                  </div>
+                ))}
               </div>
-              <span className="panel-note">Planejado x realizado</span>
-            </div>
-
-            <div className="category-list">
-              {categories.map((category) => (
-                <div className="category-row" key={category.name}>
-                  <div className="category-label">
-                    <strong>{category.name}</strong>
-                    <span>{category.value}</span>
-                  </div>
-                  <div className="progress-track progress-track-small">
-                    <div
-                      className="progress-value"
-                      style={{ width: `${category.percent}%` }}
-                    />
-                  </div>
-                  <span>{category.percent}%</span>
-                </div>
-              ))}
-            </div>
+            ) : <div className={styles.empty}><strong>Sem despesas categorizadas neste mês.</strong><p>Assim que existirem registros, a distribuição será calculada automaticamente.</p></div>}
           </article>
 
-          <article className="panel import-panel" id="importacoes">
-            <span className="import-icon">⇧</span>
-            <p className="panel-kicker">CENTRAL DE IMPORTAÇÕES</p>
-            <h2>Faturas e extratos</h2>
-            <p>
-              Envie os documentos pelo site, revise os lançamentos e só então
-              confirme a importação.
-            </p>
-            <button className="button button-secondary" type="button">
-              Importar arquivo
-            </button>
+          <article className={styles.panel}>
+            <div className={styles.panelHead}><div><p>Estrutura</p><h2>Household</h2></div></div>
+            <div className={styles.structure}>
+              <div><strong>{d.accountCount}</strong><span>Contas</span></div>
+              <div><strong>{d.cardCount}</strong><span>Cartões</span></div>
+              <div><strong>{d.transactions.length}</strong><span>Recentes</span></div>
+            </div>
           </article>
         </section>
       </section>
-
-      <nav className="mobile-nav" aria-label="Navegação móvel">
-        <a href="#resumo">Resumo</a>
-        <a href="#transacoes">Transações</a>
-        <a href="#cartoes">Cartões</a>
-        <a href="#metas">Metas</a>
-      </nav>
     </main>
   );
 }

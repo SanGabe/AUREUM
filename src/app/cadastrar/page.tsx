@@ -2,28 +2,33 @@ import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
 import styles from "@/components/auth.module.css";
 
-export const metadata = {
-  title: "Criar conta | AUREUM",
-};
+export const metadata = { title: "Criar conta | AUREUM" };
 
 export default function SignUpPage() {
   return (
     <main className={styles.shell}>
-      <section className={styles.card}>
-        <Link className={styles.brand} href="/">
-          <img className={styles.authLogo} src="/brand/aureum-monogram.png" alt="AUREUM" />
+      <section className={styles.brandPanel}>
+        <Link href="/" className={styles.brandLogo}>
+          <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM" />
         </Link>
+        <div className={styles.brandCopy}>
+          <p className={styles.eyebrow}>AMOR • ORDO • PROGRESSUS</p>
+          <h2>Organize o presente para dar direção ao futuro.</h2>
+          <p>Crie sua conta. Na etapa seguinte você escolhe entre criar sua própria Household ou entrar em uma que já existe.</p>
+        </div>
+        <img className={styles.authBird} src="/brand/aureum-footer-bird.svg" alt="" aria-hidden="true" />
+      </section>
 
-        <header className={styles.header}>
-          <h1>Crie seu espaço financeiro.</h1>
-          <p>Começamos pela sua conta. O espaço do casal entra na próxima etapa.</p>
-        </header>
-
-        <AuthForm mode="signup" />
-
-        <p className={styles.footer}>
-          Já tem uma conta? <Link href="/entrar">Entrar</Link>
-        </p>
+      <section className={styles.formPanel}>
+        <div className={styles.card}>
+          <header className={styles.header}>
+            <p className={styles.eyebrow}>CRIAR CONTA</p>
+            <h1>Bem-vindo ao AUREUM.</h1>
+            <p>Comece pela sua identidade. Sua estrutura financeira vem logo depois.</p>
+          </header>
+          <AuthForm mode="signup" />
+          <p className={styles.footer}>Já tem uma conta? <Link href="/entrar">Entrar</Link></p>
+        </div>
       </section>
     </main>
   );

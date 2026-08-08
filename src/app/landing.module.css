@@ -1235,3 +1235,6 @@
     grid-template-columns: 1fr;
   }
 }
+
+.pillarCard { text-decoration: none; transition: transform .18s ease, border-color .18s ease; }
+.pillarCard:hover { transform: translateY(-3px); border-color: rgba(226,170,50,.5); }

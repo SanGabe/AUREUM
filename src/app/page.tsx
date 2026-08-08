@@ -178,18 +178,21 @@ const pillars = [
     subtitle: "Cuidar do que importa",
     text: "Organize o que é seu, o que é da sua casa e o que constrói o futuro de quem você ama.",
     asset: "/brand/aureum-heart-hq.png",
+    href: "/amor",
   },
   {
     title: "ORDO",
     subtitle: "Ordem que gera liberdade",
     text: "Tenha método, estrutura e controle para entender seu dinheiro e tomar decisões melhores.",
     asset: "/brand/aureum-column-hq.png",
+    href: "/ordo",
   },
   {
     title: "PROGRESSUS",
     subtitle: "Evolução constante",
     text: "Acompanhe metas, construa patrimônio e avance com consistência rumo aos seus objetivos.",
     asset: "/brand/aureum-laurel-hq.png",
+    href: "/progressus",
   },
 ];
 
@@ -204,10 +207,10 @@ export default function Home() {
         </Link>
 
         <nav className={styles.nav} aria-label="Navegação principal">
-          <a href="#recursos">Recursos</a>
-          <a href="#para-quem">Para quem</a>
-          <a href="#seguranca">Segurança</a>
-          <a href="#historia">Sobre nós</a>
+          <Link href="/recursos">Recursos</Link>
+          <Link href="/para-quem">Para quem</Link>
+          <Link href="/seguranca">Segurança</Link>
+          <Link href="/sobre-nos">Sobre nós</Link>
           <Link href="/demonstracao">Demonstração</Link>
         </nav>
 
@@ -292,7 +295,7 @@ export default function Home() {
 
         <div className={styles.pillars}>
           {pillars.map((pillar) => (
-            <article className={styles.pillarCard} key={pillar.title}>
+            <Link className={styles.pillarCard} href={pillar.href} key={pillar.title}>
               <div className={styles.pillarAsset}>
                 <img src={pillar.asset} alt="" aria-hidden="true" />
               </div>
@@ -301,7 +304,7 @@ export default function Home() {
                 <strong>{pillar.subtitle}</strong>
                 <p>{pillar.text}</p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -364,15 +367,15 @@ export default function Home() {
 
         <div className={styles.footerColumn}>
           <strong>Produto</strong>
-          <a href="#recursos">Recursos</a>
+          <Link href="/recursos">Recursos</Link>
           <span>Preços</span>
           <Link href="/demonstracao">Demonstração</Link>
         </div>
 
         <div className={styles.footerColumn}>
           <strong>Empresa</strong>
-          <a href="#historia">Sobre nós</a>
-          <a href="#seguranca">Segurança</a>
+          <Link href="/sobre-nos">Sobre nós</Link>
+          <Link href="/seguranca">Segurança</Link>
           <span>Contato</span>
         </div>
 
