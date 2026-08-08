@@ -36,8 +36,10 @@ export function localeDefaultCountry(locale: AppLocale) {
 
 export function englishSpelling(locale: EnglishLocale) {
   const gb = locale === "en-GB";
+
   return {
     organize: gb ? "organise" : "organize",
+    organized: gb ? "organised" : "organized",
     organizing: gb ? "organising" : "organizing",
     organization: gb ? "organisation" : "organization",
     center: gb ? "centre" : "center",
