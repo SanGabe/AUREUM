@@ -1,3 +1,5 @@
+export const metadata = { title: "Onboarding" };
+
 import { notFound, redirect } from "next/navigation";
 import { EnglishOnboardingForm } from "@/components/english-onboarding-form";
 import { createClient } from "@/lib/supabase/server";

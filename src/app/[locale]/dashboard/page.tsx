@@ -1,3 +1,5 @@
+export const metadata = { title: "Dashboard" };
+
 import { notFound } from "next/navigation";
 import { DashboardView } from "@/components/dashboard-view";
 import { parseEnglishLocale } from "@/i18n/locales";

@@ -1,6 +1,6 @@
 import { CTA, MarketingShell, PageHero, marketingStyles as styles } from "@/components/marketing-shell";
 
-export const metadata = { title: "Para quem | AUREUM" };
+export const metadata = { title: "Para quem" };
 
 export default function ParaQuemPage() {
   return (

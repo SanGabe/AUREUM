@@ -1,3 +1,5 @@
+export const metadata = { title: "Create account" };
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EnglishAuthForm } from "@/components/english-auth-form";

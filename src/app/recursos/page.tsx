@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CTA, MarketingShell, PageHero, marketingStyles as styles } from "@/components/marketing-shell";
 
-export const metadata = { title: "Recursos | AUREUM" };
+export const metadata = { title: "Recursos" };
 
 const items = [
   ["01", "Contas em um só lugar", "Organize conta corrente, carteira, poupança e investimentos por Núcleo e moeda."],

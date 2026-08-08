@@ -1,7 +1,7 @@
 import { TransactionsSection } from "@/components/finance-sections";
 import { resolveFinanceContext } from "@/lib/aureum/finance-context";
 
-export const metadata = { title: "Transações | AUREUM" };
+export const metadata = { title: "Transações" };
 
 type Props = {
   searchParams: Promise<{

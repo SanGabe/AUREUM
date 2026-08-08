@@ -1,3 +1,5 @@
+export const metadata = { title: "Personal information" };
+
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ProfileForm } from "@/components/profile-form";

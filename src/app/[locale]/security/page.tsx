@@ -1,3 +1,5 @@
+export const metadata = { title: "Security" };
+
 import { notFound } from "next/navigation";
 import {
   EnglishCTA,

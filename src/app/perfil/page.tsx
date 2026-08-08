@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import styles from "@/components/account-page.module.css";
 
 export const metadata = {
-  title: "Informações pessoais | AUREUM",
+  title: "Informações pessoais",
 };
 
 type Props = {

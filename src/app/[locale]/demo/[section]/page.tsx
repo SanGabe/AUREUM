@@ -1,3 +1,28 @@
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{
+    locale: string;
+    section: string;
+  }>;
+}) {
+  const { section } = await params;
+
+  const titles: Record<string, string> = {
+    transactions: "Demo — Transactions",
+    categories: "Demo — Categories",
+    goals: "Demo — Goals",
+    accounts: "Demo — Accounts & Banks",
+    investments: "Demo — Investments",
+    "exchange-rates": "Demo — Exchange rates",
+    approvals: "Demo — Approvals",
+  };
+
+  return {
+    title: titles[section] ?? "Demo",
+  };
+}
+
 import { notFound } from "next/navigation";
 import { DemoFinanceSection } from "@/components/demo-finance";
 import type { FinanceSection } from "@/components/finance-navigation";

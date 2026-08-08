@@ -1,6 +1,6 @@
 import { CTA, MarketingShell, PageHero, marketingStyles as styles } from "@/components/marketing-shell";
 
-export const metadata = { title: "Segurança | AUREUM" };
+export const metadata = { title: "Segurança" };
 
 const cards = [
   ["01","Isolamento por Núcleo","Row Level Security limita o acesso aos dados que pertencem aos Núcleos dos quais o usuário realmente faz parte."],

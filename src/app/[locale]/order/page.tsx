@@ -1,3 +1,5 @@
+export const metadata = { title: "Order" };
+
 import { notFound } from "next/navigation";
 import {
   EnglishCTA,

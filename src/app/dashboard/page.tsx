@@ -2,7 +2,7 @@ import { DashboardView } from "@/components/dashboard-view";
 import { resolveFinanceContext, roleLabel } from "@/lib/aureum/finance-context";
 import { loadDashboardData } from "@/lib/aureum/dashboard-data";
 
-export const metadata = { title: "Dashboard | AUREUM" };
+export const metadata = { title: "Dashboard" };
 
 type Props = {
   searchParams: Promise<{

@@ -1,3 +1,5 @@
+export const metadata = { title: "Início" };
+
 import Link from "next/link";
 import { LandingDemoLink } from "@/components/landing-demo-link";
 import { LanguageMenu } from "@/components/language-menu";

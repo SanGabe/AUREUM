@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
 import styles from "@/components/auth.module.css";
 
-export const metadata = { title: "Entrar | AUREUM" };
+export const metadata = { title: "Entrar" };
 
 type Props = { searchParams: Promise<{ next?: string; erro?: string }> };
 

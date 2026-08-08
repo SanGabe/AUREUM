@@ -4,7 +4,7 @@ import { SettingsForm } from "@/components/settings-form";
 import { createClient } from "@/lib/supabase/server";
 import styles from "@/components/account-page.module.css";
 
-export const metadata = { title: "Configurações | AUREUM" };
+export const metadata = { title: "Configurações" };
 
 type Props = {
   searchParams: Promise<{

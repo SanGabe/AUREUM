@@ -1,3 +1,5 @@
+export const metadata = { title: "Progress" };
+
 import { notFound } from "next/navigation";
 import {
   EnglishCTA,

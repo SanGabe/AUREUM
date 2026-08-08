@@ -3,7 +3,7 @@ import { AuthForm } from "@/components/auth-form";
 import styles from "@/components/auth.module.css";
 
 export const metadata = {
-  title: "Criar conta | AUREUM",
+  title: "Criar conta",
 };
 
 export default function SignUpPage() {

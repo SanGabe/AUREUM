@@ -1,5 +1,5 @@
 import { CTA, MarketingShell, marketingStyles as styles } from "@/components/marketing-shell";
-export const metadata = { title: "Progressus | AUREUM" };
+export const metadata = { title: "Progressus" };
 export default function Page() {
   return (
     <MarketingShell active="progressus">

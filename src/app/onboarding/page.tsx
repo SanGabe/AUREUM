@@ -3,7 +3,7 @@ import { OnboardingForm } from "@/components/onboarding-form";
 import { createClient } from "@/lib/supabase/server";
 import styles from "./onboarding.module.css";
 
-export const metadata = { title: "Primeiros passos | AUREUM" };
+export const metadata = { title: "Configuração inicial" };
 
 export default async function OnboardingPage() {
   const supabase = await createClient();

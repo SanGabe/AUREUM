@@ -1,3 +1,5 @@
+export const metadata = { title: "Resources" };
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {

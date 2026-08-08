@@ -1,7 +1,7 @@
 import { ExchangeRatesSection } from "@/components/finance-sections";
 import { resolveFinanceContext } from "@/lib/aureum/finance-context";
 
-export const metadata = { title: "Cotações | AUREUM" };
+export const metadata = { title: "Cotações" };
 
 type Props = {
   searchParams: Promise<{

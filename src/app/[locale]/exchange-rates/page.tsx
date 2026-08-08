@@ -1,3 +1,5 @@
+export const metadata = { title: "Exchange rates" };
+
 import { notFound } from "next/navigation";
 import { ExchangeRatesSection } from "@/components/finance-sections";
 import { parseEnglishLocale } from "@/i18n/locales";

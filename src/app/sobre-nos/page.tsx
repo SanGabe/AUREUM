@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CTA, MarketingShell, PageHero, marketingStyles as styles } from "@/components/marketing-shell";
 
-export const metadata = { title: "Sobre nós | AUREUM" };
+export const metadata = { title: "Sobre nós" };
 
 export default function SobreNosPage() {
   return (

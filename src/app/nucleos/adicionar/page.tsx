@@ -1,7 +1,7 @@
 import { JoinNucleusSection } from "@/components/finance-sections";
 import { resolveFinanceContext } from "@/lib/aureum/finance-context";
 
-export const metadata = { title: "Adicionar Núcleo | AUREUM" };
+export const metadata = { title: "Adicionar Núcleo" };
 
 type Props = {
   searchParams: Promise<{

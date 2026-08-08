@@ -1,3 +1,5 @@
+export const metadata = { title: "Home" };
+
 import { notFound } from "next/navigation";
 import { EnglishLanding } from "@/components/english-landing";
 import { parseEnglishLocale } from "@/i18n/locales";

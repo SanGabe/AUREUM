@@ -1,3 +1,5 @@
+export const metadata = { title: "For whom" };
+
 import { notFound } from "next/navigation";
 import {
   EnglishCTA,

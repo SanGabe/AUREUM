@@ -1,3 +1,5 @@
+export const metadata = { title: "Settings" };
+
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { SettingsForm } from "@/components/settings-form";

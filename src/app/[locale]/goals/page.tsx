@@ -1,3 +1,5 @@
+export const metadata = { title: "Goals" };
+
 import { notFound } from "next/navigation";
 import { GoalsSection } from "@/components/finance-sections";
 import { parseEnglishLocale } from "@/i18n/locales";

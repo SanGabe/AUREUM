@@ -5,8 +5,8 @@ import "./theme.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "AUREUM — Seu app de finanças unificado",
-    template: "%s | AUREUM",
+    default: "AUREUM",
+    template: "AUREUM | %s",
   },
   description:
     "Organize contas, cartões, metas e a vida financeira da sua casa em uma experiência clara, elegante e moderna.",

@@ -1,3 +1,5 @@
+export const metadata = { title: "Approvals" };
+
 import { notFound } from "next/navigation";
 import { ApprovalsSection } from "@/components/finance-sections";
 import { parseEnglishLocale } from "@/i18n/locales";

@@ -1,3 +1,5 @@
+export const metadata = { title: "Join Nucleus" };
+
 import { notFound } from "next/navigation";
 import { JoinNucleusSection } from "@/components/finance-sections";
 import { parseEnglishLocale } from "@/i18n/locales";

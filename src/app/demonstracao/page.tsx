@@ -1,7 +1,7 @@
 import { DemoDashboard } from "@/components/demo-finance";
 
 export const metadata = {
-  title: "Demonstração | AUREUM",
+  title: "Demonstração",
 };
 
 export default function DemonstrationPage() {
