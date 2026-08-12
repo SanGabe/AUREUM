@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { CountryCallingCodePicker } from "@/components/country-calling-code-picker";
+import { AuthLoadingPopup } from "@/components/auth-loading-popup";
 import {
   formatCpf,
   normalizeEmail,
@@ -530,6 +531,7 @@ export function EnglishAuthForm({
             ? "Sign in to AUREUM"
             : "Create account"}
       </button>
+      {loading && mode === "signin" ? <AuthLoadingPopup english /> : null}
     </form>
   );
 }

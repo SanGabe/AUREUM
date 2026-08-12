@@ -4,6 +4,7 @@ import { LanguageMenu } from "@/components/language-menu";
 import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
+import { SiteFooter } from "@/components/site-footer";
 import styles from "@/app/landing.module.css";
 
 function IconShield() {
@@ -108,7 +109,6 @@ function HeroDevices({ locale }: { locale: EnglishLocale }) {
 export function EnglishLanding({ locale }: { locale: EnglishLocale }) {
   const t = getEnglishCopy(locale);
   const prefix = localePrefix(locale);
-  const year = new Date().getFullYear();
 
   return (
     <main className={styles.page} lang={locale}>
@@ -221,14 +221,7 @@ export function EnglishLanding({ locale }: { locale: EnglishLocale }) {
         <Link className={styles.primaryButton} href={`${prefix}/sign-up`}>{t.common.createAccount} <span>→</span></Link>
       </section>
 
-      <footer className={styles.footer}>
-        <div className={styles.footerBrand}><img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM — Amor, Ordo, Progressus" /></div>
-        <div className={styles.footerColumn}><strong>Product</strong><Link href={`${prefix}/resources`}>Features</Link><Link href={`${prefix}/for-whom`}>Who it is for</Link><LandingDemoLink href={`${prefix}/demo`} loadingText="Loading demo...">Demo</LandingDemoLink></div>
-        <div className={styles.footerColumn}><strong>Company</strong><Link href={`${prefix}/about`}>About</Link><Link href={`${prefix}/security`}>Security</Link><Link href={`${prefix}/sign-up`}>Create account</Link></div>
-        <div className={styles.footerColumn}><strong>Brand</strong><Link href={`${prefix}/love`}>Amor</Link><Link href={`${prefix}/order`}>Ordo</Link><Link href={`${prefix}/progress`}>Progressus</Link></div>
-        <div className={styles.social}><strong>Follow us</strong><div><span>◎</span><span>▶</span><span>in</span></div></div>
-        <p className={styles.copyright}>© {year} AUREUM. All rights reserved.</p>
-      </footer>
+      <SiteFooter locale={locale} />
     </main>
   );
 }

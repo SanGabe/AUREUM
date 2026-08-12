@@ -4,6 +4,7 @@ import {
   FormEvent,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
@@ -179,6 +180,12 @@ export function ProfileForm({
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] =
     useState(false);
+  const [cropSource, setCropSource] = useState<string | null>(null);
+  const [cropFile, setCropFile] = useState<File | null>(null);
+  const [cropZoom, setCropZoom] = useState(1);
+  const [cropX, setCropX] = useState(50);
+  const [cropY, setCropY] = useState(50);
+  const cropImageRef = useRef<HTMLImageElement | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -211,7 +218,7 @@ export function ProfileForm({
     };
   }, [avatarPath]);
 
-  async function uploadAvatar(file: File) {
+  function chooseAvatar(file: File) {
     setError("");
     setMessage("");
 
@@ -238,6 +245,58 @@ export function ProfileForm({
       );
       return;
     }
+
+    if (cropSource) URL.revokeObjectURL(cropSource);
+    setCropFile(file);
+    setCropSource(URL.createObjectURL(file));
+    setCropZoom(1);
+    setCropX(50);
+    setCropY(50);
+  }
+
+  function closeCrop() {
+    if (cropSource) URL.revokeObjectURL(cropSource);
+    setCropSource(null);
+    setCropFile(null);
+  }
+
+  async function createCroppedAvatar() {
+    const image = cropImageRef.current;
+    if (!image || !cropFile) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 900;
+    canvas.height = 1200;
+    const context = canvas.getContext("2d");
+    if (!context) return null;
+
+    const targetRatio = canvas.width / canvas.height;
+    const imageRatio = image.naturalWidth / image.naturalHeight;
+    const baseWidth = imageRatio > targetRatio ? image.naturalHeight * targetRatio : image.naturalWidth;
+    const baseHeight = imageRatio > targetRatio ? image.naturalHeight : image.naturalWidth / targetRatio;
+    const sourceWidth = baseWidth / cropZoom;
+    const sourceHeight = baseHeight / cropZoom;
+    const sourceX = Math.max(0, image.naturalWidth - sourceWidth) * (cropX / 100);
+    const sourceY = Math.max(0, image.naturalHeight - sourceHeight) * (cropY / 100);
+    context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
+
+    return new Promise<File | null>((resolve) => {
+      canvas.toBlob((blob) => resolve(blob ? new File([blob], "avatar-3x4.webp", { type: "image/webp" }) : null), "image/webp", .88);
+    });
+  }
+
+  async function confirmAvatarCrop() {
+    const cropped = await createCroppedAvatar();
+    if (!cropped) {
+      setError(pt ? "Não foi possível recortar a imagem." : "We could not crop the image.");
+      return;
+    }
+    await uploadAvatar(cropped);
+    closeCrop();
+  }
+
+  async function uploadAvatar(file: File) {
+    setError("");
+    setMessage("");
 
     setUploading(true);
 
@@ -416,13 +475,34 @@ export function ProfileForm({
               onChange={(event) => {
                 const file =
                   event.target.files?.[0];
-                if (file) void uploadAvatar(file);
+                if (file) chooseAvatar(file);
               }}
               type="file"
             />
           </label>
         </div>
       </div>
+
+      {cropSource ? (
+        <div className={extra.cropBackdrop} role="dialog" aria-modal="true" aria-labelledby="crop-title">
+          <div className={extra.cropDialog}>
+            <div className={extra.cropHeader}>
+              <div><strong id="crop-title">{pt ? "Recortar foto em 3:4" : "Crop photo to 3:4"}</strong><p>{pt ? "Ajuste o enquadramento antes de salvar." : "Adjust the framing before saving."}</p></div>
+              <button onClick={closeCrop} type="button" aria-label={pt ? "Fechar" : "Close"}>×</button>
+            </div>
+            <div className={extra.cropStage}>
+              <img ref={cropImageRef} src={cropSource} alt={pt ? "Prévia para recorte" : "Crop preview"} style={{ transform: `scale(${cropZoom})`, objectPosition: `${cropX}% ${cropY}%` }} />
+              <span aria-hidden="true" />
+            </div>
+            <div className={extra.cropControls}>
+              <label>Zoom<input type="range" min="1" max="3" step="0.05" value={cropZoom} onChange={(event) => setCropZoom(Number(event.target.value))} /></label>
+              <label>{pt ? "Horizontal" : "Horizontal"}<input type="range" min="0" max="100" value={cropX} onChange={(event) => setCropX(Number(event.target.value))} /></label>
+              <label>{pt ? "Vertical" : "Vertical"}<input type="range" min="0" max="100" value={cropY} onChange={(event) => setCropY(Number(event.target.value))} /></label>
+            </div>
+            <div className={extra.cropActions}><button onClick={closeCrop} type="button">{pt ? "Cancelar" : "Cancel"}</button><button disabled={uploading} onClick={() => void confirmAvatarCrop()} type="button">{uploading ? (pt ? "Salvando..." : "Saving...") : (pt ? "Usar esta foto" : "Use this photo")}</button></div>
+          </div>
+        </div>
+      ) : null}
 
       <div className={extra.section}>
         <div className={extra.sectionHeader}>

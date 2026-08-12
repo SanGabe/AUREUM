@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CurrencySelect } from "@/components/currency-select";
+import { FinancialInstitutionSelect } from "@/components/financial-institution-select";
 import { ACCOUNT_TYPE_OPTIONS } from "@/lib/aureum/financial-labels";
 import type { AppLocale } from "@/i18n/locales";
 import type { MembershipRole } from "@/lib/aureum/finance-context";
@@ -720,7 +721,7 @@ export function AccountForm({
           </label>
           <label className={styles.field}>
             {locale === "pt-BR" ? "Banco / instituição" : "Bank / institution"}
-            <input name="institution" />
+            <FinancialInstitutionSelect locale={locale} />
           </label>
           <label className={styles.field}>
             {locale === "pt-BR" ? "Tipo" : "Type"}
@@ -931,7 +932,7 @@ export function InvestmentForm({
           </label>
           <label className={styles.field}>
             {locale === "pt-BR" ? "Instituição" : "Institution"}
-            <input name="institution" />
+            <FinancialInstitutionSelect locale={locale} />
           </label>
           <label className={styles.field}>
             {locale === "pt-BR" ? "Moeda" : "Currency"}

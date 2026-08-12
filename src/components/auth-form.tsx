@@ -13,6 +13,7 @@ import {
   passwordChecks,
 } from "@/lib/aureum/identity-validation";
 import { CountryCallingCodePicker } from "@/components/country-calling-code-picker";
+import { AuthLoadingPopup } from "@/components/auth-loading-popup";
 import styles from "./auth.module.css";
 import extra from "./auth-extra.module.css";
 
@@ -514,6 +515,7 @@ export function AuthForm({
             ? "Entrar no AUREUM"
             : "Criar conta"}
       </button>
+      {loading && mode === "signin" ? <AuthLoadingPopup /> : null}
     </form>
   );
 }

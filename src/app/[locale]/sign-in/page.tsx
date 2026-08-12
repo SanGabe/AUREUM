@@ -3,6 +3,7 @@ export const metadata = { title: "Sign in" };
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EnglishAuthForm } from "@/components/english-auth-form";
+import { SiteFooter } from "@/components/site-footer";
 import { getEnglishCopy } from "@/i18n/english-copy";
 import { localePrefix, parseEnglishLocale } from "@/i18n/locales";
 import styles from "@/components/auth.module.css";
@@ -32,6 +33,7 @@ export default async function Page({ params, searchParams }: Props) {
       : undefined;
 
   return (
+    <>
     <main className={styles.shell} lang={locale}>
       <section className={styles.brandPanel}>
         <Link href={prefix} className={styles.brandLogo}>
@@ -66,5 +68,7 @@ export default async function Page({ params, searchParams }: Props) {
         </div>
       </section>
     </main>
+    <SiteFooter locale={locale} />
+    </>
   );
 }

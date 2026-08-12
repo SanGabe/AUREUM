@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
+import { SiteFooter } from "@/components/site-footer";
 import styles from "@/components/auth.module.css";
 
 export const metadata = {
@@ -8,6 +9,7 @@ export const metadata = {
 
 export default function SignUpPage() {
   return (
+    <>
     <main className={`${styles.shell} ${styles.signupShell}`}>
       <section className={styles.brandPanel}>
         <Link href="/" className={styles.brandLogo}>
@@ -58,5 +60,7 @@ export default function SignUpPage() {
         </div>
       </section>
     </main>
+    <SiteFooter />
+    </>
   );
 }

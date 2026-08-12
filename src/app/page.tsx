@@ -1,10 +1,11 @@
-export const metadata = { title: "Início" };
+export const metadata = { title: { absolute: "AUREUM" } };
 
 import Link from "next/link";
 import { LandingDemoLink } from "@/components/landing-demo-link";
 import { LanguageMenu } from "@/components/language-menu";
 import styles from "./landing.module.css";
 import { ThemeHeaderSelect } from "@/components/theme-selector";
+import { SiteFooter } from "@/components/site-footer";
 
 function IconShield() {
   return (
@@ -202,8 +203,6 @@ const pillars = [
 ];
 
 export default function Home() {
-  const year = new Date().getFullYear();
-
   return (
     <main className={styles.page}>
       <header className={styles.header}>
@@ -378,50 +377,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <footer className={styles.footer}>
-        <div className={styles.footerBrand}>
-          <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM — Amor, Ordo, Progressus" />
-        </div>
-
-        <div className={styles.footerColumn}>
-          <strong>Produto</strong>
-          <Link href="/recursos">Recursos</Link>
-          <span>Preços</span>
-          <LandingDemoLink
-            href="/demonstracao"
-            loadingText="Carregando demonstração..."
-          >
-            Demonstração
-          </LandingDemoLink>
-        </div>
-
-        <div className={styles.footerColumn}>
-          <strong>Empresa</strong>
-          <Link href="/sobre-nos">Sobre nós</Link>
-          <Link href="/seguranca">Segurança</Link>
-          <span>Contato</span>
-        </div>
-
-        <div className={styles.footerColumn}>
-          <strong>Suporte</strong>
-          <span>Central de ajuda</span>
-          <span>Privacidade</span>
-          <span>Termos de uso</span>
-        </div>
-
-        <div className={styles.social}>
-          <strong>Siga-nos</strong>
-          <div>
-            <span>◎</span>
-            <span>▶</span>
-            <span>in</span>
-          </div>
-        </div>
-
-        <p className={styles.copyright}>
-          © {year} AUREUM. Todos os direitos reservados.
-        </p>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import styles from "./dashboard-view.module.css";
 export type FinanceSection =
   | "dashboard"
   | "transactions"
+  | "imports"
   | "categories"
   | "goals"
   | "accounts"
@@ -16,6 +17,7 @@ export type FinanceSection =
 const PT_PATHS: Record<FinanceSection, string> = {
   dashboard: "/dashboard",
   transactions: "/transacoes",
+  imports: "/importacoes",
   categories: "/categorias",
   goals: "/metas",
   accounts: "/contas",
@@ -27,6 +29,7 @@ const PT_PATHS: Record<FinanceSection, string> = {
 const EN_PATHS: Record<FinanceSection, string> = {
   dashboard: "/dashboard",
   transactions: "/transactions",
+  imports: "/imports",
   categories: "/categories",
   goals: "/goals",
   accounts: "/accounts",
@@ -38,6 +41,7 @@ const EN_PATHS: Record<FinanceSection, string> = {
 const PT_DEMO_PATHS: Record<FinanceSection, string> = {
   dashboard: "/demonstracao",
   transactions: "/demonstracao/transacoes",
+  imports: "/demonstracao/transacoes",
   categories: "/demonstracao/categorias",
   goals: "/demonstracao/metas",
   accounts: "/demonstracao/contas",
@@ -49,6 +53,7 @@ const PT_DEMO_PATHS: Record<FinanceSection, string> = {
 const EN_DEMO_PATHS: Record<FinanceSection, string> = {
   dashboard: "/demo",
   transactions: "/demo/transactions",
+  imports: "/demo/transactions",
   categories: "/demo/categories",
   goals: "/demo/goals",
   accounts: "/demo/accounts",
@@ -60,6 +65,7 @@ const EN_DEMO_PATHS: Record<FinanceSection, string> = {
 export const FINANCE_SECTIONS: FinanceSection[] = [
   "dashboard",
   "transactions",
+  "imports",
   "categories",
   "goals",
   "accounts",
@@ -97,6 +103,7 @@ export function financeSectionLabel(
   const labels: Record<FinanceSection, [string, string]> = {
     dashboard: ["Resumo", "Overview"],
     transactions: ["Transações", "Transactions"],
+    imports: ["Importações", "Imports"],
     categories: ["Categorias", "Categories"],
     goals: ["Metas", "Goals"],
     accounts: ["Contas & Bancos", "Accounts & Banks"],
@@ -110,6 +117,7 @@ export function financeSectionLabel(
 export const FINANCE_ICONS: Record<FinanceSection, string> = {
   dashboard: "◫",
   transactions: "↕",
+  imports: "⇩",
   categories: "◌",
   goals: "◎",
   accounts: "▤",
@@ -145,7 +153,7 @@ export function FinanceNavigation({
 
   return (
     <nav className={styles.sidebarNav}>
-      {FINANCE_SECTIONS.map((section) => (
+      {(demo ? FINANCE_SECTIONS.filter((section) => section !== "imports") : FINANCE_SECTIONS).map((section) => (
         <Link
           className={
             active === section ? styles.activeLink : ""

@@ -35,6 +35,12 @@ Os três pilares da experiência são:
 - base V12 para upload de extratos, faturas e documentos financeiros;
 - associação do WhatsApp por código temporário e webhook com validação HMAC;
 - fila assíncrona, deduplicação e staging antes da criação de transações.
+- pop-up de carregamento durante a autenticação;
+- footer institucional reutilizável em landing, marketing e autenticação;
+- páginas de Termos de Uso, Privacidade/LGPD, Preços e Central de Ajuda em PT-BR e inglês;
+- catálogo selecionável de instituições brasileiras e internacionais comuns;
+- recorte de avatar em 3:4 antes do armazenamento privado;
+- área de importações com upload, revisão, rejeição e aprovação idempotente para `transactions`.
 
 ### Implementado localmente, com ativação remota pendente
 
@@ -47,13 +53,9 @@ Os três pilares da experiência são:
 
 ### Planejado
 
-- interface de revisão das linhas importadas e aprovação para `transactions`;
 - parsers de OFX, PDF, XLSX e imagens, com OCR e classificação assistida;
-- catálogo padronizado de instituições brasileiras e instituições estrangeiras comuns;
-- tela de carregamento específica do login;
-- Termos de Uso e Política de Privacidade/LGPD;
-- footer institucional padronizado também nas páginas de autenticação;
-- recorte e armazenamento de imagens no formato 3:4;
+- revisão jurídica e dados formais nos Termos de Uso e na Política de Privacidade/LGPD;
+- definição comercial dos planos e canais oficiais da Central de Ajuda;
 - Open Finance como etapa posterior à importação documental;
 - definição de planos, cobrança, suporte e operação comercial.
 

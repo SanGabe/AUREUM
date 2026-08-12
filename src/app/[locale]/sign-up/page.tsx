@@ -3,6 +3,7 @@ export const metadata = { title: "Create account" };
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EnglishAuthForm } from "@/components/english-auth-form";
+import { SiteFooter } from "@/components/site-footer";
 import { getEnglishCopy } from "@/i18n/english-copy";
 import {
   localePrefix,
@@ -24,6 +25,7 @@ export default async function Page({
   const prefix = localePrefix(locale);
 
   return (
+    <>
     <main className={`${styles.shell} ${styles.signupShell}`} lang={locale}>
       <section className={styles.brandPanel}>
         <Link
@@ -75,5 +77,7 @@ export default async function Page({
         </div>
       </section>
     </main>
+    <SiteFooter locale={locale} />
+    </>
   );
 }

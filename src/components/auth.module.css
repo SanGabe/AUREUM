@@ -22,6 +22,76 @@
 .field input::placeholder { color:#6f829e; }
 .submit { min-height:55px; border:0; border-radius:9px; color:var(--a-page-bg-2); background:linear-gradient(135deg,#f3c862,#d99c2e); font:inherit; font-weight:850; cursor:pointer; box-shadow:0 13px 30px rgba(217,156,46,.15); }
 .submit:disabled { opacity:.65; cursor:wait; }
+.loginPopupBackdrop {
+  position: fixed;
+  z-index: 1400;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 10, 27, .64);
+  backdrop-filter: blur(8px);
+}
+
+.loginPopup {
+  width: min(440px, 100%);
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 17px;
+  align-items: center;
+  padding: 22px;
+  border: 1px solid var(--a-border);
+  border-radius: 16px;
+  color: var(--a-text);
+  background: var(--a-surface-1);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .38);
+  animation: loginPopupIn .2s ease-out;
+}
+
+.loginPopup strong {
+  display: block;
+  color: var(--a-heading);
+  font-family: Georgia, serif;
+  font-size: 18px;
+}
+
+.loginPopup p {
+  margin: 6px 0 0;
+  color: var(--a-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.loginPopupMark {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+}
+
+.loginPopupMark span {
+  position: absolute;
+  inset: 0;
+  border: 2px solid color-mix(in srgb, var(--a-gold-strong) 25%, transparent);
+  border-top-color: var(--a-gold-strong);
+  border-radius: 50%;
+  animation: loginPopupSpin .9s linear infinite;
+}
+
+.loginPopupMark b {
+  color: var(--a-gold-strong);
+  font-family: Georgia, serif;
+  font-size: 22px;
+}
+
+@keyframes loginPopupSpin { to { transform: rotate(360deg); } }
+@keyframes loginPopupIn { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .loginPopup,
+  .loginPopupMark span { animation: none; }
+}
 .message,.error { padding:13px 14px; border-radius:10px; font-size:13px; line-height:1.5; }
 .message { color:#f2cb65; border:1px solid var(--a-border); background:rgba(228,170,50,.08); }
 .error { color:#ffc4c4; border:1px solid rgba(255,100,100,.25); background:rgba(255,70,70,.07); }

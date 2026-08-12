@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FinanceShell } from "@/components/finance-shell";
 import {
   AccountForm,
@@ -10,6 +11,7 @@ import {
 import { CurrencyRates } from "@/components/currency-rates";
 import { NucleusJoinForm } from "@/components/nucleus-join-form";
 import { ApprovalActions } from "@/components/approval-actions";
+import { FinancialImportWorkspace } from "@/components/financial-import-workspace";
 import type { FinanceContext } from "@/lib/aureum/finance-context";
 import {
   isManager,
@@ -80,6 +82,24 @@ function kindLabel(kind: string | null | undefined, locale: FinanceContext["loca
 
 function empty(locale: FinanceContext["locale"], pt: string, en: string) {
   return <div className={styles.empty}>{locale === "pt-BR" ? pt : en}</div>;
+}
+
+export async function ImportsSection({ context, selectedImportId }: { context: FinanceContext; selectedImportId?: string }) {
+  const locale = context.locale;
+  const importsResult = await context.supabase.from("financial_imports").select("id, original_filename, channel, source_type, status, row_count, received_at, error_message").eq("household_id", context.nucleus.id).order("received_at", { ascending: false }).limit(30);
+  const imports = importsResult.data ?? [];
+  const currentId = selectedImportId && imports.some((item: any) => item.id === selectedImportId) ? selectedImportId : imports.find((item: any) => item.status === "ready_for_review")?.id ?? imports[0]?.id;
+  const [rowsResult, accountsResult, categoriesResult, cardsResult] = await Promise.all([
+    currentId ? context.supabase.from("financial_import_rows").select("id, occurred_on, description, amount, currency, proposed_type, review_status, official_transaction_id").eq("import_id", currentId).order("row_index") : Promise.resolve({ data: [] }),
+    context.supabase.from("accounts").select("id,name").eq("household_id", context.nucleus.id).eq("is_active", true).order("name"),
+    context.supabase.from("categories").select("id,name").eq("household_id", context.nucleus.id).order("name"),
+    context.supabase.from("cards").select("id,name").eq("household_id", context.nucleus.id).order("name"),
+  ]);
+  const basePath = locale === "pt-BR" ? "/importacoes" : `/${locale.toLowerCase()}/imports`;
+  return <FinanceShell active="imports" context={context} eyebrow={locale === "pt-BR" ? "INGESTÃO" : "INGESTION"} title={locale === "pt-BR" ? "Extratos e faturas" : "Statements and bills"} description={locale === "pt-BR" ? "Envie documentos, confira cada linha e aprove somente o que deve entrar no histórico oficial." : "Upload documents, review every row and approve only what belongs in the official history."}>
+    <div className={styles.grid2} style={{ marginBottom: 14 }}><div className={styles.card}><h2>{locale === "pt-BR" ? "Importações" : "Imports"}</h2>{imports.length ? <div style={{ display: "grid", gap: 8 }}>{imports.map((item: any) => <Link href={`${basePath}?household=${context.nucleus.id}&month=${context.selectedMonth}&import=${item.id}`} key={item.id} style={{ padding: 10, border: "1px solid var(--a-border-soft)", borderRadius: 8 }}><strong>{item.original_filename}</strong><div style={{ color: "var(--a-muted)", fontSize: 10 }}>{item.source_type} · {item.status} · {item.row_count}</div></Link>)}</div> : empty(locale, "Nenhum arquivo enviado.", "No files uploaded.")}</div><div className={styles.notice}>{locale === "pt-BR" ? "A aprovação cria a transação uma única vez. Arquivos não suportados permanecem privados aguardando parser." : "Approval creates the transaction once. Unsupported files remain private while awaiting a parser."}</div></div>
+    <FinancialImportWorkspace householdId={context.nucleus.id} locale={locale} selectedImportId={currentId} rows={(rowsResult.data ?? []) as any} accounts={(accountsResult.data ?? []) as any} categories={(categoriesResult.data ?? []) as any} cards={(cardsResult.data ?? []) as any} />
+  </FinanceShell>;
 }
 
 export async function TransactionsSection({

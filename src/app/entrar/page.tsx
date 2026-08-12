@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
+import { SiteFooter } from "@/components/site-footer";
 import styles from "@/components/auth.module.css";
 
 export const metadata = { title: "Entrar" };
@@ -12,6 +13,7 @@ export default async function LoginPage({ searchParams }: Props) {
   const initialError = params.erro === "confirmacao" ? "Não foi possível confirmar seu e-mail. Tente novamente." : undefined;
 
   return (
+    <>
     <main className={styles.shell}>
       <section className={styles.brandPanel}>
         <Link href="/" className={styles.brandLogo}>
@@ -36,5 +38,7 @@ export default async function LoginPage({ searchParams }: Props) {
         </div>
       </section>
     </main>
+    <SiteFooter />
+    </>
   );
 }

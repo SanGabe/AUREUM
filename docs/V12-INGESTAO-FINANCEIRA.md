@@ -64,7 +64,18 @@ failed
 completed
 ```
 
-Nenhuma linha importada vira transação oficial automaticamente. A aprovação e a conversão para `transactions` pertencem à próxima etapa da interface de revisão.
+Nenhuma linha importada vira transação oficial automaticamente. A V13 adiciona a interface em `/importacoes` e `/{locale}/imports`: a pessoa revisa os campos antes de aprovar. A função `review_financial_import_row_v13` cria no máximo uma transação por linha e registra quem revisou.
+
+## Complemento V13 — revisão web
+
+- migração `supabase/migrations/202608120001_financial_import_review_v13.sql`;
+- rota `PATCH /api/imports/[importId]/rows/[rowId]`;
+- listagem de documentos por Núcleo;
+- correção e rejeição de linhas;
+- aprovação atômica e idempotente;
+- vínculo entre a linha e a transação criada.
+
+A migração V13 deve ser aplicada depois da V12. A interface remota depende das duas migrações e do bucket privado.
 
 ## Organização do repositório
 

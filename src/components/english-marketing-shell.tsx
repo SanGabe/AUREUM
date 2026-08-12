@@ -7,6 +7,7 @@ import {
 import type { EnglishLocale } from "@/i18n/locales";
 import { localePrefix } from "@/i18n/locales";
 import { getEnglishCopy } from "@/i18n/english-copy";
+import { SiteFooter } from "@/components/site-footer";
 import styles from "./marketing.module.css";
 
 type Active =
@@ -27,7 +28,6 @@ export function EnglishMarketingShell({
   active?: Active;
   locale: EnglishLocale;
 }) {
-  const year = new Date().getFullYear();
   const t = getEnglishCopy(locale);
   const prefix = localePrefix(locale);
   const languageRoute: LanguageRoute =
@@ -78,55 +78,7 @@ export function EnglishMarketingShell({
 
       {children}
 
-      <footer className={styles.footer}>
-        <div className={styles.footerTop}>
-          <div className={styles.footerBrand}>
-            <Link href={prefix} aria-label="AUREUM home">
-              <img src="/brand/aureum-logo-motto-hq.png" alt="AUREUM — Amor, Ordo, Progressus" />
-            </Link>
-            <p>Your unified finance app.</p>
-            <span>AMOR • ORDO • PROGRESSUS</span>
-          </div>
-
-          <div className={styles.footerColumn}>
-            <strong>Product</strong>
-            <Link href={`${prefix}/resources`}>Features</Link>
-            <Link href={`${prefix}/for-whom`}>Who it is for</Link>
-            <Link href={`${prefix}/demo`}>Demo</Link>
-          </div>
-
-          <div className={styles.footerColumn}>
-            <strong>Company</strong>
-            <Link href={`${prefix}/about`}>About</Link>
-            <Link href={`${prefix}/security`}>Security</Link>
-            <Link href={`${prefix}/sign-up`}>Create account</Link>
-          </div>
-
-          <div className={styles.footerColumn}>
-            <strong>Brand</strong>
-            <Link href={`${prefix}/love`}>Amor</Link>
-            <Link href={`${prefix}/order`}>Ordo</Link>
-            <Link href={`${prefix}/progress`}>Progressus</Link>
-          </div>
-
-          <div className={styles.footerSocial}>
-            <strong>Follow us</strong>
-            <div>
-              <span>◎</span>
-              <span>▶</span>
-              <span>in</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.footerBottom}>
-          <p>© {year} AUREUM. All rights reserved.</p>
-          <div>
-            <span>Privacy</span>
-            <span>Terms of use</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter locale={locale} />
     </main>
   );
 }
